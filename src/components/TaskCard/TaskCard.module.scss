@@ -28,23 +28,29 @@
 }
 
 .priorityBadge {
-  font-size: 0.75rem;
-  font-weight: bold;
+  display: inline-block;
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
-  align-self: flex-start;
+  font-size: 0.75rem;
+  font-weight: 600;
   text-transform: uppercase;
+  margin-top: 0.5rem;
+  width: fit-content;
 
-  &.high {
-    background-color: #ffebe6;
-    color: #de350b;
+  &.baja {
+    background-color: #e2f0d9;
+    color: #385723;
   }
-  &.medium {
-    background-color: #fffae6;
-    color: #b78103;
+  &.normal {
+    background-color: #e6eff5;
+    color: #2c5282;
   }
-  &.low {
-    background-color: #eae6ff;
-    color: #403294;
+  &.media {
+    background-color: #fff2cc;
+    color: #b25e00;
+  }
+  &.alta {
+    background-color: #ffe6e6;
+    color: #c00000;
   }
 }

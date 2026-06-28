@@ -143,3 +143,142 @@
     }
   }
 }
+
+.subTitle {
+  font-size: 0.85rem;
+  color: #5e6c84;
+  margin: 0;
+  margin-top: 0.25rem;
+
+  span {
+    text-decoration: underline;
+    font-weight: 500;
+  }
+}
+
+.metaDataGrid {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 0 0.5rem;
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  h4 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #5e6c84;
+    text-transform: uppercase;
+    margin: 0;
+  }
+}
+
+.dateInput {
+  background-color: rgba(9, 30, 66, 0.04);
+  border: 2px solid #dfe1e6;
+  border-radius: 4px;
+  color: #172b4d;
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: #0079bf;
+    background-color: #ffffff;
+  }
+}
+
+.headerInputGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.titleInput {
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  color: #172b4d;
+  font-size: 1.25rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  width: 500px;
+  max-width: 80vw;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    background-color: #ffffff;
+    border-color: #0079bf;
+  }
+}
+
+.shortDescriptionInput {
+  width: 100%;
+  background-color: #ffffff;
+  border: 2px solid #dfe1e6;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+
+  &:focus {
+    outline: none;
+    border-color: #0079bf;
+  }
+}
+
+.pillsContainer {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.priorityPill {
+  border: 2px solid transparent;
+  border-radius: 20px; // Súper redondeado tipo píldora
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #ffffff;
+  color: #42526e;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  // Comportamiento base al pasar el mouse por encima si no está activa
+  &:hover:not(.active) {
+    filter: brightness(0.95);
+    transform: translateY(-1px);
+  }
+
+  // Cuando la píldora está seleccionada, se enciende con su color de identidad
+  &.active {
+    transform: scale(1.04);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    
+    &.baja {
+      background-color: #61bd4f;
+      color: #ffffff;
+    }
+    &.normal {
+      background-color: #0079bf;
+      color: #ffffff;
+    }
+    &.media {
+      background-color: #f2d600;
+      color: #172b4d; // Texto oscuro para contrastar con el amarillo
+    }
+    &.alta {
+      background-color: #eb5a46;
+      color: #ffffff;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-export type StatusId = 'todo' | 'in-progress' | 'done';
+export type StatusId = 'Por Hacer' | 'En Progreso' | 'Terminado';
 
 // Definimos la estructura de un elemento dentro de la checklist
 export interface ChecklistItem {
@@ -20,7 +20,7 @@ export interface Task {
   description?: string;
   detailedDescription?: string; // 👈 Agregamos la descripción larga
   status: StatusId;
-  priority: 'low' | 'medium' | 'high';
+  priority: 'baja' | 'normal' | 'media' | 'alta';
   createdAt: string;
   dueDate?: string; // 👈 Opcional: Fecha de vencimiento (YYYY-MM-DD)
   checklist?: ChecklistItem[]; // 👈 Opcional: Array de subtareas
