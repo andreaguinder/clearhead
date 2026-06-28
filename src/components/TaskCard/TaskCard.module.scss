@@ -1,0 +1,50 @@
+.taskCard {
+  background-color: #ffffff;
+  border-radius: 6px;
+  padding: 0.75rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+    cursor: grab;
+  }
+
+  h3 {
+    font-size: 0.95rem;
+    color: #172b4d;
+    margin: 0;
+  }
+
+  p {
+    font-size: 0.85rem;
+    color: #5e6c84;
+    margin: 0;
+  }
+}
+
+.priorityBadge {
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  align-self: flex-start;
+  text-transform: uppercase;
+
+  &.high {
+    background-color: #ffebe6;
+    color: #de350b;
+  }
+  &.medium {
+    background-color: #fffae6;
+    color: #b78103;
+  }
+  &.low {
+    background-color: #eae6ff;
+    color: #403294;
+  }
+}

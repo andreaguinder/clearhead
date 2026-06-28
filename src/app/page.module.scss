@@ -1,0 +1,86 @@
+.mainContainer {
+  min-height: 100vh;
+  background-color: #f4f5f7; // El gris clásico de Trello
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.boardTitle {
+  color: #172b4d;
+  margin-bottom: 2rem;
+  font-size: 1.75rem;
+}
+
+.boardWrapper {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start; // Evita que las columnas se estiren hacia abajo innecesariamente
+  overflow-x: auto; // Si metemos muchas columnas, genera scroll horizontal automático
+  padding-bottom: 1rem;
+}
+
+.columnCard {
+  background-color: #ebecf0;
+  border-radius: 8px;
+  width: 300px;
+  min-width: 300px; // Evita que se aplasten si la pantalla es chica
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.columnTitle {
+  font-size: 1.1rem;
+  color: #172b4d;
+  margin-bottom: 1rem;
+}
+
+.tasksList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.taskCard {
+  background-color: #ffffff;
+  border-radius: 6px;
+  padding: 0.75rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  h3 {
+    font-size: 0.95rem;
+    color: #172b4d;
+    margin: 0;
+  }
+
+  p {
+    font-size: 0.85rem;
+    color: #5e6c84;
+    margin: 0;
+  }
+}
+
+// Estilos dinámicos para las prioridades usando el anidamiento de SASS
+.priorityBadge {
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  align-self: flex-start; // Para que el badge no ocupe todo el ancho
+  text-transform: uppercase;
+
+  &.high {
+    background-color: #ffebe6;
+    color: #de350b;
+  }
+  &.medium {
+    background-color: #fffae6;
+    color: #b78103;
+  }
+  &.low {
+    background-color: #eae6ff;
+    color: #403294;
+  }
+}
