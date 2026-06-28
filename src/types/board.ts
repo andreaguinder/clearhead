@@ -1,26 +1,40 @@
-// 1. Definimos cuáles son los únicos estados válidos para nuestras columnas
 export type StatusId = 'todo' | 'in-progress' | 'done';
 
-// 2. Estructura de una tarea individual
+// Definimos la estructura de un elemento dentro de la checklist
+export interface ChecklistItem {
+  id: string;
+  text: string;
+  isCompleted: boolean;
+}
+
+// Estructura de las etiquetas
+export interface Label {
+  id: string;
+  text: string;
+  color: string; // Guardaremos el código HEX del color
+}
+
 export interface Task {
   id: string;
   title: string;
-  description?: string; // El "?" significa que la descripción es opcional
+  description?: string;
+  detailedDescription?: string; // 👈 Agregamos la descripción larga
   status: StatusId;
   priority: 'low' | 'medium' | 'high';
   createdAt: string;
+  dueDate?: string; // 👈 Opcional: Fecha de vencimiento (YYYY-MM-DD)
+  checklist?: ChecklistItem[]; // 👈 Opcional: Array de subtareas
+  labels?: Label[]; // 👈 Opcional: Array de etiquetas
 }
 
-// 3. Estructura de una columna del tablero
 export interface Column {
   id: StatusId;
   title: string;
-  taskIds: string[]; // Una lista de IDs de tareas para saber cuáles van acá y en qué orden
+  taskIds: string[];
 }
 
-// 4. Estructura global de todo el tablero de Trello
 export interface BoardData {
-  tasks: Record<string, Task>; // Un objeto que guarda todas las tareas indexadas por su ID
-  columns: Record<StatusId, Column>; // Un objeto que guarda las 3 columnas
-  columnOrder: StatusId[]; // El orden en que se muestran las columnas en la pantalla
+  tasks: Record<string, Task>;
+  columns: Record<StatusId, Column>;
+  columnOrder: StatusId[];
 }

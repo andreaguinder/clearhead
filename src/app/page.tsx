@@ -1,44 +1,52 @@
-"use client"; // Clave para poder usar el useState más adelante
+"use client";
 
 import { useState } from 'react';
 import { initialBoardData } from '@/data/mockData';
-import styles from './page.module.scss'; // Importamos nuestro SASS Module
+import { Task } from '@/types/board'; // 👈 Importamos el tipo Task
+import Column from '@/components/Column/Column';
+import ActionButton from '@/components/ActionButton/ActionButton';
+import TaskDetailModal from '@/components/TaskDetailModal/TaskDetailModal'; // 👈 Importamos el Modal
+import styles from './page.module.scss';
 
 export default function Home() {
-  // Inicializamos el estado del tablero con nuestros datos de prueba
   const [boardData, setBoardData] = useState(initialBoardData);
+  
+  // 👈 Estado para controlar qué tarea se está editando en el modal
+  const [activeTask, setActiveTask] = useState<Task | null>(null);
+
+  const handleAddColumn = () => {
+    console.log('Añadir nueva columna');
+  };
 
   return (
     <main className={styles.mainContainer}>
       <h1 className={styles.boardTitle}>ClearHead</h1>
       
-      {/* Contenedor de las columnas */}
       <div className={styles.boardWrapper}>
         {boardData.columnOrder.map((columnId) => {
           const column = boardData.columns[columnId];
-          // Obtenemos las tareas correspondientes a esta columna usando sus IDs
           const tasks = column.taskIds.map((taskId) => boardData.tasks[taskId]);
 
           return (
-            <section key={column.id} className={styles.columnCard}>
-              <h2 className={styles.columnTitle}>{column.title}</h2>
-              
-              {/* Contenedor de las tarjetas dentro de la columna */}
-              <div className={styles.tasksList}>
-                {tasks.map((task) => (
-                  <article key={task.id} className={styles.taskCard}>
-                    <h3>{task.title}</h3>
-                    {task.description && <p>{task.description}</p>}
-                    <span className={`${styles.priorityBadge} ${styles[task.priority]}`}>
-                      {task.priority}
-                    </span>
-                  </article>
-                ))}
-              </div>
-            </section>
+            <Column 
+              key={column.id} 
+              column={column} 
+              tasks={tasks} 
+              onTaskClick={(task) => setActiveTask(task)} // 👈 Al hacer click, activa la tarea
+            />
           );
         })}
+
+        <ActionButton type="column" onClick={handleAddColumn} />
       </div>
+
+      {/* 👈 Si hay una tarea activa, mostramos el modal flotando */}
+      {activeTask && (
+        <TaskDetailModal 
+          task={activeTask} 
+          onClose={() => setActiveTask(null)} // 👈 Al cerrar, resetea a null
+        />
+      )}
     </main>
   );
 }
