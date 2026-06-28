@@ -1,4 +1,5 @@
-import { Task } from '@/types/board';
+import { useState } from 'react';
+import { StatusId, Task } from '@/types/board';
 import styles from './TaskDetailModal.module.scss';
 
 interface TaskDetailModalProps {
@@ -6,10 +7,17 @@ interface TaskDetailModalProps {
   onClose: () => void;
   onUpdateTask: (updatedTask: Task) => void;
   columnNames: Record<string, string>;
+  onDeleteTask: (taskId: string, columnId: StatusId) => void;
 }
 
-export default function TaskDetailModal({ task, onClose, onUpdateTask, columnNames }: TaskDetailModalProps) {
+export default function TaskDetailModal({ task, onClose, onUpdateTask, onDeleteTask, columnNames }: TaskDetailModalProps) {
   
+    const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+
+    const handleConfirmDelete = () => {
+    onDeleteTask(task.id, task.status);
+  };
+
   // 1. Cambiar el título principal
   const handleTitleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     if (!e.target.value.trim()) return; // Evita que dejen el título vacío
@@ -166,9 +174,29 @@ const columnNameHTML = columnNames[task.status] || task.status;
           <aside className={styles.sidebar}>
             <h4>Sugerencias</h4>
             <button className={styles.sidebarBtn}>🏷️ Etiquetas</button>
-            <button className={styles.sidebarBtn}>🗑️ Eliminar Tarjeta</button>
+            
+            {/* 👈 ACTUALIZADO: Bloque con seguro de eliminación */}
+            {!isConfirmingDelete ? (
+              <button 
+                className={`${styles.sidebarBtn} ${styles.dangerBtn}`} 
+                onClick={() => setIsConfirmingDelete(true)}
+              >
+                🗑️ Eliminar Tarjeta
+              </button>
+            ) : (
+              <div className={styles.confirmDeleteWrapper}>
+                <p>¿Seguro? No se puede deshacer.</p>
+                <div className={styles.confirmActions}>
+                  <button className={styles.deleteConfirmBtn} onClick={handleConfirmDelete}>
+                    Sí, eliminar
+                  </button>
+                  <button className={styles.cancelConfirmBtn} onClick={() => setIsConfirmingDelete(false)}>
+                    No
+                  </button>
+                </div>
+              </div>
+            )}
           </aside>
-
         </div>
       </div>
     </div>

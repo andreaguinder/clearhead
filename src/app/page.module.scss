@@ -84,3 +84,116 @@
     color: #403294;
   }
 }
+
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #121214; // Fondo oscuro fachero
+  font-family: sans-serif;
+}
+
+.loginCard {
+  background-color: #202024;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.title {
+  color: #ffffff;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: #a8a8b3;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.loginBtn {
+  background-color: #ffffff;
+  color: #121214;
+  border: none;
+  border-radius: 6px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #e1e1e6;
+  }
+}
+
+.googleIcon {
+  display: block;
+}
+
+// Estilos básicos para cuando entrás
+.appContainer {
+  padding: 2rem;
+  background-color: #121214;
+  min-height: 100vh;
+  color: white;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #29292e;
+  padding-bottom: 1rem;
+}
+
+.logoutBtn {
+  background: transparent;
+  color: #a8a8b3;
+  border: 1px solid #29292e;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  
+  &:hover {
+    background: #29292e;
+    color: white;
+  }
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  h2 {
+    margin: 0;
+    font-size: 1.4rem;
+  }
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid #0079bf;
+}
+
+.boardWrapper {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+  margin-top: 1.5rem; // Espacio con respecto al header
+}
