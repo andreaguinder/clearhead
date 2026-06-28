@@ -8,6 +8,8 @@ import ActionButton from '@/components/ActionButton/ActionButton';
 import TaskDetailModal from '@/components/TaskDetailModal/TaskDetailModal';
 import styles from './page.module.scss';
 
+
+
 export default function Home() {
   const [boardData, setBoardData] = useState(initialBoardData);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
@@ -64,6 +66,25 @@ export default function Home() {
     setActiveTask(updatedTask);
   };
 
+  const handleCreateColumn = (title: string) => {
+    const newColumnId = `column-${Date.now()}` as StatusId; // ID único temporal
+
+    const newColumn = {
+      id: newColumnId,
+      title: title,
+      taskIds: [], // Arranca completamente vacía de tareas
+    };
+
+    setBoardData((prevData) => ({
+      ...prevData,
+      columns: {
+        ...prevData.columns,
+        [newColumnId]: newColumn,
+      },
+      columnOrder: [...prevData.columnOrder, newColumnId], // La agrega al final del tablero
+    }));
+  };
+
   return (
     <main className={styles.mainContainer}>
       <h1 className={styles.boardTitle}>ClearHead</h1>
@@ -84,7 +105,7 @@ export default function Home() {
           );
         })}
 
-        <ActionButton type="column" onClick={handleAddColumn} />
+        <ActionButton type="column" onCreate={handleCreateColumn} />
       </div>
 
       {activeTask && (
@@ -92,6 +113,10 @@ export default function Home() {
           task={activeTask} 
           onClose={() => setActiveTask(null)}
           onUpdateTask={handleUpdateTask}
+          columnNames={Object.keys(boardData.columns).reduce((acc, id) => {
+            acc[id] = boardData.columns[id as StatusId].title;
+            return acc;
+          }, {} as Record<string, string>)}
         />
       )}
     </main>

@@ -5,9 +5,10 @@ interface TaskDetailModalProps {
   task: Task;
   onClose: () => void;
   onUpdateTask: (updatedTask: Task) => void;
+  columnNames: Record<string, string>;
 }
 
-export default function TaskDetailModal({ task, onClose, onUpdateTask }: TaskDetailModalProps) {
+export default function TaskDetailModal({ task, onClose, onUpdateTask, columnNames }: TaskDetailModalProps) {
   
   // 1. Cambiar el título principal
   const handleTitleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -62,7 +63,7 @@ const handlePrioritySelect = (value: Task['priority']) => {
     onUpdateTask(updatedTask);
   };
 
-
+const columnNameHTML = columnNames[task.status] || task.status;
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
@@ -81,7 +82,7 @@ const handlePrioritySelect = (value: Task['priority']) => {
                 defaultValue={task.title}
                 onBlur={handleTitleBlur}
               />
-              <p className={styles.subTitle}>en la columna <span>{task.status}</span></p>
+              <p className={styles.subTitle}>en la columna <span>{columnNameHTML}</span></p>
             </div>
           </div>
           <button className={styles.closeBtn} onClick={onClose}>✕</button>
