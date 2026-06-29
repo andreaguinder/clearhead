@@ -1,0 +1,71 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  h4 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin: 0;
+  }
+}
+
+.pillsContainer {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.priorityPill {
+  border: 2px solid var(--border-color); // 🌓 Borde sutil en vez de transparente fijo
+  border-radius: 20px; 
+  font-family: var(--font-general);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.1rem 0.8rem 0.3rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: var(--bg-card); // 🌓 Blanco o gris oscuro según tema
+  color: var(--text-muted);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  font-weight: 400;
+
+  &:hover:not(.active) {
+    filter: brightness(95%);
+    transform: translateY(-1px);
+    color: var(--text-main);
+    font-weight: 500;
+  }
+
+  &.active {
+    transform: scale(1.04);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border-color: transparent;
+    
+    // Mantenemos los colores de acento vivos para identificar las prioridades
+    &.baja {
+      background-color: #61bd4f;
+      color: #ffffff;
+    }
+    &.normal {
+      background-color: #0079bf;
+      color: #ffffff;
+    }
+    &.media {
+      background-color: #f2d600;
+      color: #172b4d; // Texto oscuro fijo para contraste en el amarillo brillante
+    }
+    &.alta {
+      background-color: #eb5a46;
+      color: #ffffff;
+    }
+  }
+}

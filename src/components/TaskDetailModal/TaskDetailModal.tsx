@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { StatusId, Task, Label } from '@/types/board';
 import LabelManager from '@/components/Labels/LabelManager';
+import PrioritySelector from '@/components/Priority/PrioritySelector';
 import styles from './TaskDetailModal.module.scss';
 
 interface TaskDetailModalProps {
@@ -79,7 +80,7 @@ export default function TaskDetailModal({
         
         <header className={styles.modalHeader}>
           <div className={styles.titleWrapper}>
-            <span className={styles.icon}>📋</span>
+  
             <div className={styles.headerInputGroup}>
               <input 
                 type="text" 
@@ -147,21 +148,11 @@ export default function TaskDetailModal({
               </div>
 
               <div className={styles.metaItem}>
-                <h4>Prioridad</h4>
-                <div className={styles.pillsContainer}>
-                  {priorities.map((p) => (
-                    <button
-                      key={p.value}
-                      type="button"
-                      className={`${styles.priorityPill} ${styles[p.value]} ${task.priority === p.value ? styles.active : ''}`}
-                      onClick={() => handlePrioritySelect(p.value)}
-                    >
-                      {p.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+  <PrioritySelector 
+    selectedPriority={task.priority} 
+    onSelect={(val) => onUpdateTask({ ...task, priority: val })} 
+  />
+</div></div>
 
             <section className={styles.section}>
               <h3>📌 Descripción Corta</h3>

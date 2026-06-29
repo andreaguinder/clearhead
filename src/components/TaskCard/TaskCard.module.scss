@@ -39,6 +39,7 @@
   overflow: hidden;
   text-overflow: ellipsis; // Si el texto es eterno, le mete los tres puntitos (...)
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); // Sombra sutil al texto para que sea legible en colores claros
+  filter: brightness(95%);
 }
 
   h3 {
