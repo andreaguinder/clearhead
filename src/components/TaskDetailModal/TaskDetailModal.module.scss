@@ -372,15 +372,40 @@
   justify-content: flex-start;
   gap: 16px;
 
-  span, button {
-    padding: 0.5rem;
-    border-radius: 0.5rem;
+  .labelPill {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+      display: inline-flex;
+  align-items: center;
+  padding: 2px 16px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  font-weight: 500;
+  white-space: nowrap;
+  color: currentColor;
+
+  p {
+    margin-bottom: 0;
   }
 
   button {
-    background-color: var(--header-bg);
-    width: 32px;
-    height: 32px;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    background-color: transparent;
+    border: none;
+  }
+
+  }
+
+
+  .addLabelBtn {
+  background-color: var(--header-bg);
+    width: 30px;
+    height: 30px;
     color: var(--text-light-dark);
     display: flex;
     justify-content: center;
@@ -388,6 +413,7 @@
     font-weight: 700;
     font-size: 16px;
     border: none;
+    border-radius: 8px;
+    border: none;
   }
-
 }

@@ -38,23 +38,23 @@ export default function LabelManager({
     <div className={styles.managerContainer}>
       {/* Sección para crear nueva etiqueta */}
       <div className={styles.creatorSection}>
-  <input value={text} onChange={(e) => setText(e.target.value)} placeholder="Nombre..." />
+  <input className={styles.labelInputNombre} value={text} onChange={(e) => setText(e.target.value)} placeholder="Nombre..." />
   
   <div className={styles.colorInputs}>
-    <label>Fondo: <input type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} /></label>
-    <label>Texto: <input type="color" value={textColor} onChange={(e) => setTextColor(e.target.value)} /></label>
+    <label>Fondo: <input className={styles.labelInputPicker} type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} /></label>
+    <label>Texto: <input className={styles.labelInputPicker} type="color" value={textColor} onChange={(e) => setTextColor(e.target.value)} /></label>
   </div>
   
   <button onClick={handleCreate}>+</button>
 </div>
+<h4 style={{ margin: '15px 0 5px 0' }}>Seleccionar etiquetas</h4>
 
-      <hr className={styles.divider} />
 
       {/* Lista de etiquetas disponibles */}
       <div className={styles.listSection}>
         {Object.values(globalLabels).map((label) => (
           <div key={label.id} className={styles.labelRow}>
-            <input 
+            <input className={styles.checkbox}
               type="checkbox" 
               checked={taskLabelIds.includes(label.id)} 
               onChange={() => onToggleLabel(label.id)} 
@@ -64,7 +64,7 @@ export default function LabelManager({
               className={styles.deleteBtn} 
               onClick={() => onDeleteLabel(label.id)}
             >
-              🗑️
+              &#10005;
             </button>
           </div>
         ))}

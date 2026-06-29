@@ -5,11 +5,41 @@
   flex-direction: column;
   gap: 12px;
   padding: 10px 0px;
+
+
+  .labelInputNombre {
+    height: 32px;
+    border-radius: 8px;
+    padding: 8px;
+  }
+
+  .colorInputs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+      .labelInputPicker {
+    height: 36px;
+    width: 50px;
+    border-radius: 16px;
+    border: none;
+            background-color: transparent;
+  }
+  }
+
 }
 
 .creatorSection {
   display: flex;
-  gap: 8px;
+  gap: 16px;
   align-items: center;
 
   .labelInput {
@@ -26,6 +56,7 @@
     border: none;
     cursor: pointer;
     border-radius: 4px;
+
   }
 
   .addBtn {
@@ -42,6 +73,21 @@
     border-radius: 0.5rem;
     border: none;
   }
+
+  button {
+    background-color: var(--header-bg);
+    width: 30px;
+    height: 30px;
+    color: var(--text-light-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    border: none;
+  }
 }
 
 .divider {
@@ -52,8 +98,8 @@
 
 .listSection {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-direction: row;
+  gap: 24px;
 
   .labelRow {
     display: flex;
@@ -69,12 +115,19 @@
 
     .deleteBtn {
       background: transparent;
+      color: red;
+      font-weight: 700;
       border: none;
       cursor: pointer;
       margin-left: auto; // Empuja el icono al final
       opacity: 0.6;
       &:hover { opacity: 1; }
     }
+
+      .checkbox {
+    height: 16px;
+    width: 16px;
+  }
   }
 }
 
@@ -82,7 +135,7 @@
 .pill {
   display: inline-flex;
   align-items: center;
-  padding: 2px 8px;
+  padding: 4px 16px;
   border-radius: 12px;
   font-size: 0.85rem;
   color: var(--text-main);

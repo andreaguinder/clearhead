@@ -30,7 +30,6 @@ export default function TaskDetailModal({
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const [isLabelMenuOpen, setIsLabelMenuOpen] = useState(false);
 
-  // Lógica para alternar etiquetas en la tarea
   const toggleLabel = (labelId: string) => {
     const currentLabels = task.labelIds || [];
     const newLabelIds = currentLabels.includes(labelId)
@@ -105,12 +104,17 @@ export default function TaskDetailModal({
                   const label = globalLabels[labelId];
                   if (!label) return null;
                   return (
-                    <span key={label.id} className={styles.labelPill} style={{ backgroundColor: label.color }}>
+                    <span 
+                      key={label.id} 
+                      className={styles.labelPill} 
+                      style={{ backgroundColor: label.color, color: label.textColor }}
+                    >
                       {label.text}
-                      <button className={styles.removeLabelBtn} onClick={(e) => {
-                        e.stopPropagation();
-                        toggleLabel(labelId);
-                      }}>×</button>
+                      <button 
+                        className={styles.removeLabelBtn} 
+                        onClick={(e) => { e.stopPropagation(); toggleLabel(labelId); }}
+                        style={{ color: label.textColor }}
+                      >×</button>
                     </span>
                   );
                 })}
@@ -118,34 +122,15 @@ export default function TaskDetailModal({
               </div>
 
               {isLabelMenuOpen && (
-    <div className={styles.labelMenu}>
-      <LabelManager 
-        globalLabels={globalLabels}
-        taskLabelIds={task.labelIds || []}
-        onToggleLabel={toggleLabel}
-        onSaveLabel={onSaveGlobalLabel}
-        onDeleteLabel={onDeleteGlobalLabel}
-      />
-    </div>
-  )}
-
-              {/* Menú desplegable de etiquetas */}
-              {isLabelMenuOpen && (
                 <div className={styles.labelMenu}>
-                  <h4>Seleccionar etiquetas</h4>
-                  {Object.values(globalLabels).map((label) => (
-                    <div key={label.id} className={styles.labelOption}>
-                      <span 
-                        onClick={() => toggleLabel(label.id)}
-                        style={{ backgroundColor: label.color }}
-                        className={styles.miniPill}
-                      />
-                      <span onClick={() => toggleLabel(label.id)} style={{ cursor: 'pointer', flex: 1 }}>
-                        {label.text}
-                      </span>
-                      <button onClick={() => onDeleteGlobalLabel(label.id)}>🗑️</button>
-                    </div>
-                  ))}
+
+                  <LabelManager 
+                    globalLabels={globalLabels}
+                    taskLabelIds={task.labelIds || []}
+                    onToggleLabel={toggleLabel}
+                    onSaveLabel={onSaveGlobalLabel}
+                    onDeleteLabel={onDeleteGlobalLabel}
+                  />
                 </div>
               )}
             </section>
