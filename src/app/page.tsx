@@ -5,7 +5,7 @@ import { signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/aut
 import { auth, googleProvider } from '../lib/firebase';
 import { getBoardData, saveBoardData } from '@/lib/boardService'; // 🌟 Importamos tus nuevos servicios
 import { initialBoardData } from '@/data/mockData';
-import { Task, StatusId, BoardData } from '@/types/board';
+import { Task, StatusId, BoardData, Label } from '@/types/board'; // 🌟 Sumamos Label a los imports
 import Column from '@/components/Column/Column';
 import ActionButton from '@/components/ActionButton/ActionButton';
 import TaskDetailModal from '@/components/TaskDetailModal/TaskDetailModal';
@@ -18,6 +18,7 @@ export default function Home() {
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [isInitialLoad, setIsInitialLoad] = useState(true); // 🌟 Evita sobreescritura al arrancar
+  const globalLabels = boardData.labels || {};
 
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
@@ -30,7 +31,11 @@ export default function Home() {
         // Traemos el tablero real del usuario de la nube
         const savedBoard = await getBoardData(currentUser.uid);
         if (savedBoard) {
-          setBoardData(savedBoard as unknown as BoardData);
+          // Aseguramos que si el tablero guardado no tiene el nodo labels, se inicialice vacío
+          setBoardData({
+            labels: {},
+            ...savedBoard
+          } as unknown as BoardData);
         } else {
           // Si es un usuario nuevo sin datos, le asignamos tus datos mock iniciales
           setBoardData(initialBoardData);
@@ -110,8 +115,14 @@ export default function Home() {
   const handleOpenCreateTaskModal = (columnId: StatusId) => {
     const newTaskId = `task-${Date.now()}`;
     setActiveTask({
-      id: newTaskId, title: '', description: '', detailedDescription: '',
-      status: columnId, priority: 'normal', createdAt: new Date().toISOString().split('T')[0],
+      id: newTaskId,
+      title: '',
+      description: '',
+      detailedDescription: '',
+      status: columnId,
+      priority: 'normal' as any, // Mantenemos consistencia con tu tipado
+      createdAt: new Date().toISOString().split('T')[0],
+      labelIds: [], // 🌟 Agregamos esto para solucionar las líneas rojas de la captura
     });
   };
 
@@ -145,6 +156,38 @@ export default function Home() {
       };
     });
     setActiveTask(null);
+  };
+
+  // 🌟 NUEVO: Manejadores para crear/editar y borrar etiquetas del panel global
+  const handleSaveGlobalLabel = (label: Label) => {
+    setBoardData((prev) => ({
+      ...prev,
+      labels: {
+        ...(prev.labels || {}),
+        [label.id]: label,
+      },
+    }));
+  };
+
+  const handleDeleteGlobalLabel = (labelId: string) => {
+    setBoardData((prev) => {
+      const updatedLabels = { ...(prev.labels || {}) };
+      delete updatedLabels[labelId];
+
+      const updatedTasks = { ...prev.tasks };
+      Object.keys(updatedTasks).forEach((taskId) => {
+        updatedTasks[taskId] = {
+          ...updatedTasks[taskId],
+          labelIds: (updatedTasks[taskId].labelIds || []).filter((id) => id !== labelId),
+        };
+      });
+
+      return {
+        ...prev,
+        labels: updatedLabels,
+        tasks: updatedTasks,
+      };
+    });
   };
 
   // Mientras Firebase verifica si hay sesión, mostramos un loader limpio
@@ -204,6 +247,7 @@ export default function Home() {
                 onTaskClick={(task) => setActiveTask(task)}
                 onAddTaskClick={() => handleOpenCreateTaskModal(column.id)}
                 onUpdateColumnTitle={(columnId, newTitle) => handleUpdateColumnTitle(columnId as StatusId, newTitle)}
+                globalLabels={globalLabels} // 🌟 Pasamos el objeto real desde el estado
               />
             );
           })}
@@ -222,6 +266,9 @@ export default function Home() {
             return acc;
           }, {} as Record<string, string>)}
           onDeleteTask={handleDeleteTask}
+          globalLabels={boardData.labels || {}} // 🌟 Le mandamos las etiquetas al modal
+          onSaveGlobalLabel={handleSaveGlobalLabel} // 🌟 Callback para crear/editar
+          onDeleteGlobalLabel={handleDeleteGlobalLabel} // 🌟 Callback para borrar global
         />
       )}
     </div>

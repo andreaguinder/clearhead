@@ -365,3 +365,29 @@
     color: var(--text-main);
   }
 }
+
+.labelsWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+
+  span, button {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+  }
+
+  button {
+    background-color: var(--header-bg);
+    width: 32px;
+    height: 32px;
+    color: var(--text-light-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+  }
+
+}

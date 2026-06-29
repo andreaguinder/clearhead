@@ -4,6 +4,7 @@ export const initialBoardData: BoardData = {
   tasks: {
     'task-1': {
       id: 'task-1',
+      labelIds: ["Salud", "Trabajo"],
       title: 'Ir al supermercado',
       description: 'Comprar leche, pan y huevos',
       status: 'Por Hacer',
@@ -12,6 +13,7 @@ export const initialBoardData: BoardData = {
     },
     'task-2': {
       id: 'task-2',
+      labelIds: ["Trabajo"],
       title: 'Estudiar para el exámen de matemáticas',
       description: 'Revisar álgebra y geometría',
       status: 'En Progreso',
@@ -20,6 +22,7 @@ export const initialBoardData: BoardData = {
     },
     'task-3': {
       id: 'task-3',
+      labelIds: ["Salud"],
       title: 'Limpiar la casa',
       description: 'Vaciar la basura y ordenar las habitaciones',
       status: 'Terminado',
@@ -45,4 +48,18 @@ export const initialBoardData: BoardData = {
     },
   },
   columnOrder: ['Por Hacer', 'En Progreso', 'Terminado'],
+  labels: {
+    "Salud": {
+      id: "Salud",
+      text: "Salud",
+      color: "#FF5733",
+      textColor: "#FFFFFF"
+    },
+    "Trabajo": {
+      id: "Trabajo",
+      text: "Trabajo",
+      color: "#33FF57",
+      textColor: "#FFFFFF"
+    }
+  }
 };

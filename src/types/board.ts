@@ -12,6 +12,7 @@ export interface Label {
   id: string;
   text: string;
   color: string; // Guardaremos el código HEX del color
+  textColor: string;
 }
 
 export interface Task {
@@ -24,7 +25,7 @@ export interface Task {
   createdAt: string;
   dueDate?: string; // 👈 Opcional: Fecha de vencimiento (YYYY-MM-DD)
   checklist?: ChecklistItem[]; // 👈 Opcional: Array de subtareas
-  labels?: Label[]; // 👈 Opcional: Array de etiquetas
+  labelIds: string[]; // 👈 Opcional: Array de etiquetas
 }
 
 export interface Column {
@@ -37,4 +38,5 @@ export interface BoardData {
   tasks: Record<string, Task>;
   columns: Record<StatusId, Column>;
   columnOrder: StatusId[];
+  labels: Record<string, Label>;
 }

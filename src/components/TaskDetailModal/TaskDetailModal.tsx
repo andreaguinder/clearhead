@@ -1,5 +1,8 @@
+'use client';
+
 import { useState } from 'react';
-import { StatusId, Task } from '@/types/board';
+import { StatusId, Task, Label } from '@/types/board';
+import LabelManager from '@/components/Labels/LabelManager';
 import styles from './TaskDetailModal.module.scss';
 
 interface TaskDetailModalProps {
@@ -8,81 +11,77 @@ interface TaskDetailModalProps {
   onUpdateTask: (updatedTask: Task) => void;
   columnNames: Record<string, string>;
   onDeleteTask: (taskId: string, columnId: StatusId) => void;
+  globalLabels: Record<string, Label>;
+  onSaveGlobalLabel: (label: Label) => void;
+  onDeleteGlobalLabel: (labelId: string) => void;
 }
 
-export default function TaskDetailModal({ task, onClose, onUpdateTask, onDeleteTask, columnNames }: TaskDetailModalProps) {
+export default function TaskDetailModal({ 
+  task, 
+  onClose, 
+  onUpdateTask, 
+  onDeleteTask, 
+  columnNames, 
+  globalLabels, 
+  onSaveGlobalLabel, 
+  onDeleteGlobalLabel 
+}: TaskDetailModalProps) {
   
-    const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+  const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+  const [isLabelMenuOpen, setIsLabelMenuOpen] = useState(false);
 
-    const handleConfirmDelete = () => {
+  // Lógica para alternar etiquetas en la tarea
+  const toggleLabel = (labelId: string) => {
+    const currentLabels = task.labelIds || [];
+    const newLabelIds = currentLabels.includes(labelId)
+      ? currentLabels.filter((id) => id !== labelId)
+      : [...currentLabels, labelId];
+    
+    onUpdateTask({ ...task, labelIds: newLabelIds });
+  };
+
+  const handleConfirmDelete = () => {
     onDeleteTask(task.id, task.status);
   };
 
-  // 1. Cambiar el título principal
   const handleTitleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (!e.target.value.trim()) return; // Evita que dejen el título vacío
-    const updatedTask: Task = {
-      ...task,
-      title: e.target.value,
-    };
-    onUpdateTask(updatedTask);
+    if (!e.target.value.trim()) return;
+    onUpdateTask({ ...task, title: e.target.value });
   };
 
-  // 2. Cambiar la descripción corta (la del tablero)
   const handleShortDescriptionBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const updatedTask: Task = {
-      ...task,
-      description: e.target.value,
-    };
-    onUpdateTask(updatedTask);
+    onUpdateTask({ ...task, description: e.target.value });
   };
 
-  // 3. Cambiar la descripción larga (detallada)
   const handleDescriptionBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
-    const updatedTask: Task = {
-      ...task,
-      detailedDescription: e.target.value,
-    };
-    onUpdateTask(updatedTask);
+    onUpdateTask({ ...task, detailedDescription: e.target.value });
   };
 
-  // 4. Cambiar el vencimiento
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const updatedTask: Task = {
-      ...task,
-      dueDate: e.target.value,
-    };
-    onUpdateTask(updatedTask);
+    onUpdateTask({ ...task, dueDate: e.target.value });
   };
 
-    const priorities: { value: Task['priority']; label: string }[] = [
-  { value: 'baja', label: 'Baja' },
-  { value: 'normal', label: 'Normal' },
-  { value: 'media', label: 'Media' },
-  { value: 'alta', label: 'Alta' },
-];
+  const priorities: { value: Task['priority']; label: string }[] = [
+    { value: 'baja', label: 'Baja' },
+    { value: 'normal', label: 'Normal' },
+    { value: 'media', label: 'Media' },
+    { value: 'alta', label: 'Alta' },
+  ];
 
-  // 5. Cambiar la prioridad desde el selector
-const handlePrioritySelect = (value: Task['priority']) => {
-    const updatedTask: Task = {
-      ...task,
-      priority: value,
-    };
-    onUpdateTask(updatedTask);
+  const handlePrioritySelect = (value: Task['priority']) => {
+    onUpdateTask({ ...task, priority: value });
   };
 
-const columnNameHTML = columnNames[task.status] || task.status;
+  const columnNameHTML = columnNames[task.status] || task.status;
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         
-        {/* Cabecera */}
         <header className={styles.modalHeader}>
           <div className={styles.titleWrapper}>
             <span className={styles.icon}>📋</span>
             <div className={styles.headerInputGroup}>
-              {/* 👈 Ahora el título es un input sin bordes, estilo Trello */}
               <input 
                 type="text" 
                 className={styles.titleInput} 
@@ -96,13 +95,62 @@ const columnNameHTML = columnNames[task.status] || task.status;
           <button className={styles.closeBtn} onClick={onClose}>✕</button>
         </header>
 
-        {/* Cuerpo Principal */}
         <div className={styles.modalBody}>
           <main className={styles.mainContent}>
             
-            {/* Meta-datos (Vencimiento y Prioridad) */}
+            <section className={styles.section}>
+              <h3 className={styles.sectionLabel}>Etiquetas</h3>
+              <div className={styles.labelsWrapper}>
+                {task.labelIds?.map((labelId) => {
+                  const label = globalLabels[labelId];
+                  if (!label) return null;
+                  return (
+                    <span key={label.id} className={styles.labelPill} style={{ backgroundColor: label.color }}>
+                      {label.text}
+                      <button className={styles.removeLabelBtn} onClick={(e) => {
+                        e.stopPropagation();
+                        toggleLabel(labelId);
+                      }}>×</button>
+                    </span>
+                  );
+                })}
+                <button className={styles.addLabelBtn} onClick={() => setIsLabelMenuOpen(!isLabelMenuOpen)}>+</button>
+              </div>
+
+              {isLabelMenuOpen && (
+    <div className={styles.labelMenu}>
+      <LabelManager 
+        globalLabels={globalLabels}
+        taskLabelIds={task.labelIds || []}
+        onToggleLabel={toggleLabel}
+        onSaveLabel={onSaveGlobalLabel}
+        onDeleteLabel={onDeleteGlobalLabel}
+      />
+    </div>
+  )}
+
+              {/* Menú desplegable de etiquetas */}
+              {isLabelMenuOpen && (
+                <div className={styles.labelMenu}>
+                  <h4>Seleccionar etiquetas</h4>
+                  {Object.values(globalLabels).map((label) => (
+                    <div key={label.id} className={styles.labelOption}>
+                      <span 
+                        onClick={() => toggleLabel(label.id)}
+                        style={{ backgroundColor: label.color }}
+                        className={styles.miniPill}
+                      />
+                      <span onClick={() => toggleLabel(label.id)} style={{ cursor: 'pointer', flex: 1 }}>
+                        {label.text}
+                      </span>
+                      <button onClick={() => onDeleteGlobalLabel(label.id)}>🗑️</button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </section>
+
             <div className={styles.metaDataGrid}>
-              {/* Vencimiento */}
               <div className={styles.metaItem}>
                 <h4>Vencimiento</h4>
                 <input 
@@ -113,86 +161,59 @@ const columnNameHTML = columnNames[task.status] || task.status;
                 />
               </div>
 
-              {/* 👈 NUEVO: Selector de Prioridad en formato de Pills */}
-      <div className={styles.metaItem}>
-        <h4>Prioridad</h4>
-        <div className={styles.pillsContainer}>
-          {priorities.map((p) => {
-            // Evaluamos si esta píldora es la que la tarea tiene activa actualmente
-            const isActive = task.priority === p.value;
-            
-            return (
-              <button
-                key={p.value}
-                type="button"
-                // Le pasamos la clase base, la clase del color específico, y si está activa agregamos la clase modificadora
-                className={`${styles.priorityPill} ${styles[p.value]} ${isActive ? styles.active : ''}`}
-                onClick={() => handlePrioritySelect(p.value)}
-              >
-                {p.label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </div>
+              <div className={styles.metaItem}>
+                <h4>Prioridad</h4>
+                <div className={styles.pillsContainer}>
+                  {priorities.map((p) => (
+                    <button
+                      key={p.value}
+                      type="button"
+                      className={`${styles.priorityPill} ${styles[p.value]} ${task.priority === p.value ? styles.active : ''}`}
+                      onClick={() => handlePrioritySelect(p.value)}
+                    >
+                      {p.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
 
-            {/* 👈 NUEVA SECCIÓN: Descripción Corta */}
             <section className={styles.section}>
-              <h3>📌 Descripción Corta (se muestra en la tarjeta)</h3>
+              <h3>📌 Descripción Corta</h3>
               <input 
                 type="text"
                 className={styles.shortDescriptionInput}
-                placeholder="Añade un resumen breve para mostrar en el tablero..."
+                placeholder="Resumen breve..."
                 defaultValue={task.description || ''}
                 onBlur={handleShortDescriptionBlur}
               />
             </section>
 
-            {/* Sección: Descripción Larga */}
             <section className={styles.section}>
               <h3>📝 Descripción Completa</h3>
               <textarea 
                 className={styles.textarea} 
-                placeholder="Añade una descripción más detallada para esta tarea..."
+                placeholder="Añade detalle..."
                 defaultValue={task.detailedDescription || ''}
                 onBlur={handleDescriptionBlur}
               />
             </section>
-
-            {/* Sección: Checklist */}
-            <section className={styles.section}>
-              <h3>☑ Checklist</h3>
-              <div className={styles.checklistPlaceholder}>
-                <p>Próximo paso: Acá van a ir los elementos dinámicos.</p>
-              </div>
-            </section>
-
           </main>
 
-          {/* Columna Derecha (Sidebar) */}
           <aside className={styles.sidebar}>
             <h4>Sugerencias</h4>
-            <button className={styles.sidebarBtn}>🏷️ Etiquetas</button>
+            <button className={styles.sidebarBtn} onClick={() => setIsLabelMenuOpen(!isLabelMenuOpen)}>🏷️ Etiquetas</button>
             
-            {/* 👈 ACTUALIZADO: Bloque con seguro de eliminación */}
             {!isConfirmingDelete ? (
-              <button 
-                className={`${styles.sidebarBtn} ${styles.dangerBtn}`} 
-                onClick={() => setIsConfirmingDelete(true)}
-              >
+              <button className={`${styles.sidebarBtn} ${styles.dangerBtn}`} onClick={() => setIsConfirmingDelete(true)}>
                 🗑️ Eliminar Tarjeta
               </button>
             ) : (
               <div className={styles.confirmDeleteWrapper}>
-                <p>¿Seguro? No se puede deshacer.</p>
+                <p>¿Seguro?</p>
                 <div className={styles.confirmActions}>
-                  <button className={styles.deleteConfirmBtn} onClick={handleConfirmDelete}>
-                    Sí, eliminar
-                  </button>
-                  <button className={styles.cancelConfirmBtn} onClick={() => setIsConfirmingDelete(false)}>
-                    No
-                  </button>
+                  <button className={styles.deleteConfirmBtn} onClick={handleConfirmDelete}>Sí</button>
+                  <button className={styles.cancelConfirmBtn} onClick={() => setIsConfirmingDelete(false)}>No</button>
                 </div>
               </div>
             )}

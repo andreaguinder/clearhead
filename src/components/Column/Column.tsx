@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Column as ColumnType, Task } from '@/types/board';
+import { Column as ColumnType, Task, Label } from '@/types/board';
 import TaskCard from '../TaskCard/TaskCard';
 import ActionButton from '../ActionButton/ActionButton';
 import styles from './Column.module.scss';
@@ -11,7 +11,8 @@ interface ColumnProps {
   tasks: Task[];
   onTaskClick: (task: Task) => void;
   onAddTaskClick: () => void;
-  onUpdateColumnTitle: (columnId: string, newTitle: string) => void; // 🌟 Agregamos el callback obligatorio
+  onUpdateColumnTitle: (columnId: string, newTitle: string) => void;
+  globalLabels: Record<string, Label>;
 }
 
 export default function Column({ 
@@ -19,7 +20,8 @@ export default function Column({
   tasks, 
   onTaskClick, 
   onAddTaskClick, 
-  onUpdateColumnTitle 
+  onUpdateColumnTitle,
+  globalLabels
 }: ColumnProps) {
   
   const [isEditing, setIsEditing] = useState(false);
@@ -90,6 +92,7 @@ export default function Column({
             <TaskCard 
               key={task.id} 
               task={task} 
+              globalLabels={globalLabels}
               onClick={() => onTaskClick(task)} 
             />
           )

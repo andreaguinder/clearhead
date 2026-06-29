@@ -8,6 +8,9 @@
   gap: 0.5rem;
   font-family: var(--font-general);
   transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 
   &:hover {
     // Levantamos la tarjeta sutilmente y aumentamos la sombra en lugar de meter un fondo plano
@@ -15,6 +18,28 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.18);
     filter: brightness(105%); // En dark le da un brillo extra hermoso, en light resalta
   }
+
+  .labelsContainer {
+  display: flex;
+  flex-wrap: wrap; // Por si mete muchas etiquetas, que bajen prolijamente
+  gap: 4px;
+  margin-top: 2px;
+  margin-bottom: 4px;
+}
+
+/* Pastilla individual chica */
+.miniLabelPill {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #ffffff; // Texto blanco fijo para que resalte sobre el color de la etiqueta
+  padding: 2px 8px;
+  border-radius: 4px;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; // Si el texto es eterno, le mete los tres puntitos (...)
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); // Sombra sutil al texto para que sea legible en colores claros
+}
 
   h3 {
     font-size: 0.95rem;

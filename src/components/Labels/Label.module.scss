@@ -1,0 +1,101 @@
+// src/components/Labels/Label.module.scss
+
+.managerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 0px;
+}
+
+.creatorSection {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  .labelInput {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    flex: 1;
+    height: 32px;
+  }
+
+  .colorPicker {
+    width: 40px;
+    height: 36px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+
+  .addBtn {
+    background-color: var(--header-bg);
+    width: 32px;
+    height: 32px;
+    color: var(--text-light-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 16px;
+     padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: none;
+  }
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin: 5px 0;
+}
+
+.listSection {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .labelRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #f8f8f8;
+    }
+
+    .deleteBtn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      margin-left: auto; // Empuja el icono al final
+      opacity: 0.6;
+      &:hover { opacity: 1; }
+    }
+  }
+}
+
+// Estilo de la "Pill" (la etiqueta en sí)
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  font-weight: 500;
+  white-space: nowrap;
+
+  .removeBtn {
+    background: transparent;
+    border: none;
+    color: white;
+    margin-left: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+}
+
