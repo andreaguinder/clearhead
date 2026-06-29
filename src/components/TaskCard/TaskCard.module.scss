@@ -1,27 +1,31 @@
 .taskCard {
-  background-color: #ffffff;
+  background-color: var(--bg-card); // 🌓 Blanco en light, gris oscuro en dark
   border-radius: 6px;
   padding: 0.75rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-family: var(--font-general);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease;
 
   &:hover {
-    background-color: rgba(9, 30, 66, 0.08);
-    color: #172b4d;
+    // Levantamos la tarjeta sutilmente y aumentamos la sombra en lugar de meter un fondo plano
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.18);
+    filter: brightness(105%); // En dark le da un brillo extra hermoso, en light resalta
   }
 
   h3 {
     font-size: 0.95rem;
-    color: #172b4d;
+    color: var(--text-main); // 🌓 Dinámico
     margin: 0;
+    font-family: var(--font-titles);
   }
 
   p {
     font-size: 0.85rem;
-    color: #5e6c84;
+    color: var(--text-muted); // 🌓 Dinámico
     margin: 0;
   }
 }
@@ -33,9 +37,11 @@
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
   width: fit-content;
+  font-family: var(--font-general);
 
+  // Mantenemos tus esquemas lógicos de color para las etiquetas
   &.baja {
     background-color: #e2f0d9;
     color: #385723;

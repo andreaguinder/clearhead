@@ -4,24 +4,26 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); // Fondo semitransparente oscuro
+  background-color: rgba(0, 0, 0, 0.6); // 🌓 Un toque más oscuro para dar mejor contraste al fondo
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 50px; // Que no quede pegado al techo
+  padding-top: 50px; 
   z-index: 1000;
 }
 
 .modalContent {
-  background-color: #f4f5f7;
+  background-color: var(--bg-app); // 🌓 Se acopla al fondo de la app (gris claro o grafito)
   width: 768px;
   max-width: 95vw;
   border-radius: 12px;
-  box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  font-family: var(--font-general);
+  transition: background-color 0.3s ease;
 }
 
 .modalHeader {
@@ -40,8 +42,9 @@
 
     h2 {
       font-size: 1.25rem;
-      color: #172b4d;
+      color: var(--text-main); // 🌓 Dinámico
       margin: 0;
+      font-family: var(--font-titles);
     }
   }
 
@@ -50,26 +53,28 @@
     border: none;
     font-size: 1.1rem;
     cursor: pointer;
-    color: #42526e;
+    color: var(--text-muted); // 🌓 Dinámico
     padding: 0.5rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 0.15s ease, color 0.15s ease;
 
     &:hover {
-      background-color: rgba(9, 30, 66, 0.08);
+      background-color: rgba(var(--text-main), 0.08);
+      color: var(--text-main);
     }
   }
 }
 
 .modalBody {
   display: grid;
-  grid-template-columns: 3fr 1fr; // 3 partes para la izquierda, 1 para la barra lateral
+  grid-template-columns: 3fr 1fr; 
   gap: 1.5rem;
 
   @media (max-width: 600px) {
-    grid-template-columns: 1fr; // Se hace en una sola columna si la pantalla es chica
+    grid-template-columns: 1fr; 
   }
 }
 
@@ -82,34 +87,37 @@
 .section {
   h3 {
     font-size: 1rem;
-    color: #172b4d;
+    color: var(--text-main); // 🌓 Dinámico
     margin-bottom: 0.75rem;
+    font-family: var(--font-titles);
   }
 
   .textarea {
     width: 100%;
     min-height: 108px;
-    background-color: #ffffff;
-    border: 2px solid #dfe1e6;
+    background-color: var(--bg-card); // 🌓 Blanco en light, gris oscuro en dark
+    border: 2px solid var(--border-color); // 🌓 Dinámico
     border-radius: 4px;
     padding: 0.5rem 0.75rem;
-    font-family: inherit;
+    font-family: var(--font-general);
     font-size: 0.9rem;
+    color: var(--text-main); // 🌓 Dinámico
     resize: vertical;
+    transition: border-color 0.2s, background-color 0.3s;
 
     &:focus {
       outline: none;
-      border-color: #0079bf;
+      border-color: var(--header-bg); // Usa tu azul o tono principal de header
     }
   }
 
   .checklistPlaceholder {
-    background-color: rgba(9, 30, 66, 0.04);
-    border: 2px dashed #dfe1e6;
+    background-color: rgba(var(--text-main), 0.04); // Se adapta sutilmente a la luz/oscuridad
+    border: 2px dashed var(--border-color);
     padding: 1rem;
     border-radius: 6px;
     font-size: 0.9rem;
-    color: #5e6c84;
+    color: var(--text-muted);
   }
 }
 
@@ -121,14 +129,15 @@
   h4 {
     font-size: 0.75rem;
     font-weight: 700;
-    color: #5e6c84;
+    color: var(--text-muted);
     text-transform: uppercase;
     margin-bottom: 0.5rem;
+    font-family: var(--font-general);
   }
 
   .sidebarBtn {
-    background-color: rgba(9, 30, 66, 0.04);
-    color: #172b4d;
+    background-color: rgba(var(--text-main), 0.04);
+    color: var(--text-main); // 🌓 Dinámico
     border: none;
     border-radius: 4px;
     padding: 0.5rem 0.75rem;
@@ -136,17 +145,18 @@
     font-weight: 500;
     cursor: pointer;
     text-align: left;
-    transition: background-color 0.15s ease;
+    font-family: var(--font-general);
+    transition: background-color 0.15s ease, color 0.15s ease;
 
     &:hover {
-      background-color: rgba(9, 30, 66, 0.08);
+      background-color: rgba(var(--text-main), 0.08);
     }
   }
 }
 
 .subTitle {
   font-size: 0.85rem;
-  color: #5e6c84;
+  color: var(--text-muted);
   margin: 0;
   margin-top: 0.25rem;
 
@@ -171,26 +181,27 @@
   h4 {
     font-size: 0.75rem;
     font-weight: 700;
-    color: #5e6c84;
+    color: var(--text-muted);
     text-transform: uppercase;
     margin: 0;
   }
 }
 
 .dateInput {
-  background-color: rgba(9, 30, 66, 0.04);
-  border: 2px solid #dfe1e6;
+  background-color: rgba(var(--text-main), 0.04);
+  border: 2px solid var(--border-color);
   border-radius: 4px;
-  color: #172b4d;
-  font-family: inherit;
+  color: var(--text-main);
+  font-family: var(--font-general);
   font-size: 0.9rem;
   padding: 0.4rem 0.6rem;
   cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
 
   &:focus {
     outline: none;
-    border-color: #0079bf;
-    background-color: #ffffff;
+    border-color: var(--header-bg);
+    background-color: var(--bg-card);
   }
 }
 
@@ -204,33 +215,36 @@
   background: transparent;
   border: 2px solid transparent;
   border-radius: 4px;
-  color: #172b4d;
+  color: var(--text-main); // 🌓 Dinámico
   font-size: 1.25rem;
   font-weight: 600;
   padding: 0.25rem 0.5rem;
   width: 500px;
   max-width: 80vw;
-  font-family: inherit;
+  font-family: var(--font-titles);
+  transition: border-color 0.2s;
 
   &:focus {
     outline: none;
-    background-color: #ffffff;
-    border-color: #0079bf;
+    background-color: var(--bg-card);
+    border-color: var(--header-bg);
   }
 }
 
 .shortDescriptionInput {
   width: 100%;
-  background-color: #ffffff;
-  border: 2px solid #dfe1e6;
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-color);
   border-radius: 4px;
   padding: 0.5rem 0.75rem;
-  font-family: inherit;
+  font-family: var(--font-general);
   font-size: 0.9rem;
+  color: var(--text-main);
+  transition: border-color 0.2s, background-color 0.3s;
 
   &:focus {
     outline: none;
-    border-color: #0079bf;
+    border-color: var(--header-bg);
   }
 }
 
@@ -241,29 +255,30 @@
 }
 
 .priorityPill {
-  border: 2px solid transparent;
-  border-radius: 20px; // Súper redondeado tipo píldora
-  font-family: inherit;
+  border: 2px solid var(--border-color); // 🌓 Borde sutil en vez de transparente fijo
+  border-radius: 20px; 
+  font-family: var(--font-general);
   font-size: 0.8rem;
   font-weight: 600;
   padding: 0.4rem 0.8rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  background-color: #ffffff;
-  color: #42526e;
+  background-color: var(--bg-card); // 🌓 Blanco o gris oscuro según tema
+  color: var(--text-muted);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 
-  // Comportamiento base al pasar el mouse por encima si no está activa
   &:hover:not(.active) {
-    filter: brightness(0.95);
+    filter: brightness(95%);
     transform: translateY(-1px);
+    color: var(--text-main);
   }
 
-  // Cuando la píldora está seleccionada, se enciende con su color de identidad
   &.active {
     transform: scale(1.04);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border-color: transparent;
     
+    // Mantenemos los colores de acento vivos para identificar las prioridades
     &.baja {
       background-color: #61bd4f;
       color: #ffffff;
@@ -274,7 +289,7 @@
     }
     &.media {
       background-color: #f2d600;
-      color: #172b4d; // Texto oscuro para contrastar con el amarillo
+      color: #172b4d; // Texto oscuro fijo para contraste en el amarillo brillante
     }
     &.alta {
       background-color: #eb5a46;
@@ -284,25 +299,28 @@
 }
 
 .dangerBtn {
+  // Ajuste fino para el hover destructivo dependiendo del fondo del tema
   &:hover {
-    background-color: #ffe6e6 !important;
-    color: #c00000 !important;
+    background-color: rgba(235, 90, 70, 0.15) !important;
+    color: #eb5a46 !important;
+    border-color: #eb5a46 !important;
   }
 }
 
 .confirmDeleteWrapper {
-  background-color: #ffe6e6;
-  border: 1px solid #ffccd0;
+  background-color: rgba(235, 90, 70, 0.1);
+  border: 1px solid rgba(235, 90, 70, 0.3);
   border-radius: 4px;
   padding: 0.6rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  transition: background-color 0.3s;
 
   p {
     font-size: 0.75rem;
     font-weight: 600;
-    color: #c00000;
+    color: #eb5a46;
     margin: 0;
     text-align: center;
   }
@@ -323,6 +341,7 @@
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.15s;
   
   &:hover {
     background-color: #cf3522;
@@ -331,16 +350,18 @@
 
 .cancelConfirmBtn {
   flex: 1;
-  background-color: #ffffff;
-  color: #42526e;
-  border: 1px solid #dfe1e6;
+  background-color: var(--bg-card);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
   border-radius: 3px;
   padding: 0.3rem;
   font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
 
   &:hover {
-    background-color: #f4f5f7;
+    background-color: rgba(var(--text-main), 0.04);
+    color: var(--text-main);
   }
 }

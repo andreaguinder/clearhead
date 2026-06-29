@@ -1,3 +1,6 @@
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
 import { Column as ColumnType, Task } from '@/types/board';
 import TaskCard from '../TaskCard/TaskCard';
 import ActionButton from '../ActionButton/ActionButton';
@@ -7,13 +10,78 @@ interface ColumnProps {
   column: ColumnType;
   tasks: Task[];
   onTaskClick: (task: Task) => void;
-  onAddTaskClick: () => void; // 👈 Recibimos la prop para añadir tarea
+  onAddTaskClick: () => void;
+  onUpdateColumnTitle: (columnId: string, newTitle: string) => void; // 🌟 Agregamos el callback obligatorio
 }
 
-export default function Column({ column, tasks, onTaskClick, onAddTaskClick }: ColumnProps) {
+export default function Column({ 
+  column, 
+  tasks, 
+  onTaskClick, 
+  onAddTaskClick, 
+  onUpdateColumnTitle 
+}: ColumnProps) {
+  
+  const [isEditing, setIsEditing] = useState(false);
+  const [localTitle, setLocalTitle] = useState(column.title);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Sincroniza el estado local si el título cambia de forma externa
+  useEffect(() => {
+    setLocalTitle(column.title);
+  }, [column.title]);
+
+  // Hace foco automático y selecciona el texto completo para facilitar la edición
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.select();
+    }
+  }, [isEditing]);
+
+  const handleBlur = () => {
+    setIsEditing(false);
+    // Si dejó texto válido y mutó, disparamos la actualización al padre
+    if (localTitle.trim() && localTitle.trim() !== column.title) {
+      onUpdateColumnTitle(column.id, localTitle.trim());
+    } else {
+      setLocalTitle(column.title); // Revierte el input si lo dejó vacío o sin cambios
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      inputRef.current?.blur(); // Provoca el blur automático al meter Enter
+    }
+    if (e.key === 'Escape') {
+      setLocalTitle(column.title); // Revierte y cierra
+      setIsEditing(false);
+    }
+  };
+
   return (
     <section className={styles.columnCard}>
-      <h2 className={styles.columnTitle}>{column.title}</h2>
+      <div className={styles.columnHeader}>
+        {isEditing ? (
+          <input
+            ref={inputRef}
+            type="text"
+            className={styles.columnTitleInput}
+            value={localTitle}
+            onChange={(e) => setLocalTitle(e.target.value)}
+            onBlur={handleBlur}
+            onKeyDown={handleKeyDown}
+            maxLength={25}
+          />
+        ) : (
+          <h2 
+            className={styles.columnTitle} 
+            onClick={() => setIsEditing(true)}
+          >
+            {column.title}
+          </h2>
+        )}
+      </div>
       
       <div className={styles.tasksList}>
         {tasks.map((task) => (
@@ -29,7 +97,7 @@ export default function Column({ column, tasks, onTaskClick, onAddTaskClick }: C
       </div>
 
       <div className={styles.buttonWrapper}>
-        {/* 👈 Conectamos el ActionButton a la función de creación */}
+        {/* Conectamos el ActionButton a la función de creación */}
         <ActionButton type="task" onClick={onAddTaskClick} />
       </div>
     </section>

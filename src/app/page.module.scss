@@ -1,100 +1,8 @@
-.mainContainer {
-  min-height: 100vh;
-  background-color: var(--bg-app); // 🌓 Dinámico según el tema
-  padding: 2rem;
-  font-family: var(--font-general); // 🧠 Usando tu variable de fuente
-  transition: background-color 0.3s ease; // Fundido suave al cambiar de tema
-}
+// src/app/page.module.scss
 
-.boardTitle {
-  color: var(--text-main); // 🌓 Dinámico
-  margin-bottom: 2rem;
-  font-size: 1.75rem;
-  font-family: var(--font-titles);
-}
-
-.boardWrapper {
-  display: flex;
-  gap: 1.5rem;
-  align-items: flex-start;
-  overflow-x: auto;
-  padding-bottom: 1rem;
-}
-
-.columnCard {
-  // Para la columna en modo oscuro usamos un tono intermedio derivado del borde/fondo
-  background-color: var(--border-color); 
-  border-radius: 8px;
-  width: 300px;
-  min-width: 300px;
-  padding: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-  transition: background-color 0.3s ease;
-}
-
-.columnTitle {
-  font-size: 1.1rem;
-  color: var(--text-main); // 🌓 Dinámico
-  margin-bottom: 1rem;
-  font-family: var(--font-titles);
-}
-
-.tasksList {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.taskCard {
-  background-color: var(--bg-card); // 🌓 Dinámico (blanco en light, gris oscuro en dark)
-  border-radius: 6px;
-  padding: 0.75rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  transition: background-color 0.3s ease;
-
-  h3 {
-    font-size: 0.95rem;
-    color: var(--text-main); // 🌓 Dinámico
-    margin: 0;
-    font-family: var(--font-titles);
-  }
-
-  p {
-    font-size: 0.85rem;
-    color: var(--text-muted); // 🌓 Dinámico
-    margin: 0;
-  }
-}
-
-// Estilos dinámicos para las prioridades (Se mantienen legibles en ambos modos)
-.priorityBadge {
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  align-self: flex-start;
-  text-transform: uppercase;
-  font-family: var(--font-general);
-
-  &.high {
-    background-color: #ffebe6;
-    color: #de350b;
-  }
-  &.medium {
-    background-color: #fffae6;
-    color: #b78103;
-  }
-  &.low {
-    background-color: #eae6ff;
-    color: #403294;
-  }
-}
-
-// 🔑 VISTA DE LOGIN: Como es una pantalla previa, la dejamos fija en modo oscuro
-// pero adaptada para usar tus variables semánticas si hiciese falta.
+// ----------------------------------------------------
+// VISTA DE LOGIN (Pantalla previa fija)
+// ----------------------------------------------------
 .loginContainer {
   display: flex;
   justify-content: center;
@@ -153,43 +61,35 @@
   display: block;
 }
 
-// Estilos de la App una vez logueada
+// ----------------------------------------------------
+// CONTENEDOR GENERAL DE LA APP (Una vez logueada)
+// ----------------------------------------------------
 .appContainer {
-  padding: 2rem 1.5rem;
-  background-color: var(--bg-app); // 🌓 Dinámico
-  min-height: 100vh;
-  color: var(--text-main); // 🌓 Dinámico
+  display: flex;
+  flex-direction: column;
+  height: 100vh;       // 100% del alto real de la pantalla fijo
+  width: 100vw;        // 100% del ancho real de la pantalla fijo
+  overflow: hidden;    // Evita scrolls generales duplicados en el body
+  background-color: var(--bg-app);
+  color: var(--text-main);
   font-family: var(--font-general);
+  padding: 1.5rem;     // Espaciado exterior uniforme
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+// ----------------------------------------------------
+// HEADER
+// ----------------------------------------------------
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--header-bg); // 🌓 Azul en light, grafito en dark
-  color: var(--header-text); // 🌓 Dinámico
+  background-color: var(--header-bg);
+  color: var(--header-text);
   padding: 1rem 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
   transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.logoutBtn {
-  background: transparent;
-  color: var(--header-text);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  font-family: var(--font-general);
-  transition: background-color 0.2s, border-color 0.2s;
-  
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.6);
-  }
 }
 
 .userInfo {
@@ -211,16 +111,6 @@
   border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
-.boardWrapper {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  overflow-x: auto;
-  padding-bottom: 1rem;
-  margin-top: 1.5rem;
-}
-
-// 🌓 Opcional: Estilo básico para el botón del switch de tema si lo ponés en el header
 .themeBtn {
   background: rgba(255, 255, 255, 0.2);
   border: none;
@@ -235,5 +125,125 @@
 
   &:hover {
     background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.logoutBtn {
+  background: transparent;
+  color: var(--header-text);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: var(--font-general);
+  transition: background-color 0.2s, border-color 0.2s;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+// ----------------------------------------------------
+// TABLERO (El Wrapper del scroll horizontal)
+// ----------------------------------------------------
+.boardWrapper {
+  flex: 1;             // Se estira limpiamente usando el espacio que deja el header
+  display: flex;
+  flex-direction: row; // Fuerza las columnas lado a lado
+  gap: 1.5rem;
+  padding: 1.5rem 0;   // Aire arriba y abajo, los costados los maneja el contenedor padre
+  margin-top: 1rem;
+  overflow-x: auto;    // Activa el scroll horizontal nativo si las columnas desbordan
+  overflow-y: hidden;  // Cancela desbordes verticales extraños
+  align-items: flex-start;
+  width: 100%;
+
+  // Customización de la barra usando var(--text-muted) de manera nativa
+  &::-webkit-scrollbar {
+    height: 10px;  // Altura de la barra de scroll horizontal
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--bg-column);
+    border-radius: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--text-muted); // Toma dinámicamente tu variable global mutando según el tema
+    border-radius: 6px;
+  }
+}
+
+// ----------------------------------------------------
+// COMPONENTES INTERNOS DEL TABLERO
+// ----------------------------------------------------
+.columnCard {
+  background-color: var(--border-color); 
+  border-radius: 8px;
+  width: 300px;
+  min-width: 300px;    // Protege que Flexbox no aplaste la columna
+  flex-shrink: 0;      // Asegura que mantenga sus 300px y empuje el scroll
+  padding: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transition: background-color 0.3s ease;
+}
+
+.columnTitle {
+  font-size: 1.1rem;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+  font-family: var(--font-titles);
+}
+
+.tasksList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.taskCard {
+  background-color: var(--bg-card);
+  border-radius: 6px;
+  padding: 0.75rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: background-color 0.3s ease;
+
+  h3 {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    margin: 0;
+    font-family: var(--font-titles);
+  }
+
+  p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+}
+
+.priorityBadge {
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  align-self: flex-start;
+  text-transform: uppercase;
+  font-family: var(--font-general);
+
+  &.high {
+    background-color: #ffebe6;
+    color: #de350b;
+  }
+  &.medium {
+    background-color: #fffae6;
+    color: #b78103;
+  }
+  &.low {
+    background-color: #eae6ff;
+    color: #403294;
   }
 }

@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react';
 import { signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
 import { auth, googleProvider } from '../lib/firebase';
+import { getBoardData, saveBoardData } from '@/lib/boardService'; // 🌟 Importamos tus nuevos servicios
 import { initialBoardData } from '@/data/mockData';
 import { Task, StatusId, BoardData } from '@/types/board';
 import Column from '@/components/Column/Column';
 import ActionButton from '@/components/ActionButton/ActionButton';
 import TaskDetailModal from '@/components/TaskDetailModal/TaskDetailModal';
+import Header from '@/components/Header/Header';
 import styles from './page.module.scss';
 
 export default function Home() {
@@ -15,15 +17,56 @@ export default function Home() {
   const [boardData, setBoardData] = useState<BoardData>(initialBoardData);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [isInitialLoad, setIsInitialLoad] = useState(true); // 🌟 Evita sobreescritura al arrancar
 
-  // 1. Escuchar el estado real de Firebase Auth
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  // 1. Escuchar el estado real de Firebase Auth y cargar la data remota
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
+      
+      if (currentUser) {
+        // Traemos el tablero real del usuario de la nube
+        const savedBoard = await getBoardData(currentUser.uid);
+        if (savedBoard) {
+          setBoardData(savedBoard as unknown as BoardData);
+        } else {
+          // Si es un usuario nuevo sin datos, le asignamos tus datos mock iniciales
+          setBoardData(initialBoardData);
+        }
+      } else {
+        // Al desloguear limpiamos el tablero
+        setBoardData(initialBoardData);
+      }
+      
       setAuthLoading(false);
+      // Apagamos la carga inicial para dar luz verde al auto-guardado remoto
+      setIsInitialLoad(false);
     });
+    
     return () => unsubscribe();
   }, []);
+
+  // 🌟 NUEVO: Mecanismo de Guardado Automático con Debounce (1.5 segundos)
+  useEffect(() => {
+    if (!user || isInitialLoad) return;
+
+    const timer = setTimeout(() => {
+      saveBoardData(user.uid, boardData as any);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [boardData, user, isInitialLoad]);
+
+  // Controlar el cambio de tema en el elemento HTML raíz
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+  };
 
   // 2. Funciones reales de Login / Logout con Firebase
   const handleLogin = async () => {
@@ -36,6 +79,7 @@ export default function Home() {
 
   const handleLogout = async () => {
     try {
+      setIsInitialLoad(true); // Bloqueamos el auto-guardado antes de limpiar el estado
       await signOut(auth);
       setActiveTask(null);
     } catch (error) {
@@ -50,6 +94,16 @@ export default function Home() {
       ...prev,
       columns: { ...prev.columns, [newColumnId]: { id: newColumnId, title, taskIds: [] } },
       columnOrder: [...prev.columnOrder, newColumnId],
+    }));
+  };
+
+  const handleUpdateColumnTitle = (columnId: StatusId, newTitle: string) => {
+    setBoardData((prev) => ({
+      ...prev,
+      columns: {
+        ...prev.columns,
+        [columnId]: { ...prev.columns[columnId], title: newTitle }
+      }
     }));
   };
 
@@ -129,13 +183,12 @@ export default function Home() {
   // VISTA DEL TABLERO COMPLETO: Si está logueado, recuperamos tu panel original
   return (
     <div className={styles.appContainer}>
-      <header className={styles.header}>
-        <div className={styles.userInfo}>
-          {user.photoURL && <img src={user.photoURL} alt="Avatar" className={styles.avatar} />}
-          <h2>¡Hola, {user.displayName}! 👋</h2>
-        </div>
-        <button className={styles.logoutBtn} onClick={handleLogout}>Cerrar sesión</button>
-      </header>
+      <Header 
+        user={user} 
+        theme={theme} 
+        onToggleTheme={toggleTheme} 
+        onLogout={handleLogout} 
+      />
 
       <main className={styles.mainContainer}>
         <div className={styles.boardWrapper}>
@@ -143,19 +196,20 @@ export default function Home() {
             const column = boardData.columns[columnId];
             const tasks = column?.taskIds.map((taskId) => boardData.tasks[taskId]) || [];
 
-          return (
-            <Column 
-              key={column.id} 
-              column={column} 
-              tasks={tasks} 
-              onTaskClick={(task) => setActiveTask(task)}
-              onAddTaskClick={() => handleOpenCreateTaskModal(column.id)}
-            />
-          );
-        })}
+            return (
+              <Column 
+                key={column.id} 
+                column={column} 
+                tasks={tasks} 
+                onTaskClick={(task) => setActiveTask(task)}
+                onAddTaskClick={() => handleOpenCreateTaskModal(column.id)}
+                onUpdateColumnTitle={(columnId, newTitle) => handleUpdateColumnTitle(columnId as StatusId, newTitle)}
+              />
+            );
+          })}
 
-        <ActionButton type="column" onCreate={handleCreateColumn} />
-      </div>
+          <ActionButton type="column" onCreate={handleCreateColumn} />
+        </div>
       </main>
 
       {activeTask && (

@@ -1,36 +1,39 @@
 .columnCard {
-  background-color: #ebecf0;
+  background-color: var(--bg-column); // 🌓 Dinámico (gris claro o gris oscuro intermedio)
   border-radius: 8px;
   width: 300px;
   min-width: 300px;
-  padding: 0.75rem; // Un toque más ajustado para que respire mejor con el botón
+  padding: 0.75rem; 
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
-  max-height: 100%; // Por si la lista de tareas se vuelve muy larga
+  max-height: 100%; 
+  transition: background-color 0.3s ease; // Suaviza el cambio de tema
+  flex-shrink: 0;
 }
 
 .columnTitle {
   font-size: 1rem;
   font-weight: 600;
-  color: #172b4d;
+  color: var(--text-main); // 🌓 Dinámico
   padding: 0.25rem 0.5rem;
   margin-bottom: 0.75rem;
+  font-family: var(--font-titles);
 }
 
 .tasksList {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  overflow-y: auto; // Si hay demasiadas tarjetas, scrollea la columna y no toda la pantalla
+  overflow-y: auto; 
   padding: 0.25rem 0.5rem;
   
-  // Customizamos la barra de scroll para que quede finita y estética estilo Trello
+  // Customizamos la barra de scroll adaptada a cada tema usando opacidades
   &::-webkit-scrollbar {
     width: 6px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: rgba(9, 30, 66, 0.15);
+    background-color: rgba(var(--text-main), 0.15); // 🌓 Mutará sutilmente en light y dark
     border-radius: 3px;
   }
 }
@@ -38,4 +41,47 @@
 .buttonWrapper {
   margin-top: 0.5rem;
   padding: 0 0.5rem;
+}
+
+.columnHeader {
+  min-height: 38px; // 🌟 Le damos una altura mínima fija para que la columna no se estire ni se achique al editar
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  width: 100%;
+}
+
+.columnTitle {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-main); // Tu variable de texto principal
+  margin: 0;
+  cursor: pointer;
+  width: 100%;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    // Un destello sutil que le avisa al usuario que ahí se puede clickear
+    background-color: rgba(255, 255, 255, 0.06); 
+  }
+}
+
+.columnTitleInput {
+  font-size: 1.15rem; // Mismo tamaño que el título para que no salte
+  font-weight: 600;
+  color: var(--text-main);
+  background-color: rgba(122, 121, 121, 0.082); // Fondo oscuro traslúcido que calza bien en light/dark
+  border: 2px solid #4285F4; // El azul de Google o podés usar alguna variable tuya de focus
+  border-radius: 6px;
+  padding: 4px 6px; // Ajustado para compensar el borde de 2px y que el texto no se mueva de lugar
+  width: 100%;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit; // Para que no te herede la fuente horrible por defecto de los inputs
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.25); // Un sutil resplandor (glow) azul
+  }
 }
