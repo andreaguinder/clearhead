@@ -1,37 +1,42 @@
 .mainContainer {
   min-height: 100vh;
-  background-color: #f4f5f7; // El gris clásico de Trello
+  background-color: var(--bg-app); // 🌓 Dinámico según el tema
   padding: 2rem;
-  font-family: sans-serif;
+  font-family: var(--font-general); // 🧠 Usando tu variable de fuente
+  transition: background-color 0.3s ease; // Fundido suave al cambiar de tema
 }
 
 .boardTitle {
-  color: #172b4d;
+  color: var(--text-main); // 🌓 Dinámico
   margin-bottom: 2rem;
   font-size: 1.75rem;
+  font-family: var(--font-titles);
 }
 
 .boardWrapper {
   display: flex;
   gap: 1.5rem;
-  align-items: flex-start; // Evita que las columnas se estiren hacia abajo innecesariamente
-  overflow-x: auto; // Si metemos muchas columnas, genera scroll horizontal automático
+  align-items: flex-start;
+  overflow-x: auto;
   padding-bottom: 1rem;
 }
 
 .columnCard {
-  background-color: #ebecf0;
+  // Para la columna en modo oscuro usamos un tono intermedio derivado del borde/fondo
+  background-color: var(--border-color); 
   border-radius: 8px;
   width: 300px;
-  min-width: 300px; // Evita que se aplasten si la pantalla es chica
+  min-width: 300px;
   padding: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transition: background-color 0.3s ease;
 }
 
 .columnTitle {
   font-size: 1.1rem;
-  color: #172b4d;
+  color: var(--text-main); // 🌓 Dinámico
   margin-bottom: 1rem;
+  font-family: var(--font-titles);
 }
 
 .tasksList {
@@ -41,35 +46,38 @@
 }
 
 .taskCard {
-  background-color: #ffffff;
+  background-color: var(--bg-card); // 🌓 Dinámico (blanco en light, gris oscuro en dark)
   border-radius: 6px;
   padding: 0.75rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  transition: background-color 0.3s ease;
 
   h3 {
     font-size: 0.95rem;
-    color: #172b4d;
+    color: var(--text-main); // 🌓 Dinámico
     margin: 0;
+    font-family: var(--font-titles);
   }
 
   p {
     font-size: 0.85rem;
-    color: #5e6c84;
+    color: var(--text-muted); // 🌓 Dinámico
     margin: 0;
   }
 }
 
-// Estilos dinámicos para las prioridades usando el anidamiento de SASS
+// Estilos dinámicos para las prioridades (Se mantienen legibles en ambos modos)
 .priorityBadge {
   font-size: 0.75rem;
   font-weight: bold;
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
-  align-self: flex-start; // Para que el badge no ocupe todo el ancho
+  align-self: flex-start;
   text-transform: uppercase;
+  font-family: var(--font-general);
 
   &.high {
     background-color: #ffebe6;
@@ -85,13 +93,15 @@
   }
 }
 
+// 🔑 VISTA DE LOGIN: Como es una pantalla previa, la dejamos fija en modo oscuro
+// pero adaptada para usar tus variables semánticas si hiciese falta.
 .loginContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #121214; // Fondo oscuro fachero
-  font-family: sans-serif;
+  background-color: #121214;
+  font-family: var(--font-general);
 }
 
 .loginCard {
@@ -108,6 +118,7 @@
   color: #ffffff;
   font-size: 2rem;
   margin-bottom: 0.5rem;
+  font-family: var(--font-titles);
 }
 
 .subtitle {
@@ -131,6 +142,7 @@
   gap: 0.75rem;
   width: 100%;
   transition: background-color 0.2s ease;
+  font-family: var(--font-general);
 
   &:hover {
     background-color: #e1e1e6;
@@ -141,33 +153,42 @@
   display: block;
 }
 
-// Estilos básicos para cuando entrás
+// Estilos de la App una vez logueada
 .appContainer {
-  padding: 2rem;
-  background-color: #121214;
+  padding: 2rem 1.5rem;
+  background-color: var(--bg-app); // 🌓 Dinámico
   min-height: 100vh;
-  color: white;
+  color: var(--text-main); // 🌓 Dinámico
+  font-family: var(--font-general);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #29292e;
-  padding-bottom: 1rem;
+  background-color: var(--header-bg); // 🌓 Azul en light, grafito en dark
+  color: var(--header-text); // 🌓 Dinámico
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .logoutBtn {
   background: transparent;
-  color: #a8a8b3;
-  border: 1px solid #29292e;
+  color: var(--header-text);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   padding: 0.5rem 1rem;
   border-radius: 4px;
   cursor: pointer;
+  font-weight: 500;
+  font-family: var(--font-general);
+  transition: background-color 0.2s, border-color 0.2s;
   
   &:hover {
-    background: #29292e;
-    color: white;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.6);
   }
 }
 
@@ -178,7 +199,8 @@
 
   h2 {
     margin: 0;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    font-family: var(--font-titles);
   }
 }
 
@@ -186,7 +208,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 2px solid #0079bf;
+  border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
 .boardWrapper {
@@ -195,5 +217,23 @@
   align-items: flex-start;
   overflow-x: auto;
   padding-bottom: 1rem;
-  margin-top: 1.5rem; // Espacio con respecto al header
+  margin-top: 1.5rem;
+}
+
+// 🌓 Opcional: Estilo básico para el botón del switch de tema si lo ponés en el header
+.themeBtn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: var(--header-text);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  font-family: var(--font-general);
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
 }

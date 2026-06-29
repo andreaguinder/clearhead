@@ -1,0 +1,51 @@
+// src/components/Button/Button.module.scss
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: var(--font-general);
+}
+
+// Variante Principal
+.primary {
+  background-color: var(--header-text);
+  color: var(--header-bg);
+  &:hover {
+    background-color: var(--bg-app);
+  }
+}
+
+// Variante Secundaria / Logout
+.secondary {
+  background: transparent;
+  color: var(--header-text);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.6);
+  }
+}
+
+// Variante para el Switch de Tema
+.theme {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--header-text);
+  border-radius: 20px;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+}

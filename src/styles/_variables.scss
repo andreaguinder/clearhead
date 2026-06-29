@@ -1,3 +1,5 @@
+// src/styles/_variables.scss
+
 :root {
   // VARIABLES DEL THEME LIGHT (Por defecto)
   --bg-app: #f4f5f7;
@@ -36,9 +38,3 @@ $header-bg: var(--header-bg);
 $header-text: var(--header-text);
 $font-titles: var(--font-titles);
 $font-general: var(--font-general);
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}

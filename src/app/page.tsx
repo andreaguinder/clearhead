@@ -128,19 +128,20 @@ export default function Home() {
 
   // VISTA DEL TABLERO COMPLETO: Si está logueado, recuperamos tu panel original
   return (
-    <main className={styles.appContainer}>
+    <div className={styles.appContainer}>
       <header className={styles.header}>
         <div className={styles.userInfo}>
           {user.photoURL && <img src={user.photoURL} alt="Avatar" className={styles.avatar} />}
-          <h2>¡Hola, {user.displayName || 'Andy'}! 👋</h2>
+          <h2>¡Hola, {user.displayName}! 👋</h2>
         </div>
         <button className={styles.logoutBtn} onClick={handleLogout}>Cerrar sesión</button>
       </header>
 
-      <div className={styles.boardWrapper}>
-        {boardData.columnOrder.map((columnId) => {
-          const column = boardData.columns[columnId];
-          const tasks = column?.taskIds.map((taskId) => boardData.tasks[taskId]) || [];
+      <main className={styles.mainContainer}>
+        <div className={styles.boardWrapper}>
+          {boardData.columnOrder.map((columnId) => {
+            const column = boardData.columns[columnId];
+            const tasks = column?.taskIds.map((taskId) => boardData.tasks[taskId]) || [];
 
           return (
             <Column 
@@ -155,6 +156,7 @@ export default function Home() {
 
         <ActionButton type="column" onCreate={handleCreateColumn} />
       </div>
+      </main>
 
       {activeTask && (
         <TaskDetailModal 
@@ -168,6 +170,6 @@ export default function Home() {
           onDeleteTask={handleDeleteTask}
         />
       )}
-    </main>
+    </div>
   );
 }
