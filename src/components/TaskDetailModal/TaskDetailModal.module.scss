@@ -8,29 +8,33 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 50px; 
+  padding-top: 15px; 
   z-index: 1000;
   backdrop-filter: blur(1px);
 }
 
 .modalContent {
   background-color: var(--bg-app); // 🌓 Se acopla al fondo de la app (gris claro o grafito)
-  width: 768px;
+  width: 100%;
   max-width: 95vw;
+  max-width: 340px;
+  max-height: calc(100vh - 2rem);
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
-  padding: 1.5rem;
+  padding: 1rem 0.75rem 1rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   font-family: var(--font-general);
   transition: background-color 0.3s ease;
+  overflow: visible;
 }
 
 .modalHeader {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-shrink: 0;
 
   .titleWrapper {
     display: flex;
@@ -73,6 +77,7 @@
   display: grid;
   grid-template-columns: 3fr 1fr; 
   gap: 1.5rem;
+  overflow-y: auto;
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr; 
@@ -83,6 +88,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+      padding-right: 1rem;
 }
 
 .section {
@@ -171,21 +177,22 @@
   display: flex;
   gap: 1.5rem;
   flex-wrap: wrap;
-  padding: 0 0.5rem;
-
-
 }
 
-
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
 .dateInput {
-  background-color: (var--text-light-dark);
+  background-color: var(--text-light-dark);
   border: 2px solid var(--border-color);
   border-radius: 4px;
-  color: black;
+  color: var(--text-main);
   font-family: var(--font-general);
   font-size: 0.9rem;
-  padding: 0.4rem 0.6rem;
+  padding: 0.2rem 0.6rem;
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s;
 
@@ -193,6 +200,14 @@
     outline: none;
     border-color: var(--header-bg);
     background-color: var(--bg-card);
+  }
+
+  :global([data-theme='dark']) & {
+    color-scheme: dark !important;
+  }
+  
+  :global([data-theme='light']) & {
+    color-scheme: light !important;
   }
 }
 
@@ -211,9 +226,10 @@
   font-weight: 600;
   padding: 0.5rem 0rem;
   width: 500px;
-  max-width: 80vw;
+  max-width: 75vw;
   font-family: var(--font-titles);
   transition: border-color 0.2s;
+  min-height: 70px;
 
   &:focus {
     outline: none;
@@ -251,21 +267,37 @@
 }
 
 .confirmDeleteWrapper {
-  background-color: rgba(235, 90, 70, 0.1);
-  border: 1px solid rgba(235, 90, 70, 0.3);
+  background-color: rgba(70, 186, 235, 0.1);
+  border: 2px solid var(--border-color);
   border-radius: 4px;
   padding: 0.6rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   transition: background-color 0.3s;
 
   p {
-    font-size: 0.75rem;
+    font-size: 14px;
     font-weight: 600;
-    color: #eb5a46;
+    color: var(--text-main);
     margin: 0;
     text-align: center;
+  }
+
+  .deleteConfirmBtn {
+    color: green;
+    background-color: transparent;
+    border: none;
+    font-weight: 700;
+  }
+
+  .cancelConfirmBtn {
+    color: red;
+        background-color: transparent;
+    border: none;
+    font-weight: 700;
   }
 }
 
@@ -274,46 +306,15 @@
   gap: 0.4rem;
 }
 
-.deleteConfirmBtn {
-  flex: 2;
-  background-color: #eb5a46;
-  color: #ffffff;
-  border: none;
-  border-radius: 3px;
-  padding: 0.3rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.15s;
-  
-  &:hover {
-    background-color: #cf3522;
-  }
-}
 
-.cancelConfirmBtn {
-  flex: 1;
-  background-color: var(--bg-card);
-  color: var(--text-muted);
-  border: 1px solid var(--border-color);
-  border-radius: 3px;
-  padding: 0.3rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.15s, color 0.15s;
-
-  &:hover {
-    background-color: rgba(var(--text-main), 0.04);
-    color: var(--text-main);
-  }
-}
 
 .labelsWrapper {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 16px;
+
+    flex-wrap: wrap;
 
   .labelPill {
     display: flex;
@@ -363,3 +364,13 @@
   }
 }
 
+@media screen and (min-width: 768px) {
+
+  .titleInput {
+  min-height: 40px;
+  }
+
+  .modalContent {
+    max-width: 700px;
+  }
+}

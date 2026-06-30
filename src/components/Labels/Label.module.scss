@@ -41,6 +41,7 @@
   display: flex;
   gap: 16px;
   align-items: center;
+      flex-wrap: wrap;
 
   .labelInput {
     padding: 6px 10px;
@@ -100,6 +101,7 @@
   display: flex;
   flex-direction: row;
   gap: 24px;
+      flex-wrap: wrap;
 
   .labelRow {
     display: flex;

@@ -6,7 +6,7 @@ import styles from './Button.module.scss';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'ghost' | 'theme';
+ variant?: 'primary' | 'secondary' | 'ghost' | 'theme' | 'danger';
 }
 
 export default function Button({ 

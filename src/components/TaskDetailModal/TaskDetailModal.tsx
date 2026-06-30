@@ -4,7 +4,9 @@ import { useState } from 'react';
 import { StatusId, Task, Label } from '@/types/board';
 import LabelManager from '@/components/Labels/LabelManager';
 import PrioritySelector from '@/components/Priority/PrioritySelector';
+import { Trash2, Check, X } from 'lucide-react';
 import styles from './TaskDetailModal.module.scss';
+import  Button  from "../Button/Button";
 
 interface TaskDetailModalProps {
   task: Task;
@@ -44,7 +46,7 @@ export default function TaskDetailModal({
     onDeleteTask(task.id, task.status);
   };
 
-  const handleTitleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleTitleBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
     if (!e.target.value.trim()) return;
     onUpdateTask({ ...task, title: e.target.value });
   };
@@ -81,16 +83,23 @@ export default function TaskDetailModal({
         <header className={styles.modalHeader}>
           <div className={styles.titleWrapper}>
   
-            <div className={styles.headerInputGroup}>
-              <input 
-                type="text" 
-                className={styles.titleInput} 
-                placeholder="Dale un título a esta tarjeta..."
-                defaultValue={task.title}
-                onBlur={handleTitleBlur}
-              />
-              <p className={styles.subTitle}>en la columna <span>{columnNameHTML}</span></p>
-            </div>
+           <div className={styles.headerInputGroup}>
+  <textarea 
+    className={styles.titleInput} 
+    placeholder="Dale un título a esta tarjeta..."
+    defaultValue={task.title}
+    rows={1} // Arranca midiendo una sola línea
+    onBlur={handleTitleBlur}
+    onKeyDown={(e) => {
+      // Si el usuario aprieta Enter, evita el salto de línea manual y guarda (opcional)
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        e.currentTarget.blur();
+      }
+    }}
+  />
+  <p className={styles.subTitle}>en la columna <span>{columnNameHTML}</span></p>
+</div>
           </div>
           <button className={styles.closeBtn} onClick={onClose}>✕</button>
         </header>
@@ -178,21 +187,43 @@ export default function TaskDetailModal({
 
           <aside className={styles.sidebar}>
             <h4>Sugerencias</h4>
-            <button className={styles.sidebarBtn} onClick={() => setIsLabelMenuOpen(!isLabelMenuOpen)}>🏷️ Etiquetas</button>
+
             
-            {!isConfirmingDelete ? (
-              <button className={`${styles.sidebarBtn} ${styles.dangerBtn}`} onClick={() => setIsConfirmingDelete(true)}>
-                🗑️ Eliminar Tarjeta
-              </button>
-            ) : (
-              <div className={styles.confirmDeleteWrapper}>
-                <p>¿Seguro?</p>
-                <div className={styles.confirmActions}>
-                  <button className={styles.deleteConfirmBtn} onClick={handleConfirmDelete}>Sí</button>
-                  <button className={styles.cancelConfirmBtn} onClick={() => setIsConfirmingDelete(false)}>No</button>
-                </div>
-              </div>
-            )}
+{!isConfirmingDelete ? (
+  <Button 
+    // Usamos el secundario para mantener el hover oscuro base
+    variant="secondary" 
+    // ¡TUS CLASES! Que tienen el color rojo, márgenes, etc.
+    className={`${styles.sidebarBtn} ${styles.dangerBtn}`} 
+    onClick={() => setIsConfirmingDelete(true)}
+  >
+    <Trash2 size={16} className="mr-2" />
+    <span>Eliminar Tarjeta</span>
+  </Button>
+) : (
+  <div className={styles.confirmDeleteWrapper}>
+    <p>¿Seguro?</p>
+    <div className={styles.confirmActions}>
+      <Button 
+        variant="secondary" 
+        className={styles.deleteConfirmBtn} // ¡TU CLASE! (Seguro es roja)
+        onClick={handleConfirmDelete}
+      >
+        <Check size={16} className="mr-1" />
+        Sí
+      </Button>
+      
+      <Button 
+        variant="ghost" // Usamos ghost que seguro es el que ya usabas antes
+        className={styles.cancelConfirmBtn} // ¡TU CLASE!
+        onClick={() => setIsConfirmingDelete(false)}
+      >
+        <X size={16} className="mr-1" />
+        No
+      </Button>
+    </div>
+  </div>
+)}
           </aside>
         </div>
       </div>
