@@ -2,6 +2,7 @@
 
 import { Task, Label } from '@/types/board'; // 🌟 Importamos Label del tipado
 import { LabelPills } from '@/components/Labels/LabelPills';
+import { CheckSquare } from 'lucide-react';
 import styles from './TaskCard.module.scss';
 
 interface TaskCardProps {
@@ -19,6 +20,12 @@ export default function TaskCard({ task, globalLabels, onClick }: TaskCardProps)
     alta: 'Alta'
   };
 
+  
+const totalItems = task.checklist?.length || 0;
+const completedItems = task.checklist?.filter(item => item.isCompleted).length || 0;
+const isAllDone = totalItems > 0 && completedItems === totalItems;
+
+
   return (
     <article className={styles.taskCard} onClick={onClick}>
       <span className={`${styles.priorityBadge} ${styles[task.priority]}`}>
@@ -29,6 +36,13 @@ export default function TaskCard({ task, globalLabels, onClick }: TaskCardProps)
 
       {task.description && <p className={styles.taskDescription}>{task.description}</p>}
 
+{totalItems > 0 && (
+      <div className={`${styles.checklistBadge} ${isAllDone ? styles.badgeDone : ''}`}>
+        <CheckSquare size={14} />
+        <span>{completedItems}/{totalItems}</span>
+      </div>
+    )}
+    
       {task.labelIds && task.labelIds.length > 0 && (
         <div className={styles.labelsContainer}>
           {task.labelIds?.map((labelId) => {

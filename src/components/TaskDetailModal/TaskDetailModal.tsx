@@ -5,6 +5,7 @@ import { StatusId, Task, Label } from '@/types/board';
 import LabelManager from '@/components/Labels/LabelManager';
 import PrioritySelector from '@/components/Priority/PrioritySelector';
 import { Trash2, Check, X } from 'lucide-react';
+import TaskCheckList from '../TaskCheckList/TaskCheckList';
 import styles from './TaskDetailModal.module.scss';
 import  Button  from "../Button/Button";
 
@@ -183,6 +184,17 @@ export default function TaskDetailModal({
                 onBlur={handleDescriptionBlur}
               />
             </section>
+
+
+<TaskCheckList 
+        items={task.checklist || []} 
+        onUpdateChecklist={(updatedItems) => {
+          // Usamos la misma función que actualiza los otros datos de la card
+          onUpdateTask({ ...task, checklist: updatedItems });
+        }}
+      />
+
+
           </main>
 
           <aside className={styles.sidebar}>

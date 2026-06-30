@@ -1,8 +1,3 @@
-// src/app/page.module.scss
-
-// ----------------------------------------------------
-// VISTA DE LOGIN (Pantalla previa fija)
-// ----------------------------------------------------
 .loginContainer {
   display: flex;
   justify-content: center;
@@ -19,7 +14,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   text-align: center;
   max-width: 400px;
-  width: 100%;
+  width: 80%;
 }
 
 .title {
@@ -61,25 +56,21 @@
   display: block;
 }
 
-// ----------------------------------------------------
-// CONTENEDOR GENERAL DE LA APP (Una vez logueada)
-// ----------------------------------------------------
+
+// CONTENEDOR (Una vez logueado)
 .appContainer {
   display: flex;
   flex-direction: column;
-  height: 100vh;       // 100% del alto real de la pantalla fijo
-  width: 100vw;        // 100% del ancho real de la pantalla fijo
-  overflow: hidden;    // Evita scrolls generales duplicados en el body
+  height: 100vh;   
+  width: 100vw;   
+  overflow: hidden; 
   background-color: var(--bg-app);
   color: var(--text-main);
   font-family: var(--font-general);
-  padding: 12px;     // Espaciado exterior uniforme
+  padding: 12px;   
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-// ----------------------------------------------------
-// HEADER
-// ----------------------------------------------------
 .header {
   display: flex;
   justify-content: space-between;
@@ -145,43 +136,41 @@
   }
 }
 
-// ----------------------------------------------------
-// TABLERO (El Wrapper del scroll horizontal)
-// ----------------------------------------------------
+
 .boardWrapper {
-  flex: 1;             // Se estira limpiamente usando el espacio que deja el header
+  flex: 1;         
   display: flex;
-  flex-direction: row; // Fuerza las columnas lado a lado
+  flex-direction: row; 
   gap: 16px;
-  padding: 1.5rem 0;   // Aire arriba y abajo, los costados los maneja el contenedor padre
-  overflow-x: auto;    // Activa el scroll horizontal nativo si las columnas desbordan
-  overflow-y: hidden;  // Cancela desbordes verticales extraños
+  padding: 1.5rem 0;   
+  overflow-x: auto;  
+  overflow-y: hidden;  
   align-items: flex-start;
   width: 100%;
 
-  // Customización de la barra usando var(--text-muted) de manera nativa
+
   &::-webkit-scrollbar {
-    height: 10px;  // Altura de la barra de scroll horizontal
+    height: 10px;  
   }
   &::-webkit-scrollbar-track {
     background: var(--bg-column);
     border-radius: 6px;
   }
   &::-webkit-scrollbar-thumb {
-    background-color: var(--text-muted); // Toma dinámicamente tu variable global mutando según el tema
+    background-color: var(--text-muted); 
     border-radius: 6px;
   }
 }
 
-// ----------------------------------------------------
+
 // COMPONENTES INTERNOS DEL TABLERO
-// ----------------------------------------------------
+
 .columnCard {
   background-color: var(--border-color); 
   border-radius: 8px;
   width: 300px;
-  min-width: 300px;    // Protege que Flexbox no aplaste la columna
-  flex-shrink: 0;      // Asegura que mantenga sus 300px y empuje el scroll
+  min-width: 300px;    
+  flex-shrink: 0;    
   padding: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   transition: background-color 0.3s ease;
@@ -251,7 +240,7 @@
 
 
   .appContainer {
-  padding: 18px;     // Espaciado exterior uniforme
+  padding: 18px;    
 }
 
 }

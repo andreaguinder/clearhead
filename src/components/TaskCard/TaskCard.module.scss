@@ -86,3 +86,32 @@
     color: #c00000;
   }
 }
+
+.checklistBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-family: var(--font-general);
+  color: var(--text-muted);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  background-color: var(--bg-app); // Se adapta al fondo de la app en light/dark
+  border: 1px solid var(--border-color);
+  width: fit-content;
+
+  svg {
+    color: var(--text-muted);
+  }
+}
+
+// Cuando completan el 100% de la lista, pasa a modo "Éxito"
+.badgeDone {
+  background-color: rgba(16, 185, 129, 0.12); // Verde esmeralda sutil
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.25);
+
+  svg {
+    color: #10b981;
+  }
+}
