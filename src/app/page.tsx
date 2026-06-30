@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { signOut, onAuthStateChanged, User, signInWithRedirect, GoogleAuthProvider } from 'firebase/auth';
+import { signOut, onAuthStateChanged, User, signInWithRedirect, GoogleAuthProvider, getRedirectResult } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { getBoardData, saveBoardData } from '@/lib/boardService'; 
 import { initialBoardData } from '@/data/mockData';
@@ -24,6 +24,17 @@ export default function Home() {
 
   // 1. Escuchar el estado real de Firebase Auth y cargar la data remota
   useEffect(() => {
+    
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result?.user) {
+          setUser(result.user);
+        }
+      })
+      .catch((error) => {
+        console.error("Error al procesar el retorno de redirección:", error);
+      });
+
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       
