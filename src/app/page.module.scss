@@ -1,5 +1,6 @@
 .loginContainer {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
@@ -260,6 +261,22 @@
   justify-content: center;
   align-items: center;
   font-family: var(--font-general);
+}
+
+.footer {
+  margin-top: 40px;
+  h3 {
+    font-size: 14px;
+    color: var(--text-main);
+    font-family: var(--font-general);
+    font-weight: 400;
+
+    a {
+      text-decoration: none;
+      color: var(--header-bg);
+      font-weight: 500;
+    }
+  }
 }
 
 @media screen and (min-width: 1024px) {

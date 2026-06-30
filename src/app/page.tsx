@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { signOut, onAuthStateChanged, User, signInWithRedirect, GoogleAuthProvider, getRedirectResult } from 'firebase/auth';
+import { signOut, onAuthStateChanged, User, signInWithRedirect, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { getBoardData, saveBoardData } from '@/lib/boardService'; 
 import { initialBoardData } from '@/data/mockData';
@@ -24,16 +24,8 @@ export default function Home() {
 
   // 1. Escuchar el estado real de Firebase Auth y cargar la data remota
   useEffect(() => {
-    
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result?.user) {
-          setUser(result.user);
-        }
-      })
-      .catch((error) => {
-        console.error("Error al procesar el retorno de redirección:", error);
-      });
+
+
 
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
@@ -215,6 +207,9 @@ export default function Home() {
       <main className={styles.loginContainer}>
         <div className={styles.loginCard}>
           <h2 style={{ color: '#fff' }}><span className={styles.loadingText}></span><span className={styles.logoText}>ClearHead<span className={styles.logoClearHead}></span></span></h2>
+        </div>
+        <div className={styles.footer}>
+          <h3>Desarrollado por <a href="https://andreaguinder.com/" target="_blank" rel="noopener noreferrer">Andrea Guinder</a></h3>
         </div>
       </main>
     );
