@@ -2,12 +2,16 @@
 
 import { useState } from 'react';
 import { StatusId, Task, Label } from '@/types/board';
-import LabelManager from '@/components/Labels/LabelManager';
-import PrioritySelector from '@/components/Priority/PrioritySelector';
 import { Trash2, Check, X } from 'lucide-react';
 import TaskCheckList from '../TaskCheckList/TaskCheckList';
-import styles from './TaskDetailModal.module.scss';
 import Button from "../Button/Button";
+import styles from './TaskDetailModal.module.scss';
+
+// Subcomponentes modulares que extraemos abajo
+import TaskHeader from './components/TaskHeader';
+import TaskLabels from './components/TaskLabels';
+import TaskMeta from './components/TaskMeta';
+import TaskDescription from './components/TaskDescription';
 
 interface TaskDetailModalProps {
   task: Task;
@@ -30,179 +34,65 @@ export default function TaskDetailModal({
   onSaveGlobalLabel,
   onDeleteGlobalLabel
 }: TaskDetailModalProps) {
-
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
-  const [isLabelMenuOpen, setIsLabelMenuOpen] = useState(false);
-
-  const toggleLabel = (labelId: string) => {
-    const currentLabels = task.labelIds || [];
-    const newLabelIds = currentLabels.includes(labelId)
-      ? currentLabels.filter((id) => id !== labelId)
-      : [...currentLabels, labelId];
-
-    onUpdateTask({ ...task, labelIds: newLabelIds });
-  };
-
-  const handleConfirmDelete = () => {
-    onDeleteTask(task.id, task.status);
-  };
-
-  const handleTitleBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
-    if (!e.target.value.trim()) return;
-    onUpdateTask({ ...task, title: e.target.value });
-  };
-
-  const handleShortDescriptionBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    onUpdateTask({ ...task, description: e.target.value });
-  };
-
-  const handleDescriptionBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
-    onUpdateTask({ ...task, detailedDescription: e.target.value });
-  };
-
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onUpdateTask({ ...task, dueDate: e.target.value });
-  };
-
-  const priorities: { value: Task['priority']; label: string }[] = [
-    { value: 'baja', label: 'Baja' },
-    { value: 'normal', label: 'Normal' },
-    { value: 'media', label: 'Media' },
-    { value: 'alta', label: 'Alta' },
-  ];
-
-  const handlePrioritySelect = (value: Task['priority']) => {
-    onUpdateTask({ ...task, priority: value });
-  };
-
-  const columnNameHTML = columnNames[task.status] || task.status;
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-
-        <header className={styles.modalHeader}>
-          <div className={styles.titleWrapper}>
-
-            <div className={styles.headerInputGroup}>
-              <textarea
-                className={styles.titleInput}
-                placeholder="Dale un título a esta tarjeta..."
-                defaultValue={task.title}
-                rows={1} // Arranca midiendo una sola línea
-                onBlur={handleTitleBlur}
-                onKeyDown={(e) => {
-                  // Si el usuario aprieta Enter, evita el salto de línea manual y guarda 
-                  if (e.key === 'Enter') {
-                    e.preventDefault();
-                    e.currentTarget.blur();
-                  }
-                }}
-              />
-              <p className={styles.subTitle}>en la columna <span>{columnNameHTML}</span></p>
-            </div>
-          </div>
-          <button className={styles.closeBtn} onClick={onClose}>✕</button>
-        </header>
+        
+        {/* 1. HEADER (Título y Columna) */}
+        <TaskHeader 
+          title={task.title} 
+          columnName={columnNames[task.status] || task.status} 
+          onUpdateTitle={(newTitle) => onUpdateTask({ ...task, title: newTitle })}
+          onClose={onClose}
+        />
 
         <div className={styles.modalBody}>
           <main className={styles.mainContent}>
+            
+            {/* 2. ETIQUETAS */}
+            <TaskLabels 
+              taskLabelIds={task.labelIds || []}
+              globalLabels={globalLabels}
+              onUpdateLabels={(newLabelIds) => onUpdateTask({ ...task, labelIds: newLabelIds })}
+              onSaveGlobalLabel={onSaveGlobalLabel}
+              onDeleteGlobalLabel={onDeleteGlobalLabel}
+            />
 
-            <section className={styles.section}>
-              <h3 className={styles.sectionLabel}>Etiquetas</h3>
-              <div className={styles.labelsWrapper}>
-                {task.labelIds?.map((labelId) => {
-                  const label = globalLabels[labelId];
-                  if (!label) return null;
-                  return (
-                    <span
-                      key={label.id}
-                      className={styles.labelPill}
-                      style={{ backgroundColor: label.color, color: label.textColor }}
-                    >
-                      {label.text}
-                      <button
-                        className={styles.removeLabelBtn}
-                        onClick={(e) => { e.stopPropagation(); toggleLabel(labelId); }}
-                        style={{ color: label.textColor }}
-                      >×</button>
-                    </span>
-                  );
-                })}
-                <button className={styles.addLabelBtn} onClick={() => setIsLabelMenuOpen(!isLabelMenuOpen)}>+</button>
-              </div>
+            {/* 3. METADATA GRID (Vencimiento, Prioridad y próximamente ASIGNADOS) */}
+            <TaskMeta 
+              dueDate={task.dueDate || ''}
+              priority={task.priority}
+              onUpdateMeta={(fields) => onUpdateTask({ ...task, ...fields })}
+            />
 
-              {isLabelMenuOpen && (
-                <div className={styles.labelMenu}>
+            {/* 4. DESCRIPCIONES */}
+            <TaskDescription 
+              shortDescription={task.description || ''}
+              detailedDescription={task.detailedDescription || ''}
+              onUpdateDescription={(fields) => onUpdateTask({ ...task, ...fields })}
+            />
 
-                  <LabelManager
-                    globalLabels={globalLabels}
-                    taskLabelIds={task.labelIds || []}
-                    onToggleLabel={toggleLabel}
-                    onSaveLabel={onSaveGlobalLabel}
-                    onDeleteLabel={onDeleteGlobalLabel}
-                  />
-                </div>
-              )}
-            </section>
-
-            <div className={styles.metaDataGrid}>
-              <div className={styles.metaItem}>
-                <h4>Vencimiento</h4>
-                <input
-                  type="date"
-                  className={styles.dateInput}
-                  value={task.dueDate || ''}
-                  onChange={handleDateChange}
-                />
-              </div>
-
-              <div className={styles.metaItem}>
-                <PrioritySelector
-                  selectedPriority={task.priority}
-                  onSelect={(val) => onUpdateTask({ ...task, priority: val })}
-                />
-              </div></div>
-
-            <section className={styles.section}>
-              <h3>📌 Descripción Corta</h3>
-              <input
-                type="text"
-                className={styles.shortDescriptionInput}
-                placeholder="Resumen breve..."
-                defaultValue={task.description || ''}
-                onBlur={handleShortDescriptionBlur}
-              />
-            </section>
-
-            <section className={styles.section}>
-              <h3>📝 Descripción Completa</h3>
-              <textarea
-                className={styles.textarea}
-                placeholder="Añade detalle..."
-                defaultValue={task.detailedDescription || ''}
-                onBlur={handleDescriptionBlur}
-              />
-            </section>
-
-
+            {/* 5. CHECKLIST */}
             <TaskCheckList
               items={task.checklist || []}
-              onUpdateChecklist={(updatedItems) => {
-
-                onUpdateTask({ ...task, checklist: updatedItems });
-              }}
+              onUpdateChecklist={(updatedItems) => onUpdateTask({ ...task, checklist: updatedItems })}
             />
+
+            {/* 🌟 6. PRÓXIMAMENTE: SECCIÓN DE COMENTARIOS COLABORATIVOS */}
+            {/* <TaskComments taskId={task.id} /> */}
 
           </main>
 
+          {/* SIDEBAR DE ACCIONES */}
           <aside className={styles.sidebar}>
-            <h4>Sugerencias</h4>
-
+            <h4>Acciones</h4>
+            
+            {/* Espacio ideal para agregar botón "Asignar Miembros" en la barra lateral */}
 
             {!isConfirmingDelete ? (
               <Button
-
                 variant="secondary"
                 className={`${styles.sidebarBtn} ${styles.dangerBtn}`}
                 onClick={() => setIsConfirmingDelete(true)}
@@ -216,19 +106,16 @@ export default function TaskDetailModal({
                   <Button
                     variant="secondary"
                     className={styles.deleteConfirmBtn}
-                    onClick={handleConfirmDelete}
+                    onClick={() => onDeleteTask(task.id, task.status)}
                   >
-                    <Check size={16} className="mr-1" />
-                    Sí
+                    <Check size={16} className="mr-1" /> Sí
                   </Button>
-
                   <Button
                     variant="ghost"
                     className={styles.cancelConfirmBtn}
                     onClick={() => setIsConfirmingDelete(false)}
                   >
-                    <X size={16} className="mr-1" />
-                    No
+                    <X size={16} className="mr-1" /> No
                   </Button>
                 </div>
               </div>
