@@ -21,25 +21,25 @@ export default function TaskCard({ task, globalLabels, onClick }: TaskCardProps)
 
   return (
     <article className={styles.taskCard} onClick={onClick}>
-      <h3 className={styles.taskTitle}>{task.title}</h3>
-      
-      {/* 🌟 Bloque de Etiquetas: Aparece entre el título y la descripción */}
-      {task.labelIds && task.labelIds.length > 0 && (
-        <div className={styles.labelsContainer}>
-  {task.labelIds?.map((labelId) => {
-    const label = globalLabels[labelId];
-    if (!label) return null;
-    return <LabelPills key={label.id} label={label} />;
-  })}
-</div>
-      )}
-
-      {task.description && <p className={styles.taskDescription}>{task.description}</p>}
-      
-      {/* Usamos la clase dinámica basada en el valor en español */}
       <span className={`${styles.priorityBadge} ${styles[task.priority]}`}>
         {priorityLabels[task.priority]}
       </span>
+
+      <h3 className={styles.taskTitle}>{task.title}</h3>
+
+      {task.description && <p className={styles.taskDescription}>{task.description}</p>}
+
+      {task.labelIds && task.labelIds.length > 0 && (
+        <div className={styles.labelsContainer}>
+          {task.labelIds?.map((labelId) => {
+            const label = globalLabels[labelId];
+            if (!label) return null;
+            return <LabelPills key={label.id} label={label} />;
+          })}
+        </div>
+      )}
+
+
     </article>
   );
 }

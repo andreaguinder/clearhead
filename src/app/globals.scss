@@ -7,24 +7,26 @@
   --border-color: #dfe1e6;
   --header-bg: #0079bf;
   --header-text: #ffffff;
-  --bg-column: #c6c5c5;
+  --bg-column: #cdcdcd;
   --text-light-dark: #ffffff;
+  --overlay: rgba(0, 0, 0, 0.6);
 
-  --font-titles: "Ubuntu", sans-serif;
-  --font-general: "Lato", sans-serif;
+  --font-titles: "Lato", sans-serif;
+  --font-general: "Trebuchet MS", sans-serif;
 }
 
 [data-theme="dark"] {
   // VARIABLES DEL THEME DARK
-  --bg-app: #121214;
-  --bg-card: #202024;
+  --bg-app: #050506;
+  --bg-card: #131316;
   --text-main: #ffffff;
   --text-muted: #a8a8b3;
   --border-color: #29292e;
-  --header-bg: #030324;
+  --header-bg: #022839;
   --header-text: #e1e1e6;
-    --bg-column: #383737;
+    --bg-column: #323236;
     --text-light-dark: #000000;
+      --overlay: rgba(30, 30, 30, 0.6);
 
     --font-titles: "Ubuntu", sans-serif;
   --font-general: "Lato", sans-serif;

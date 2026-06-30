@@ -73,7 +73,7 @@
   background-color: var(--bg-app);
   color: var(--text-main);
   font-family: var(--font-general);
-  padding: 1.5rem;     // Espaciado exterior uniforme
+  padding: 12px;     // Espaciado exterior uniforme
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -152,9 +152,8 @@
   flex: 1;             // Se estira limpiamente usando el espacio que deja el header
   display: flex;
   flex-direction: row; // Fuerza las columnas lado a lado
-  gap: 1.5rem;
+  gap: 16px;
   padding: 1.5rem 0;   // Aire arriba y abajo, los costados los maneja el contenedor padre
-  margin-top: 1rem;
   overflow-x: auto;    // Activa el scroll horizontal nativo si las columnas desbordan
   overflow-y: hidden;  // Cancela desbordes verticales extraños
   align-items: flex-start;
@@ -246,4 +245,13 @@
     background-color: #eae6ff;
     color: #403294;
   }
+}
+
+@media screen and (min-width: 1024px) {
+
+
+  .appContainer {
+  padding: 18px;     // Espaciado exterior uniforme
+}
+
 }

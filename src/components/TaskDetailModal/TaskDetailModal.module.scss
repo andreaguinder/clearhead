@@ -4,12 +4,13 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6); // 🌓 Un toque más oscuro para dar mejor contraste al fondo
+  background-color: var(--overlay); // 🌓 Un toque más oscuro para dar mejor contraste al fondo
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding-top: 50px; 
   z-index: 1000;
+  backdrop-filter: blur(1px);
 }
 
 .modalContent {
@@ -361,5 +362,4 @@
     border: none;
   }
 }
-
 

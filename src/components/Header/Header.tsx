@@ -1,8 +1,9 @@
 // src/components/Header/Header.tsx
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { User } from 'firebase/auth';
+import { Sun, Moon, LogOut } from 'lucide-react';
 import Button from '../Button/Button';
 import styles from './Header.module.scss';
 
@@ -14,26 +15,47 @@ interface HeaderProps {
 }
 
 export default function Header({ user, theme, onToggleTheme, onLogout }: HeaderProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
     <header className={styles.header}>
-      <div className={styles.userInfo}>
-        {user.photoURL && (
-          <img src={user.photoURL} alt="Avatar" className={styles.avatar} />
-        )}
-        <h2>¡Hola, {user.displayName || 'Andy'}! 👋</h2>
+      <div className={styles.appInfo}>
+        <div className={styles.appInfoTheme}>
+          <h1>ClearHead</h1>
+          <Button variant="theme" onClick={onToggleTheme}>
+            {theme === 'light' ? <Moon size={22} className="mr-2" /> : <Sun size={22} className="mr-2" />}
+          </Button>
+        </div>
+
+        {/* El userInfo ahora contiene el avatar-botón y el dropdown que se usa SIEMPRE */}
+        <div className={styles.userInfo}>
+          {user.photoURL && (
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)} 
+              className={styles.avatarButton}
+              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+            >
+              <img src={user.photoURL} alt="Avatar" className={styles.avatar} />
+            </button>
+          )}
+
+          {/* El menú flotante unificado */}
+          {isMenuOpen && (
+            <div className={styles.dropdownMenu}>
+              <div className={styles.dropdownHeader}>
+                <p>{user.displayName}</p>
+              </div>
+              <hr className={styles.dropdownDivider} />
+              <button onClick={onLogout} className={styles.dropdownLogout}>
+                <LogOut size={16} />
+                <span>Cerrar sesión</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className={styles.actions}>
-        {/* Switch de cambio de Theme */}
-        <Button variant="theme" onClick={onToggleTheme}>
-          {theme === 'light' ? '🌙 Modo Oscuro' : '☀️ Modo Claro'}
-        </Button>
-
-        {/* Botón de cerrar sesión */}
-        <Button variant="secondary" onClick={onLogout}>
-          Cerrar sesión
-        </Button>
-      </div>
+      {/* Eliminamos el div styles.actions viejo que duplicaba el botón afuera */}
     </header>
   );
 }

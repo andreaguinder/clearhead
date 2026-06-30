@@ -60,8 +60,9 @@
   display: inline-block;
   padding: 0.2rem 0.5rem;
   border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
   text-transform: uppercase;
   margin-top: 0.25rem;
   width: fit-content;
@@ -69,19 +70,19 @@
 
   // Mantenemos tus esquemas lógicos de color para las etiquetas
   &.baja {
-    background-color: #e2f0d9;
+    background-color: #c8d8be;
     color: #385723;
   }
   &.normal {
-    background-color: #e6eff5;
+    background-color: #cedfeb;
     color: #2c5282;
   }
   &.media {
-    background-color: #fff2cc;
+    background-color: #f6eac5;
     color: #b25e00;
   }
   &.alta {
-    background-color: #ffe6e6;
+    background-color: #edd4d4;
     color: #c00000;
   }
 }
