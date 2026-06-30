@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { signOut, onAuthStateChanged, User, signInWithRedirect, GoogleAuthProvider } from 'firebase/auth';
+import { signOut, onAuthStateChanged, User, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { getBoardData, saveBoardData } from '@/lib/boardService'; 
 import { initialBoardData } from '@/data/mockData';
@@ -79,14 +79,20 @@ export default function Home() {
   // Funciones reales de Login / Logout con Firebase
   const handleLogin = async () => {
 
-    console.log("1. ¿Vercel lee la API Key?:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
-    console.log("2. Estado del objeto Auth:", auth);
     try {
       const provider = new GoogleAuthProvider();
-      // Forzar la selección de cuenta para evitar que extensiones interfieran con sesiones automáticas
       provider.setCustomParameters({ prompt: 'select_account' });
       
-      await signInWithRedirect(auth, provider);
+      // 🌟 Detectamos si estamos en localhost
+      const isDevelopment = typeof window !== 'undefined' && window.location.hostname === 'localhost';
+      
+      if (isDevelopment) {
+        // En desarrollo usamos Popup: es instantáneo, no recarga la página y mantiene el estado limpio
+        await signInWithPopup(auth, provider);
+      } else {
+        // En producción usamos la Redirección blindada que armamos con el proxy inverso
+        await signInWithRedirect(auth, provider);
+      }
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
     }
