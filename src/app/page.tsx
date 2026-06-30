@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { signOut, onAuthStateChanged, User, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { signOut, onAuthStateChanged, User, signInWithRedirect, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { getBoardData, saveBoardData } from '@/lib/boardService'; 
 import { initialBoardData } from '@/data/mockData';
@@ -83,7 +83,7 @@ export default function Home() {
       // Forzar la selección de cuenta para evitar que extensiones interfieran con sesiones automáticas
       provider.setCustomParameters({ prompt: 'select_account' });
       
-      await signInWithPopup(auth, provider);
+      await signInWithRedirect(auth, provider);
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
     }

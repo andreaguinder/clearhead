@@ -1,5 +1,5 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, initializeAuth, browserLocalPersistence } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -14,6 +14,12 @@ const firebaseConfig = {
 // Evita que Next.js inicialice la app dos veces en el cliente
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
-export const auth = getAuth(app);
+export const auth = getApps().length > 0 
+  ? getAuth(app) 
+  : initializeAuth(app, {
+      persistence: browserLocalPersistence,
+      popupRedirectResolver: undefined // Le dice que no intente inventar proxies locales
+    });
+
 export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app);
