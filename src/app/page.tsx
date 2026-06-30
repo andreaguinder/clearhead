@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
-import { auth, googleProvider } from '../lib/firebase';
+import { signOut, onAuthStateChanged, User } from 'firebase/auth';
+import { auth } from '../lib/firebase';
+import { signInWithRedirect, GoogleAuthProvider } from 'firebase/auth';
 import { getBoardData, saveBoardData } from '@/lib/boardService'; 
 import { initialBoardData } from '@/data/mockData';
 import { Task, StatusId, BoardData, Label } from '@/types/board';
@@ -75,11 +76,13 @@ export default function Home() {
 
   //  Funciones reales de Login / Logout con Firebase
   const handleLogin = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error) {
-      console.error("Error al iniciar sesión con Google", error);
-    }
+try {
+    const provider = new GoogleAuthProvider();
+
+    await signInWithRedirect(auth, provider);
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+  }
   };
 
   const handleLogout = async () => {

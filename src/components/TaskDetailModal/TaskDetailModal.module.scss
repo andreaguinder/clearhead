@@ -231,10 +231,12 @@
   transition: border-color 0.2s;
   min-height: 70px;
 
+
   &:focus {
     outline: none;
     background-color: var(--bg-card);
     border-color: var(--header-bg);
+      padding-left: 0.25rem;
   }
 }
 
