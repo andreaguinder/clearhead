@@ -195,7 +195,7 @@ export default function Home() {
     return (
       <main className={styles.loginContainer}>
         <div className={styles.loginCard}>
-          <h2 style={{ color: '#fff' }}>Cargando ClearHead...</h2>
+          <h2 style={{ color: '#fff' }}><span className={styles.loadingText}></span><span className={styles.logoText}>ClearHead<span className={styles.logoClearHead}></span></span></h2>
         </div>
       </main>
     );

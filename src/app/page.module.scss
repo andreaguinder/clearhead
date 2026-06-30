@@ -3,12 +3,12 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #121214;
+  background-color: var(--bg-app);
   font-family: var(--font-general);
 }
 
 .loginCard {
-  background-color: #202024;
+  background-color: var(--header-bg);
   padding: 2.5rem;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
@@ -234,6 +234,30 @@
     background-color: #eae6ff;
     color: #403294;
   }
+}
+
+.loadingText {
+  font-size: 14px;
+  margin-bottom: 1rem;
+}
+
+.logoClearHead {
+  display: inline-block;
+  background-image: url("../assets/ico-clearhead-light.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 50px;
+  height: 50px;
+  margin-left: 1rem;
+  vertical-align: middle;
+}
+
+.logoText {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-general);
 }
 
 @media screen and (min-width: 1024px) {
