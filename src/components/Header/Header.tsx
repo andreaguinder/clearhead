@@ -22,12 +22,9 @@ export default function Header({ user, theme, onToggleTheme, onLogout }: HeaderP
       <div className={styles.appInfo}>
         <div className={styles.appInfoTheme}>
           <h1>ClearHead</h1>
-          <Button variant="theme" onClick={onToggleTheme}>
-            {theme === 'light' ? <Moon size={22} className="mr-2" /> : <Sun size={22} className="mr-2" />}
-          </Button>
-        </div>
+          <div className={styles.logoClearHead}></div>
 
-        {/* El userInfo ahora contiene el avatar-botón y el dropdown que se usa SIEMPRE */}
+                  {/* El userInfo ahora contiene el avatar-botón y el dropdown que se usa SIEMPRE */}
         <div className={styles.userInfo}>
           {user.photoURL && (
             <button 
@@ -53,6 +50,12 @@ export default function Header({ user, theme, onToggleTheme, onLogout }: HeaderP
             </div>
           )}
         </div>
+
+        </div>
+
+          <Button variant="theme" onClick={onToggleTheme}>
+            {theme === 'light' ? <Moon size={22} className="mr-2" /> : <Sun size={22} className="mr-2" />}
+          </Button>
       </div>
 
       {/* Eliminamos el div styles.actions viejo que duplicaba el botón afuera */}

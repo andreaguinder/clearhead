@@ -214,7 +214,6 @@ export default function TaskDetailModal({
   </Button>
 ) : (
   <div className={styles.confirmDeleteWrapper}>
-    <p>¿Seguro?</p>
     <div className={styles.confirmActions}>
       <Button 
         variant="secondary" 

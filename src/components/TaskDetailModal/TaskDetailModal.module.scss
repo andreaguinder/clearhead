@@ -270,13 +270,14 @@
   background-color: rgba(70, 186, 235, 0.1);
   border: 2px solid var(--border-color);
   border-radius: 4px;
-  padding: 0.6rem;
+  padding: .5rem .75rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   transition: background-color 0.3s;
+  height: 32.8px;
 
   p {
     font-size: 14px;
@@ -291,6 +292,7 @@
     background-color: transparent;
     border: none;
     font-weight: 700;
+    padding: 0rem;
   }
 
   .cancelConfirmBtn {
@@ -298,12 +300,14 @@
         background-color: transparent;
     border: none;
     font-weight: 700;
+    padding: 0rem;
   }
 }
 
 .confirmActions {
   display: flex;
-  gap: 0.4rem;
+  gap: 2.5rem;
+
 }
 
 

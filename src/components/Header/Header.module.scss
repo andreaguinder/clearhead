@@ -23,7 +23,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 4rem;
+  gap: 3.5rem;
 
   h2 {
     font-size: 14px;
@@ -35,8 +35,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.5rem;
 }
+
 
 .userInfo {
   display: flex;
@@ -114,12 +115,22 @@
   }
 }
 
+.logoClearHead {
+  background-image: url("../../assets/ico-clearhead-light.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 40px;
+  min-height: 40px;
+  margin-right: 1rem;
+}
+
 @media screen and (min-width: 768px) {
 
 
   .header {
   flex-direction: row;
           padding: 1rem;
+
 }
 
 .avatar {
@@ -130,6 +141,8 @@
 .appInfo {
   flex-direction: row;
   gap: 3rem;
+          justify-content: space-between;
+        width: 100%;
 }
 
 .userInfo {
@@ -146,5 +159,10 @@
 
 .actions {
   margin: 0;
+}
+
+
+.logoClearHead {
+  margin-right: 2rem;
 }
 }
