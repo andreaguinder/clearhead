@@ -75,6 +75,9 @@ export default function Home() {
 
   // Funciones reales de Login / Logout con Firebase
   const handleLogin = async () => {
+
+    console.log("1. ¿Vercel lee la API Key?:", process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
+    console.log("2. Estado del objeto Auth:", auth);
     try {
       const provider = new GoogleAuthProvider();
       // Forzar la selección de cuenta para evitar que extensiones interfieran con sesiones automáticas
