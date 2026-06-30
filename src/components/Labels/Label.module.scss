@@ -1,5 +1,3 @@
-// src/components/Labels/Label.module.scss
-
 .managerContainer {
   display: flex;
   flex-direction: column;
@@ -119,7 +117,7 @@
       font-weight: 700;
       border: none;
       cursor: pointer;
-      margin-left: auto; // Empuja el icono al final
+      margin-left: auto;
       opacity: 0.6;
       &:hover { opacity: 1; }
     }
@@ -131,7 +129,6 @@
   }
 }
 
-// Estilo de la "Pill" (la etiqueta en sí)
 .pill {
   display: inline-flex;
   align-items: center;

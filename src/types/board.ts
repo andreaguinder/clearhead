@@ -19,13 +19,13 @@ export interface Task {
   id: string;
   title: string;
   description?: string;
-  detailedDescription?: string; // 👈 Agregamos la descripción larga
+  detailedDescription?: string;
   status: StatusId;
   priority: 'baja' | 'normal' | 'media' | 'alta';
   createdAt: string;
-  dueDate?: string; // 👈 Opcional: Fecha de vencimiento (YYYY-MM-DD)
-  checklist?: ChecklistItem[]; // 👈 Opcional: Array de subtareas
-  labelIds: string[]; // 👈 Opcional: Array de etiquetas
+  dueDate?: string; 
+  checklist?: ChecklistItem[]; 
+  labelIds: string[]; 
 }
 
 export interface Column {

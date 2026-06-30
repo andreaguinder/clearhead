@@ -1,4 +1,3 @@
-// src/components/Button/Button.tsx
 'use client';
 
 import React from 'react';
@@ -15,7 +14,7 @@ export default function Button({
   className = '', 
   ...props 
 }: ButtonProps) {
-  // Combinamos la clase base, la variante dinámica y cualquier clase extra que le pases
+
   const buttonClass = `${styles.btn} ${styles[variant]} ${className}`.trim();
 
   return (

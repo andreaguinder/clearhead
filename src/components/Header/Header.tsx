@@ -1,4 +1,3 @@
-// src/components/Header/Header.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -24,41 +23,40 @@ export default function Header({ user, theme, onToggleTheme, onLogout }: HeaderP
           <h1>ClearHead</h1>
           <div className={styles.logoClearHead}></div>
 
-                  {/* El userInfo ahora contiene el avatar-botón y el dropdown que se usa SIEMPRE */}
-        <div className={styles.userInfo}>
-          {user.photoURL && (
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)} 
-              className={styles.avatarButton}
-              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-            >
-              <img src={user.photoURL} alt="Avatar" className={styles.avatar} />
-            </button>
-          )}
-
-          {/* El menú flotante unificado */}
-          {isMenuOpen && (
-            <div className={styles.dropdownMenu}>
-              <div className={styles.dropdownHeader}>
-                <p>{user.displayName}</p>
-              </div>
-              <hr className={styles.dropdownDivider} />
-              <button onClick={onLogout} className={styles.dropdownLogout}>
-                <LogOut size={16} />
-                <span>Cerrar sesión</span>
+          {/* El userInfo ahora contiene el avatar-botón y el dropdown que se usa SIEMPRE */}
+          <div className={styles.userInfo}>
+            {user.photoURL && (
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className={styles.avatarButton}
+                style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+              >
+                <img src={user.photoURL} alt="Avatar" className={styles.avatar} />
               </button>
-            </div>
-          )}
-        </div>
+            )}
+
+            {/* El menú flotante unificado */}
+            {isMenuOpen && (
+              <div className={styles.dropdownMenu}>
+                <div className={styles.dropdownHeader}>
+                  <p>{user.displayName}</p>
+                </div>
+                <hr className={styles.dropdownDivider} />
+                <button onClick={onLogout} className={styles.dropdownLogout}>
+                  <LogOut size={16} />
+                  <span>Cerrar sesión</span>
+                </button>
+              </div>
+            )}
+          </div>
 
         </div>
 
-          <Button variant="theme" onClick={onToggleTheme}>
-            {theme === 'light' ? <Moon size={22} className="mr-2" /> : <Sun size={22} className="mr-2" />}
-          </Button>
+        <Button variant="theme" onClick={onToggleTheme}>
+          {theme === 'light' ? <Moon size={22} className="mr-2" /> : <Sun size={22} className="mr-2" />}
+        </Button>
       </div>
 
-      {/* Eliminamos el div styles.actions viejo que duplicaba el botón afuera */}
     </header>
   );
 }

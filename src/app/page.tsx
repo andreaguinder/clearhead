@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import { signInWithPopup, signOut, onAuthStateChanged, User } from 'firebase/auth';
 import { auth, googleProvider } from '../lib/firebase';
-import { getBoardData, saveBoardData } from '@/lib/boardService'; // 🌟 Importamos tus nuevos servicios
+import { getBoardData, saveBoardData } from '@/lib/boardService'; 
 import { initialBoardData } from '@/data/mockData';
-import { Task, StatusId, BoardData, Label } from '@/types/board'; // 🌟 Sumamos Label a los imports
+import { Task, StatusId, BoardData, Label } from '@/types/board';
 import Column from '@/components/Column/Column';
 import ActionButton from '@/components/ActionButton/ActionButton';
 import TaskDetailModal from '@/components/TaskDetailModal/TaskDetailModal';
@@ -17,7 +17,7 @@ export default function Home() {
   const [boardData, setBoardData] = useState<BoardData>(initialBoardData);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
-  const [isInitialLoad, setIsInitialLoad] = useState(true); // 🌟 Evita sobreescritura al arrancar
+  const [isInitialLoad, setIsInitialLoad] = useState(true); 
   const globalLabels = boardData.labels || {};
 
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -53,7 +53,7 @@ export default function Home() {
     return () => unsubscribe();
   }, []);
 
-  // 🌟 NUEVO: Mecanismo de Guardado Automático con Debounce (1.5 segundos)
+  // Mecanismo de Guardado Automático con Debounce (1.5 segundos)
   useEffect(() => {
     if (!user || isInitialLoad) return;
 
@@ -73,7 +73,7 @@ export default function Home() {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  // 2. Funciones reales de Login / Logout con Firebase
+  //  Funciones reales de Login / Logout con Firebase
   const handleLogin = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
@@ -92,7 +92,7 @@ export default function Home() {
     }
   };
 
-  // 3. Controladores del Tablero (Tus funciones de las cards y columnas)
+  //  Controladores del Tablero
   const handleCreateColumn = (title: string) => {
     const newColumnId = `column-${Date.now()}` as StatusId;
     setBoardData((prev) => ({
@@ -120,9 +120,9 @@ export default function Home() {
       description: '',
       detailedDescription: '',
       status: columnId,
-      priority: 'normal' as any, // Mantenemos consistencia con tu tipado
+      priority: 'normal' as any, 
       createdAt: new Date().toISOString().split('T')[0],
-      labelIds: [], // 🌟 Agregamos esto para solucionar las líneas rojas de la captura
+      labelIds: [], 
     });
   };
 
@@ -158,7 +158,7 @@ export default function Home() {
     setActiveTask(null);
   };
 
-  // 🌟 NUEVO: Manejadores para crear/editar y borrar etiquetas del panel global
+  // Manejadores para crear/editar y borrar etiquetas del panel global
   const handleSaveGlobalLabel = (label: Label) => {
     setBoardData((prev) => ({
       ...prev,
@@ -201,7 +201,7 @@ export default function Home() {
     );
   }
 
-  // VISTA DE LOGIN: Si no hay usuario real en Firebase, mostramos la tarjeta
+  //  Si no hay usuario real en Firebase, mostramos la tarjeta
   if (!user) {
     return (
       <main className={styles.loginContainer}>
@@ -223,7 +223,7 @@ export default function Home() {
     );
   }
 
-  // VISTA DEL TABLERO COMPLETO: Si está logueado, recuperamos tu panel original
+  // Si está logueado, panel original
   return (
     <div className={styles.appContainer}>
       <Header 
@@ -266,9 +266,9 @@ export default function Home() {
             return acc;
           }, {} as Record<string, string>)}
           onDeleteTask={handleDeleteTask}
-          globalLabels={boardData.labels || {}} // 🌟 Le mandamos las etiquetas al modal
-          onSaveGlobalLabel={handleSaveGlobalLabel} // 🌟 Callback para crear/editar
-          onDeleteGlobalLabel={handleDeleteGlobalLabel} // 🌟 Callback para borrar global
+          globalLabels={boardData.labels || {}}
+          onSaveGlobalLabel={handleSaveGlobalLabel}
+          onDeleteGlobalLabel={handleDeleteGlobalLabel} 
         />
       )}
     </div>

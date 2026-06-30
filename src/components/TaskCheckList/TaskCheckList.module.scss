@@ -1,8 +1,3 @@
-// src/components/TaskChecklist/TaskChecklist.module.scss
-
-// Importamos tus variables mapeadas (si las tenés en un archivo base tipo _variables.scss o mixins, traelo acá con @use o @import)
-// Por ahora usamos tus variables nativas que ya lee Sass:
-
 .checklistContainer {
   width: 100%;
   display: flex;
@@ -19,7 +14,7 @@
   h3 {
     font-size: 1rem;
     font-weight: 600;
-    color: var(--text-main); // Se vuelve oscuro en light y blanco en dark
+    color: var(--text-main);
     font-family: var(--font-titles);
     margin: 0;
   }
@@ -27,7 +22,7 @@
   .progressText {
     font-size: 0.85rem;
     color: var(--text-muted);
-    background-color: var(--border-color); // Fondo adaptativo sutil
+    background-color: var(--border-color);
     padding: 0.2rem 0.5rem;
     border-radius: 4px;
     font-weight: 600;
@@ -37,7 +32,7 @@
 .progressBarBg {
   width: 100%;
   height: 6px;
-  background-color: var(--border-color); // Gris claro en light, gris oscuro en dark
+  background-color: var(--border-color); 
   border-radius: 3px;
   overflow: hidden;
 }
@@ -64,11 +59,11 @@
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: var(--bg-app); // Se aclara en light, se oscurece en dark
+    background-color: var(--bg-app); 
     border-color: var(--border-color);
 
     .deleteItemBtn {
-      opacity: 1; // El tachito solo se ve al pasar por encima
+      opacity: 1; 
     }
   }
 }
@@ -88,7 +83,6 @@
   }
 }
 
-// Icono tildado (podés usar un color de éxito o tu azul de marca)
 .checkedIcon {
   color: #10b981; 
 }
@@ -105,7 +99,7 @@
 
 .itemText {
   font-size: 0.95rem;
-  color: var(--text-main); // Letras dinámicas
+  color: var(--text-main); 
   cursor: pointer;
   width: 100%;
   word-break: break-word;
@@ -139,11 +133,11 @@
 .deleteItemBtn {
   background: none;
   border: none;
-  color: #ef4444; // El tachito Lucide queda en rojo de advertencia
+  color: #ef4444; 
   cursor: pointer;
   padding: 4px;
   border-radius: 4px;
-  opacity: 0; // Escondido por defecto para que sea más "clean"
+  opacity: 0; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -154,7 +148,7 @@
   }
 
   @media (max-width: 768px) {
-    opacity: 1; // En mobile siempre visible porque no hay evento hover real
+    opacity: 1; 
   }
 }
 

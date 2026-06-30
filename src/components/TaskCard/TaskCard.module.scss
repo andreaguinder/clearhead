@@ -1,5 +1,5 @@
 .taskCard {
-  background-color: var(--bg-card); // 🌓 Blanco en light, gris oscuro en dark
+  background-color: var(--bg-card);
   border-radius: 6px;
   padding: 0.75rem;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
@@ -13,45 +13,44 @@
   gap: 0.5rem;
 
   &:hover {
-    // Levantamos la tarjeta sutilmente y aumentamos la sombra en lugar de meter un fondo plano
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.18);
-    filter: brightness(105%); // En dark le da un brillo extra hermoso, en light resalta
+    filter: brightness(105%);
   }
 
   .labelsContainer {
   display: flex;
-  flex-wrap: wrap; // Por si mete muchas etiquetas, que bajen prolijamente
+  flex-wrap: wrap;
   gap: 4px;
   margin-top: 2px;
   margin-bottom: 4px;
 }
 
-/* Pastilla individual chica */
+
 .miniLabelPill {
   font-size: 0.72rem;
   font-weight: 600;
-  color: #ffffff; // Texto blanco fijo para que resalte sobre el color de la etiqueta
+  color: #ffffff;
   padding: 2px 8px;
   border-radius: 4px;
   max-width: 120px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; // Si el texto es eterno, le mete los tres puntitos (...)
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); // Sombra sutil al texto para que sea legible en colores claros
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   filter: brightness(95%);
 }
 
   h3 {
     font-size: 0.95rem;
-    color: var(--text-main); // 🌓 Dinámico
+    color: var(--text-main);
     margin: 0;
     font-family: var(--font-titles);
   }
 
   p {
     font-size: 0.85rem;
-    color: var(--text-muted); // 🌓 Dinámico
+    color: var(--text-muted);
     margin: 0;
     word-break: wrap;
   }
@@ -69,7 +68,7 @@
   width: fit-content;
   font-family: var(--font-general);
 
-  // Mantenemos tus esquemas lógicos de color para las etiquetas
+
   &.baja {
     background-color: #c8d8be;
     color: #385723;
@@ -97,7 +96,7 @@
   color: var(--text-muted);
   padding: 0.2rem 0.4rem;
   border-radius: 4px;
-  background-color: var(--bg-app); // Se adapta al fondo de la app en light/dark
+  background-color: var(--bg-app);
   border: 1px solid var(--border-color);
   width: fit-content;
 
@@ -106,9 +105,9 @@
   }
 }
 
-// Cuando completan el 100% de la lista, pasa a modo "Éxito"
+
 .badgeDone {
-  background-color: rgba(16, 185, 129, 0.12); // Verde esmeralda sutil
+  background-color: rgba(16, 185, 129, 0.12);
   color: #10b981;
   border-color: rgba(16, 185, 129, 0.25);
 

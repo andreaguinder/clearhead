@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.png', // Para navegadores de escritorio
     shortcut: '/favicon.png',
-    apple: '/apple-icon.png', // 🌟 Este es el que usa iOS para la pantalla de inicio
+    apple: '/apple-icon.png', //  Este es el que usa iOS para la pantalla de inicio
   },
 
   // 2. OPEN GRAPH (Para cuando compartís el link por WhatsApp / Redes)
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: 'ClearHead',
     images: [
       {
-        url: '/og-image.png', // 🌟 La imagen que se va a ver en el mensaje de WhatsApp
+        url: '/og-image.png', //  La imagen que se va a ver en el mensaje de WhatsApp
         width: 1200,
         height: 630,
         alt: 'Vista previa de ClearHead Kanban',

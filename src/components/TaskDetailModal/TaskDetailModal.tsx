@@ -7,7 +7,7 @@ import PrioritySelector from '@/components/Priority/PrioritySelector';
 import { Trash2, Check, X } from 'lucide-react';
 import TaskCheckList from '../TaskCheckList/TaskCheckList';
 import styles from './TaskDetailModal.module.scss';
-import  Button  from "../Button/Button";
+import Button from "../Button/Button";
 
 interface TaskDetailModalProps {
   task: Task;
@@ -20,17 +20,17 @@ interface TaskDetailModalProps {
   onDeleteGlobalLabel: (labelId: string) => void;
 }
 
-export default function TaskDetailModal({ 
-  task, 
-  onClose, 
-  onUpdateTask, 
-  onDeleteTask, 
-  columnNames, 
-  globalLabels, 
-  onSaveGlobalLabel, 
-  onDeleteGlobalLabel 
+export default function TaskDetailModal({
+  task,
+  onClose,
+  onUpdateTask,
+  onDeleteTask,
+  columnNames,
+  globalLabels,
+  onSaveGlobalLabel,
+  onDeleteGlobalLabel
 }: TaskDetailModalProps) {
-  
+
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
   const [isLabelMenuOpen, setIsLabelMenuOpen] = useState(false);
 
@@ -39,7 +39,7 @@ export default function TaskDetailModal({
     const newLabelIds = currentLabels.includes(labelId)
       ? currentLabels.filter((id) => id !== labelId)
       : [...currentLabels, labelId];
-    
+
     onUpdateTask({ ...task, labelIds: newLabelIds });
   };
 
@@ -80,34 +80,34 @@ export default function TaskDetailModal({
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-        
+
         <header className={styles.modalHeader}>
           <div className={styles.titleWrapper}>
-  
-           <div className={styles.headerInputGroup}>
-  <textarea 
-    className={styles.titleInput} 
-    placeholder="Dale un título a esta tarjeta..."
-    defaultValue={task.title}
-    rows={1} // Arranca midiendo una sola línea
-    onBlur={handleTitleBlur}
-    onKeyDown={(e) => {
-      // Si el usuario aprieta Enter, evita el salto de línea manual y guarda (opcional)
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        e.currentTarget.blur();
-      }
-    }}
-  />
-  <p className={styles.subTitle}>en la columna <span>{columnNameHTML}</span></p>
-</div>
+
+            <div className={styles.headerInputGroup}>
+              <textarea
+                className={styles.titleInput}
+                placeholder="Dale un título a esta tarjeta..."
+                defaultValue={task.title}
+                rows={1} // Arranca midiendo una sola línea
+                onBlur={handleTitleBlur}
+                onKeyDown={(e) => {
+                  // Si el usuario aprieta Enter, evita el salto de línea manual y guarda 
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.currentTarget.blur();
+                  }
+                }}
+              />
+              <p className={styles.subTitle}>en la columna <span>{columnNameHTML}</span></p>
+            </div>
           </div>
           <button className={styles.closeBtn} onClick={onClose}>✕</button>
         </header>
 
         <div className={styles.modalBody}>
           <main className={styles.mainContent}>
-            
+
             <section className={styles.section}>
               <h3 className={styles.sectionLabel}>Etiquetas</h3>
               <div className={styles.labelsWrapper}>
@@ -115,14 +115,14 @@ export default function TaskDetailModal({
                   const label = globalLabels[labelId];
                   if (!label) return null;
                   return (
-                    <span 
-                      key={label.id} 
-                      className={styles.labelPill} 
+                    <span
+                      key={label.id}
+                      className={styles.labelPill}
                       style={{ backgroundColor: label.color, color: label.textColor }}
                     >
                       {label.text}
-                      <button 
-                        className={styles.removeLabelBtn} 
+                      <button
+                        className={styles.removeLabelBtn}
                         onClick={(e) => { e.stopPropagation(); toggleLabel(labelId); }}
                         style={{ color: label.textColor }}
                       >×</button>
@@ -135,7 +135,7 @@ export default function TaskDetailModal({
               {isLabelMenuOpen && (
                 <div className={styles.labelMenu}>
 
-                  <LabelManager 
+                  <LabelManager
                     globalLabels={globalLabels}
                     taskLabelIds={task.labelIds || []}
                     onToggleLabel={toggleLabel}
@@ -149,24 +149,24 @@ export default function TaskDetailModal({
             <div className={styles.metaDataGrid}>
               <div className={styles.metaItem}>
                 <h4>Vencimiento</h4>
-                <input 
-                  type="date" 
+                <input
+                  type="date"
                   className={styles.dateInput}
-                  value={task.dueDate || ''} 
+                  value={task.dueDate || ''}
                   onChange={handleDateChange}
                 />
               </div>
 
               <div className={styles.metaItem}>
-  <PrioritySelector 
-    selectedPriority={task.priority} 
-    onSelect={(val) => onUpdateTask({ ...task, priority: val })} 
-  />
-</div></div>
+                <PrioritySelector
+                  selectedPriority={task.priority}
+                  onSelect={(val) => onUpdateTask({ ...task, priority: val })}
+                />
+              </div></div>
 
             <section className={styles.section}>
               <h3>📌 Descripción Corta</h3>
-              <input 
+              <input
                 type="text"
                 className={styles.shortDescriptionInput}
                 placeholder="Resumen breve..."
@@ -177,8 +177,8 @@ export default function TaskDetailModal({
 
             <section className={styles.section}>
               <h3>📝 Descripción Completa</h3>
-              <textarea 
-                className={styles.textarea} 
+              <textarea
+                className={styles.textarea}
                 placeholder="Añade detalle..."
                 defaultValue={task.detailedDescription || ''}
                 onBlur={handleDescriptionBlur}
@@ -186,55 +186,53 @@ export default function TaskDetailModal({
             </section>
 
 
-<TaskCheckList 
-        items={task.checklist || []} 
-        onUpdateChecklist={(updatedItems) => {
-          // Usamos la misma función que actualiza los otros datos de la card
-          onUpdateTask({ ...task, checklist: updatedItems });
-        }}
-      />
+            <TaskCheckList
+              items={task.checklist || []}
+              onUpdateChecklist={(updatedItems) => {
 
+                onUpdateTask({ ...task, checklist: updatedItems });
+              }}
+            />
 
           </main>
 
           <aside className={styles.sidebar}>
             <h4>Sugerencias</h4>
 
-            
-{!isConfirmingDelete ? (
-  <Button 
-    // Usamos el secundario para mantener el hover oscuro base
-    variant="secondary" 
-    // ¡TUS CLASES! Que tienen el color rojo, márgenes, etc.
-    className={`${styles.sidebarBtn} ${styles.dangerBtn}`} 
-    onClick={() => setIsConfirmingDelete(true)}
-  >
-    <Trash2 size={16} className="mr-2" />
-    <span>Eliminar Tarjeta</span>
-  </Button>
-) : (
-  <div className={styles.confirmDeleteWrapper}>
-    <div className={styles.confirmActions}>
-      <Button 
-        variant="secondary" 
-        className={styles.deleteConfirmBtn} // ¡TU CLASE! (Seguro es roja)
-        onClick={handleConfirmDelete}
-      >
-        <Check size={16} className="mr-1" />
-        Sí
-      </Button>
-      
-      <Button 
-        variant="ghost" // Usamos ghost que seguro es el que ya usabas antes
-        className={styles.cancelConfirmBtn} // ¡TU CLASE!
-        onClick={() => setIsConfirmingDelete(false)}
-      >
-        <X size={16} className="mr-1" />
-        No
-      </Button>
-    </div>
-  </div>
-)}
+
+            {!isConfirmingDelete ? (
+              <Button
+
+                variant="secondary"
+                className={`${styles.sidebarBtn} ${styles.dangerBtn}`}
+                onClick={() => setIsConfirmingDelete(true)}
+              >
+                <Trash2 size={16} className="mr-2" />
+                <span>Eliminar Tarjeta</span>
+              </Button>
+            ) : (
+              <div className={styles.confirmDeleteWrapper}>
+                <div className={styles.confirmActions}>
+                  <Button
+                    variant="secondary"
+                    className={styles.deleteConfirmBtn}
+                    onClick={handleConfirmDelete}
+                  >
+                    <Check size={16} className="mr-1" />
+                    Sí
+                  </Button>
+
+                  <Button
+                    variant="ghost"
+                    className={styles.cancelConfirmBtn}
+                    onClick={() => setIsConfirmingDelete(false)}
+                  >
+                    <X size={16} className="mr-1" />
+                    No
+                  </Button>
+                </div>
+              </div>
+            )}
           </aside>
         </div>
       </div>

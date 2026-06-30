@@ -1,5 +1,3 @@
-// src/components/Button/Button.module.scss
-
 .btn {
   display: inline-flex;
   align-items: center;
@@ -15,7 +13,6 @@
   font-family: var(--font-general);
 }
 
-// Variante Principal
 .primary {
   background-color: var(--header-text);
   color: var(--header-bg);
@@ -24,7 +21,6 @@
   }
 }
 
-// Variante Secundaria / Logout
 .secondary {
   background: transparent;
   color: var(--header-text);
@@ -36,7 +32,6 @@
   }
 }
 
-// Variante para el Switch de Tema
 .theme {
   background: rgba(255, 255, 255, 0.15);
   color: var(--header-text);

@@ -1,4 +1,4 @@
-import styles from './Label.module.scss'; // Asegúrate de que el nombre coincida
+import styles from './Label.module.scss'; 
 
 interface LabelPillsProps {
   label: { text: string; color: string, textColor: string };

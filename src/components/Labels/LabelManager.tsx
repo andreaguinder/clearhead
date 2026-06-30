@@ -11,25 +11,25 @@ interface LabelManagerProps {
   onDeleteLabel: (labelId: string) => void;
 }
 
-export default function LabelManager({ 
-  globalLabels, 
-  taskLabelIds, 
-  onToggleLabel, 
+export default function LabelManager({
+  globalLabels,
+  taskLabelIds,
+  onToggleLabel,
   onSaveLabel,
-  onDeleteLabel 
+  onDeleteLabel
 }: LabelManagerProps) {
-  
+
   const [text, setText] = useState('');
   const [bgColor, setBgColor] = useState('#3b82f6');
   const [textColor, setTextColor] = useState('#ffffff');
 
   const handleCreate = () => {
     if (!text.trim()) return;
-    onSaveLabel({ 
-      id: `label-${Date.now()}`, 
-      text, 
-      color: bgColor, 
-    textColor
+    onSaveLabel({
+      id: `label-${Date.now()}`,
+      text,
+      color: bgColor,
+      textColor
     });
     setText('');
   };
@@ -38,16 +38,16 @@ export default function LabelManager({
     <div className={styles.managerContainer}>
       {/* Sección para crear nueva etiqueta */}
       <div className={styles.creatorSection}>
-  <input className={styles.labelInputNombre} value={text} onChange={(e) => setText(e.target.value)} placeholder="Nombre..." />
-  
-  <div className={styles.colorInputs}>
-    <label>Fondo: <input className={styles.labelInputPicker} type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} /></label>
-    <label>Texto: <input className={styles.labelInputPicker} type="color" value={textColor} onChange={(e) => setTextColor(e.target.value)} /></label>
-  </div>
-  
-  <button onClick={handleCreate}>+</button>
-</div>
-<h4 style={{ margin: '15px 0 5px 0' }}>Seleccionar etiquetas</h4>
+        <input className={styles.labelInputNombre} value={text} onChange={(e) => setText(e.target.value)} placeholder="Nombre..." />
+
+        <div className={styles.colorInputs}>
+          <label>Fondo: <input className={styles.labelInputPicker} type="color" value={bgColor} onChange={(e) => setBgColor(e.target.value)} /></label>
+          <label>Texto: <input className={styles.labelInputPicker} type="color" value={textColor} onChange={(e) => setTextColor(e.target.value)} /></label>
+        </div>
+
+        <button onClick={handleCreate}>+</button>
+      </div>
+      <h4 style={{ margin: '15px 0 5px 0' }}>Seleccionar etiquetas</h4>
 
 
       {/* Lista de etiquetas disponibles */}
@@ -55,13 +55,13 @@ export default function LabelManager({
         {Object.values(globalLabels).map((label) => (
           <div key={label.id} className={styles.labelRow}>
             <input className={styles.checkbox}
-              type="checkbox" 
-              checked={taskLabelIds.includes(label.id)} 
-              onChange={() => onToggleLabel(label.id)} 
+              type="checkbox"
+              checked={taskLabelIds.includes(label.id)}
+              onChange={() => onToggleLabel(label.id)}
             />
             <LabelPills label={label} />
-            <button 
-              className={styles.deleteBtn} 
+            <button
+              className={styles.deleteBtn}
               onClick={() => onDeleteLabel(label.id)}
             >
               &#10005;

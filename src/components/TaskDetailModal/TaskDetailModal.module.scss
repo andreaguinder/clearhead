@@ -4,17 +4,17 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: var(--overlay); // 🌓 Un toque más oscuro para dar mejor contraste al fondo
+  background-color: var(--overlay);
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 15px; 
+  padding-top: 15px;
   z-index: 1000;
   backdrop-filter: blur(1px);
 }
 
 .modalContent {
-  background-color: var(--bg-app); // 🌓 Se acopla al fondo de la app (gris claro o grafito)
+  background-color: var(--bg-app);
   width: 100%;
   max-width: 95vw;
   max-width: 340px;
@@ -47,7 +47,7 @@
 
     h2 {
       font-size: 1.25rem;
-      color: var(--text-main); // 🌓 Dinámico
+      color: var(--text-main);
       margin: 0;
       font-family: var(--font-titles);
     }
@@ -58,7 +58,7 @@
     border: none;
     font-size: 1.1rem;
     cursor: pointer;
-    color: var(--text-muted); // 🌓 Dinámico
+    color: var(--text-muted);
     padding: 0.5rem;
     border-radius: 50%;
     display: flex;
@@ -75,12 +75,12 @@
 
 .modalBody {
   display: grid;
-  grid-template-columns: 3fr 1fr; 
+  grid-template-columns: 3fr 1fr;
   gap: 1.5rem;
   overflow-y: auto;
 
   @media (max-width: 600px) {
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
   }
 }
 
@@ -88,13 +88,13 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-      padding-right: 1rem;
+  padding-right: 1rem;
 }
 
 .section {
   h3 {
     font-size: 1rem;
-    color: var(--text-main); // 🌓 Dinámico
+    color: var(--text-main);
     margin-bottom: 0.75rem;
     font-family: var(--font-titles);
   }
@@ -102,24 +102,24 @@
   .textarea {
     width: 100%;
     min-height: 108px;
-    background-color: var(--bg-card); // 🌓 Blanco en light, gris oscuro en dark
-    border: 2px solid var(--border-color); // 🌓 Dinámico
+    background-color: var(--bg-card);
+    border: 2px solid var(--border-color);
     border-radius: 4px;
     padding: 0.5rem 0.75rem;
     font-family: var(--font-general);
     font-size: 0.9rem;
-    color: var(--text-main); // 🌓 Dinámico
+    color: var(--text-main);
     resize: vertical;
     transition: border-color 0.2s, background-color 0.3s;
 
     &:focus {
       outline: none;
-      border-color: var(--header-bg); // Usa tu azul o tono principal de header
+      border-color: var(--header-bg);
     }
   }
 
   .checklistPlaceholder {
-    background-color: rgba(var(--text-main), 0.04); // Se adapta sutilmente a la luz/oscuridad
+    background-color: rgba(var(--text-main), 0.04);
     border: 2px dashed var(--border-color);
     padding: 1rem;
     border-radius: 6px;
@@ -144,7 +144,7 @@
 
   .sidebarBtn {
     background-color: rgba(var(--text-main), 0.04);
-    color: var(--text-main); // 🌓 Dinámico
+    color: var(--text-main);
     border: none;
     border-radius: 4px;
     padding: 0.5rem 0.75rem;
@@ -205,7 +205,7 @@
   :global([data-theme='dark']) & {
     color-scheme: dark !important;
   }
-  
+
   :global([data-theme='light']) & {
     color-scheme: light !important;
   }
@@ -221,7 +221,7 @@
   background: transparent;
   border: 2px solid transparent;
   border-radius: 4px;
-  color: var(--text-main); // 🌓 Dinámico
+  color: var(--text-main);
   font-size: 1.25rem;
   font-weight: 600;
   padding: 0.5rem 0rem;
@@ -258,7 +258,7 @@
 
 
 .dangerBtn {
-  // Ajuste fino para el hover destructivo dependiendo del fondo del tema
+
   &:hover {
     background-color: rgba(235, 90, 70, 0.15) !important;
     color: #eb5a46 !important;
@@ -297,7 +297,7 @@
 
   .cancelConfirmBtn {
     color: red;
-        background-color: transparent;
+    background-color: transparent;
     border: none;
     font-weight: 700;
     padding: 0rem;
@@ -318,42 +318,42 @@
   justify-content: flex-start;
   gap: 16px;
 
-    flex-wrap: wrap;
+  flex-wrap: wrap;
 
   .labelPill {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
-      display: inline-flex;
-  align-items: center;
-  padding: 2px 16px;
-  border-radius: 12px;
-  font-size: 0.85rem;
-  color: var(--text-main);
-  font-weight: 500;
-  white-space: nowrap;
-  color: currentColor;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  border: 2px solid var(--border-color);
-
-  p {
-    margin-bottom: 0;
-  }
-
-  button {
-    color: white;
-    font-size: 18px;
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 16px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    color: var(--text-main);
     font-weight: 500;
-    background-color: transparent;
-    border: none;
-  }
+    white-space: nowrap;
+    color: currentColor;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border: 2px solid var(--border-color);
+
+    p {
+      margin-bottom: 0;
+    }
+
+    button {
+      color: white;
+      font-size: 18px;
+      font-weight: 500;
+      background-color: transparent;
+      border: none;
+    }
 
   }
 
 
   .addLabelBtn {
-  background-color: var(--header-bg);
+    background-color: var(--header-bg);
     width: 30px;
     height: 30px;
     color: white;
@@ -371,7 +371,7 @@
 @media screen and (min-width: 768px) {
 
   .titleInput {
-  min-height: 40px;
+    min-height: 40px;
   }
 
   .modalContent {
