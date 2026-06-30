@@ -233,6 +233,9 @@ export default function Home() {
             <span>Iniciar sesión con Google</span>
           </button>
         </div>
+                <div className={styles.footer}>
+          <h3>Desarrollado por <a href="https://andreaguinder.com/" target="_blank" rel="noopener noreferrer">Andrea Guinder</a></h3>
+        </div>
       </main>
     );
   }
