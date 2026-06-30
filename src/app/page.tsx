@@ -206,7 +206,7 @@ export default function Home() {
     return (
       <main className={styles.loginContainer}>
         <div className={styles.loginCard}>
-          <h1 className={styles.title}>🧠 ClearHead</h1>
+          <h1 className={styles.title}>ClearHead<span className={styles.logoClearHead}></span></h1>
           <p className={styles.subtitle}>Organizá tus ideas de manera limpia y eficiente.</p>
           
           <button className={styles.loginBtn} onClick={handleLogin}>
