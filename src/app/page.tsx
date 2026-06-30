@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { signOut, onAuthStateChanged, User } from 'firebase/auth';
+import { signOut, onAuthStateChanged, User, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { auth } from '../lib/firebase';
-import { signInWithRedirect, GoogleAuthProvider } from 'firebase/auth';
 import { getBoardData, saveBoardData } from '@/lib/boardService'; 
 import { initialBoardData } from '@/data/mockData';
 import { Task, StatusId, BoardData, Label } from '@/types/board';
@@ -74,15 +73,17 @@ export default function Home() {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  //  Funciones reales de Login / Logout con Firebase
+  // Funciones reales de Login / Logout con Firebase
   const handleLogin = async () => {
-try {
-    const provider = new GoogleAuthProvider();
-
-    await signInWithRedirect(auth, provider);
-  } catch (error) {
-    console.error("Error al iniciar sesión:", error);
-  }
+    try {
+      const provider = new GoogleAuthProvider();
+      // Forzar la selección de cuenta para evitar que extensiones interfieran con sesiones automáticas
+      provider.setCustomParameters({ prompt: 'select_account' });
+      
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+    }
   };
 
   const handleLogout = async () => {
@@ -95,7 +96,7 @@ try {
     }
   };
 
-  //  Controladores del Tablero
+  // Controladores del Tablero
   const handleCreateColumn = (title: string) => {
     const newColumnId = `column-${Date.now()}` as StatusId;
     setBoardData((prev) => ({
@@ -151,6 +152,7 @@ try {
       delete newTasks[taskId];
       return {
         ...prev,
+        withData: true,
         tasks: newTasks,
         columns: { 
           ...prev.columns, 
@@ -204,7 +206,7 @@ try {
     );
   }
 
-  //  Si no hay usuario real en Firebase, mostramos la tarjeta
+  // Si no hay usuario real en Firebase, mostramos la tarjeta
   if (!user) {
     return (
       <main className={styles.loginContainer}>
@@ -250,7 +252,7 @@ try {
                 onTaskClick={(task) => setActiveTask(task)}
                 onAddTaskClick={() => handleOpenCreateTaskModal(column.id)}
                 onUpdateColumnTitle={(columnId, newTitle) => handleUpdateColumnTitle(columnId as StatusId, newTitle)}
-                globalLabels={globalLabels} // 🌟 Pasamos el objeto real desde el estado
+                globalLabels={globalLabels} 
               />
             );
           })}
