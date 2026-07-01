@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext'; 
 import { getBoardData, saveBoardData } from '@/lib/boardService'; 
 import { initialBoardData } from '@/data/mockData';
-import { Task, StatusId, BoardData, Label, Member } from '@/types/board'; // 🚀 Importamos Member de tus tipos centrales
+import { Task, StatusId, BoardData, Label, Member } from '@/types/board'; 
 import Column from '@/components/Column/Column';
 import ActionButton from '@/components/ActionButton/ActionButton';
 import TaskDetailModal from '@/components/TaskDetailModal/TaskDetailModal';
@@ -29,7 +29,7 @@ export default function Home() {
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   // 🔍 Estado para el filtrado de miembros
-  const [memberFilter, setMemberFilter] = useState<string>('');
+const [memberFilters, setMemberFilters] = useState<string[]>([]);
   
   const globalLabels = boardData.labels || {};
 
@@ -124,6 +124,7 @@ export default function Home() {
       priority: 'normal' as any, 
       createdAt: new Date().toISOString().split('T')[0],
       labelIds: [], 
+      assignedTo: [] // Inicializa explícitamente como un array vacío
     });
   };
 
@@ -141,35 +142,28 @@ export default function Home() {
       return { ...prev, tasks: newTasks, columns: newColumns };
     });
     
-    // Si la tarjeta editada es la que está abierta en el modal, actualizamos la vista activa también
+    // Sincroniza el modal activo si está abierto
     setActiveTask((prevActive) => (prevActive?.id === updatedTask.id ? updatedTask : prevActive));
   };
 
-  // 👤 Controlador para cambiar el miembro asignado a una tarea
-  const handleAssignMember = (taskId: string, memberId: string) => {
-  if (!boardData.tasks[taskId]) return;
-  
-  setBoardData((prev) => {
-    const updatedTasks = { ...prev.tasks };
+  // 🚀 Controlador adaptado a Selección Múltiple (Array de IDs)
+  const handleAssignMembers = (taskId: string, memberIds: string[]) => {
+    if (!boardData.tasks[taskId]) return;
     
-    if (!memberId) {
-      // Si no hay memberId (desasignar), eliminamos la propiedad por completo para que no sea undefined
-      const { assignedTo, ...taskWithoutMember } = updatedTasks[taskId];
-      updatedTasks[taskId] = taskWithoutMember as Task;
-    } else {
-      // Si hay miembro, lo asignamos normalmente
+    setBoardData((prev) => {
+      const updatedTasks = { ...prev.tasks };
+      
       updatedTasks[taskId] = {
         ...updatedTasks[taskId],
-        assignedTo: memberId
+        assignedTo: memberIds
       };
-    }
 
-    return {
-      ...prev,
-      tasks: updatedTasks
-    };
-  });
-};
+      return {
+        ...prev,
+        tasks: updatedTasks
+      };
+    });
+  };
 
   const handleDeleteTask = (taskId: string, columnId: StatusId) => {
     setBoardData((prev) => {
@@ -266,42 +260,56 @@ export default function Home() {
         boardId={user.uid}
       />
 
-      {/* 🚀 Inyección del Navbar de Miembros Finito */}
       <MembersNavbar 
-        members={mockMembers} 
-        currentFilter={memberFilter} 
-        onFilterChange={setMemberFilter} 
-      />
+  members={mockMembers} 
+  currentFilters={memberFilters} 
+  onFilterChange={(uid) => {
+    // Si viene vacío, limpiamos todos los filtros
+    if (uid === '') {
+      setMemberFilters([]);
+    } else {
+      // Si ya está, lo saca; si no está, lo agrega al array
+      setMemberFilters(prev => 
+        prev.includes(uid) ? prev.filter(id => id !== uid) : [...prev, uid]
+      );
+    }
+  }} 
+/>
 
       <main className={styles.mainContainer}>
         <div className={styles.boardWrapper}>
           {boardData.columnOrder.map((columnId) => {
-            const column = boardData.columns[columnId];
-            
-            // 1. Tomamos las tareas crudas de la columna
-            const rawTasks = column?.taskIds.map((taskId) => boardData.tasks[taskId]) || [];
-            
-            // 2. 🔍 Aplicamos el filtro por miembro seleccionado antes de mandárselas a <Column />
-            const filteredTasks = rawTasks.filter((task) => {
-              if (!task) return false;
-              if (!memberFilter) return true;
-              return task.assignedTo === memberFilter;
-            });
+  const column = boardData.columns[columnId];
+  const rawTasks = column?.taskIds.map((taskId) => boardData.tasks[taskId]) || [];
+  
+  // 🚀 2. Filtro Multi-Select Corregido (Comportamiento OR)
+  const filteredTasks = rawTasks.filter((task) => {
+    if (!task) return false;
+    // Si no hay ningún filtro activo, pasan todas las tareas
+    if (memberFilters.length === 0) return true;
+    
+    const assignedIds = Array.isArray(task.assignedTo) 
+      ? task.assignedTo 
+      : task.assignedTo ? [task.assignedTo] : [];
+
+    // Pasa la tarea si comparte AL MENOS UNO de los miembros seleccionados en el filtro
+    return assignedIds.some(id => memberFilters.includes(id));
+  });
 
             return (
-              <Column 
-                key={column.id} 
-                column={column} 
-                tasks={filteredTasks} 
-                onTaskClick={(task) => setActiveTask(task)}
-                onAddTaskClick={() => handleOpenCreateTaskModal(column.id)}
-                onUpdateColumnTitle={(columnId, newTitle) => handleUpdateColumnTitle(columnId as StatusId, newTitle)}
-                globalLabels={globalLabels} 
-                members={mockMembers} // 🚀 Descomentado y activado
-                onAssignMember={handleAssignMember} // 🚀 Descomentado y activado
-              />
-            );
-          })}
+           <Column 
+      key={column.id} 
+      column={column} 
+      tasks={filteredTasks} 
+      onTaskClick={(task) => setActiveTask(task)}
+      onAddTaskClick={() => handleOpenCreateTaskModal(column.id)}
+      onUpdateColumnTitle={(columnId, newTitle) => handleUpdateColumnTitle(columnId as StatusId, newTitle)}
+      globalLabels={globalLabels} 
+      members={mockMembers} 
+      onAssignMembers={handleAssignMembers} 
+    />
+  );
+})}
 
           <ActionButton type="column" onCreate={handleCreateColumn} />
         </div>
@@ -320,8 +328,8 @@ export default function Home() {
           globalLabels={boardData.labels || {}}
           onSaveGlobalLabel={handleSaveGlobalLabel}
           onDeleteGlobalLabel={handleDeleteGlobalLabel} 
-          members={mockMembers} // 🚀 Descomentado y activado
-          onAssignMember={handleAssignMember} // 🚀 Descomentado y activado
+          members={mockMembers} 
+          onAssignMembers={handleAssignMembers} 
         />
       )}
 

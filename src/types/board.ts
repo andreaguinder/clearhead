@@ -27,7 +27,7 @@ export interface Task {
   checklist?: ChecklistItem[]; 
   labelIds: string[]; 
   comments?: Comment[];
-  assignedTo?: string;
+  assignedTo?: string[];
 }
 
 export interface Column {

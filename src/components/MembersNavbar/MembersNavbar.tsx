@@ -3,34 +3,24 @@
 import React, { useState } from 'react';
 import styles from './MembersNavbar.module.scss';
 import { Member } from '@/types/board';
-import { ChevronDown, Check, Users } from 'lucide-react'; // Necesitamos estos iconos para el look premium
+import { ChevronDown, Check, Users } from 'lucide-react'; 
 
 interface MembersNavbarProps {
   members: Member[];
-  currentFilter: string;
+  currentFilters: string[]; // 🚀 Ahora es un array
   onFilterChange: (uid: string) => void;
 }
 
 export const MembersNavbar: React.FC<MembersNavbarProps> = ({
   members,
-  currentFilter,
+  currentFilters,
   onFilterChange,
 }) => {
-  // Estado para controlar el menú flotante personalizado
   const [isOpen, setIsOpen] = useState(false);
 
-  // Si solo estás vos, no se muestra
   if (members.length <= 1) return null;
 
-  // Buscamos cuál es el miembro por el que se está filtrando actualmente
-  const selectedMember = members.find((m) => m.uid === currentFilter);
-
-  const handleSelect = (uid: string) => {
-    onFilterChange(uid);
-    setIsOpen(false); // Cierra el menú al seleccionar
-  };
-
-  // Helper para renderizar las iniciales/avatar dentro del botón y del dropdown de forma unificada
+  // Renderizador de iniciales o foto
   const renderMiniAvatar = (member?: Member) => {
     if (!member) {
       return (
@@ -46,19 +36,31 @@ export const MembersNavbar: React.FC<MembersNavbarProps> = ({
     return <div className={styles.avatarCircle}>{initial.toUpperCase()}</div>;
   };
 
+  // Texto dinámico para el botón principal del dropdown
+  const getDropdownLabel = () => {
+    if (currentFilters.length === 0) return 'Todos los miembros';
+    if (currentFilters.length === 1) {
+      const match = members.find(m => m.uid === currentFilters[0]);
+      return match ? (match.name || match.email) : '1 miembro';
+    }
+    return `${currentFilters.length} miembros seleccionados`;
+  };
+
   return (
     <div className={styles.membersNavbar}>
       
-      {/* 1. Lista de Avatares Rápidos (Izquierda) */}
+      {/* 1. Lista de Avatares Rápidos */}
       <div className={styles.membersList}>
         {members.map((member) => {
-          const isActive = currentFilter === member.uid;
+          // 🚀 Activo si su ID está dentro del array de filtros
+          const isActive = currentFilters.includes(member.uid);
+          
           return (
             <div 
               key={member.uid} 
               className={`${styles.memberAvatar} ${isActive ? styles.active : ''}`}
               title={member.name || member.email}
-              onClick={() => onFilterChange(isActive ? '' : member.uid)}
+              onClick={() => onFilterChange(member.uid)}
             >
               {member.photoURL ? (
                 <img src={member.photoURL} alt={member.name} />
@@ -72,20 +74,20 @@ export const MembersNavbar: React.FC<MembersNavbarProps> = ({
         })}
       </div>
 
-      {/* 2. Selector Desplegable Premium (Derecha) */}
+      {/* 2. Selector Desplegable Premium */}
       <div className={styles.filterSelectWrapper}>
         <span>Filtrar por:</span>
         
         <div className={styles.selectorContainer}>
-          {/* El botón gatillo que reemplaza al select */}
           <button
             type="button"
             className={styles.triggerButton}
             onClick={() => setIsOpen(!isOpen)}
           >
             <div className={styles.triggerContent}>
-              {renderMiniAvatar(selectedMember)}
-              <span>{selectedMember ? (selectedMember.name || selectedMember.email) : 'Todos los miembros'}</span>
+              {/* Si hay filtros, mostramos el icono de grupo, sino el default */}
+              {renderMiniAvatar(currentFilters.length === 1 ? members.find(m => m.uid === currentFilters[0]) : undefined)}
+              <span>{getDropdownLabel()}</span>
             </div>
             <ChevronDown 
               size={14} 
@@ -97,31 +99,33 @@ export const MembersNavbar: React.FC<MembersNavbarProps> = ({
             />
           </button>
 
-          {/* Menú Desplegable Flotante */}
           {isOpen && (
             <div className={styles.dropdownMenu}>
-              {/* Opción por defecto: Mostrar Todos */}
+              {/* Opción para limpiar: Mostrar Todos */}
               <button
                 type="button"
-                className={`${styles.dropdownItem} ${!currentFilter ? styles.active : ''}`}
-                onClick={() => handleSelect('')}
+                className={`${styles.dropdownItem} ${currentFilters.length === 0 ? styles.active : ''}`}
+                onClick={() => {
+                  onFilterChange(''); // Envía vacío para resetear
+                  setIsOpen(false);
+                }}
               >
                 <div className={styles.memberInfo}>
                   {renderMiniAvatar(undefined)}
                   <span>Todos los miembros</span>
                 </div>
-                {!currentFilter && <Check size={12} />}
+                {currentFilters.length === 0 && <Check size={12} />}
               </button>
 
-              {/* Mapeo de cada uno de los miembros reales */}
+              {/* Lista de miembros con checks múltiples */}
               {members.map((member) => {
-                const isSelected = member.uid === currentFilter;
+                const isSelected = currentFilters.includes(member.uid);
                 return (
                   <button
                     key={member.uid}
                     type="button"
                     className={`${styles.dropdownItem} ${isSelected ? styles.active : ''}`}
-                    onClick={() => handleSelect(member.uid)}
+                    onClick={() => onFilterChange(member.uid)} // Hace toggle y no cierra el menú para dejar seguir eligiendo
                   >
                     <div className={styles.memberInfo}>
                       {renderMiniAvatar(member)}
@@ -136,7 +140,6 @@ export const MembersNavbar: React.FC<MembersNavbarProps> = ({
         </div>
       </div>
 
-      {/* Backdrop invisible para cerrar el menú si haces clic en cualquier otra parte de la pantalla */}
       {isOpen && <div className={styles.backdrop} onClick={() => setIsOpen(false)} />}
     </div>
   );

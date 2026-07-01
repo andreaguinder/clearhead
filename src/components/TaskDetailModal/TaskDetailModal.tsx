@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { StatusId, Task, Label, Member } from '@/types/board'; // 🚀 Importamos Member
+import { StatusId, Task, Label, Member } from '@/types/board'; 
 import { Trash2, Check, X, Wrench } from 'lucide-react';
 import TaskCheckList from '../TaskCheckList/TaskCheckList';
 import Button from "../Button/Button";
@@ -14,7 +14,7 @@ import TaskMeta from './components/TaskMeta';
 import TaskDescription from './components/TaskDescription';
 import TaskComments from './components/TaskComments';
 
-import { MemberSelector } from '@/components/MemberSelector/MemberSelector'; // 🚀 Importación limpia del selector modular
+import { MemberSelector } from '@/components/MemberSelector/MemberSelector'; 
 
 interface TaskDetailModalProps {
   task: Task;
@@ -25,8 +25,9 @@ interface TaskDetailModalProps {
   globalLabels: Record<string, Label>;
   onSaveGlobalLabel: (label: Label) => void;
   onDeleteGlobalLabel: (labelId: string) => void;
-  members: Member[]; // 🚀 Agregado a la interfaz
-  onAssignMember: (taskId: string, memberId: string) => void; // 🚀 Agregado a la interfaz
+  members: Member[]; 
+  // 1. Cambiamos la firma para que reciba el array completo de IDs seleccionados
+  onAssignMembers: (taskId: string, memberIds: string[]) => void; 
 }
 
 export default function TaskDetailModal({
@@ -38,10 +39,15 @@ export default function TaskDetailModal({
   globalLabels,
   onSaveGlobalLabel,
   onDeleteGlobalLabel,
-  members, // 🚀 Recibimos los miembros
-  onAssignMember // 🚀 Recibimos la función
+  members, 
+  onAssignMembers // 🚀 Recibimos la nueva función estructurada
 }: TaskDetailModalProps) {
   const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
+
+  // 2. Forzamos el tipado seguro para manejar la transición de string a array en Firestore
+  const currentAssignedIds = Array.isArray(task.assignedTo) 
+    ? task.assignedTo 
+    : task.assignedTo ? [task.assignedTo] : [];
 
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
@@ -128,11 +134,16 @@ export default function TaskDetailModal({
 
           {/* SIDEBAR DE ACCIONES COLABORATIVAS */}
           <aside className={styles.sidebar}>
-            {/* 🚀 Selector de Miembros en la Sidebar */}
-            <MemberSelector 
-              members={members} 
-              currentAssignedId={task.assignedTo} 
-              onAssign={(memberId) => onAssignMember(task.id, memberId)}
+            {/* 🚀 Selector de Miembros Corregido */}
+            <MemberSelector
+              members={members} // Usamos la prop real del componente
+              currentAssignedIds={currentAssignedIds} 
+              onAssign={(updatedIds) => {
+                // Actualiza el estado local de la tarea de inmediato
+                onUpdateTask({ ...task, assignedTo: updatedIds });
+                // Dispara el guardado en la base de datos remota
+                onAssignMembers(task.id, updatedIds);
+              }}
               variant="sidebar"
             />
 

@@ -9,7 +9,7 @@ interface TaskCardProps {
   task: Task;
   globalLabels: Record<string, Label>;
   onClick: () => void;
-  members: Member[]; // Mantenemos la lista para buscar los datos del asignado
+  members: Member[]; 
 }
 
 export default function TaskCard({ 
@@ -30,8 +30,13 @@ export default function TaskCard({
   const completedItems = task.checklist?.filter(item => item.isCompleted).length || 0;
   const isAllDone = totalItems > 0 && completedItems === totalItems;
 
-  // 🔍 Buscamos al miembro asignado para sacar su foto o inicial
-  const assignedMember = members.find(m => m.uid === task.assignedTo);
+  // 🚀 Normalizamos para asegurarnos de que siempre sea un array iterable
+  const taskAssignedIds = Array.isArray(task.assignedTo) 
+    ? task.assignedTo 
+    : task.assignedTo ? [task.assignedTo] : [];
+
+  // 🔍 Filtramos los miembros reales que están asignados a esta tarjeta
+  const assignedMembers = members.filter(m => taskAssignedIds.includes(m.uid));
 
   return (
     <article className={styles.taskCard} onClick={onClick}>
@@ -41,20 +46,33 @@ export default function TaskCard({
           {priorityLabels[task.priority]}
         </span>
 
-        {/* 👤 Avatar estático (Solo lectura, no interrumpe el click de la tarjeta) */}
-        {assignedMember && (
-          <div className={styles.staticMemberAvatar} title={`Asignado a: ${assignedMember.name}`}>
-            {assignedMember.photoURL ? (
-              <img 
-                src={assignedMember.photoURL} 
-                alt={assignedMember.name} 
-                style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover', border: '1px solid var(--border-main, #ddd)' }} 
-              />
-            ) : (
-              <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#4f46e5', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', fontWeight: 'bold', border: '1px solid var(--border-main, #ddd)' }}>
-                {assignedMember.name?.charAt(0) || assignedMember.email?.charAt(0)}
+        {/* 👤 Contenedor de Avatares Múltiples (Estilo pila/hilera encimada) */}
+        {assignedMembers.length > 0 && (
+          <div style={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center' }}>
+            {assignedMembers.map((member, index) => (
+              <div 
+                key={member.uid} 
+                className={styles.staticMemberAvatar} 
+                title={`Asignado a: ${member.name}`}
+                style={{ 
+                  marginLeft: index === 0 ? '0px' : '-6px', // Genera el solapamiento visual limpio
+                  position: 'relative',
+                  zIndex: assignedMembers.length - index 
+                }}
+              >
+                {member.photoURL ? (
+                  <img 
+                    src={member.photoURL} 
+                    alt={member.name} 
+                    style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--bg-card, #fff)' }} 
+                  />
+                ) : (
+                  <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#4f46e5', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', fontWeight: 'bold', border: '2px solid var(--bg-card, #fff)' }}>
+                    {member.name?.charAt(0) || member.email?.charAt(0)}
+                  </div>
+                )}
               </div>
-            )}
+            ))}
           </div>
         )}
       </div>

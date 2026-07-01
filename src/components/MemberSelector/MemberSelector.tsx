@@ -7,25 +7,38 @@ import styles from './MemberSelector.module.scss';
 
 interface MemberSelectorProps {
   members: Member[];
-  currentAssignedId?: string;
-  onAssign: (memberId: string) => void;
+  // 1. Cambiamos a array para soportar selección múltiple
+  currentAssignedIds?: string[]; 
+  onAssign: (memberIds: string[]) => void;
   variant?: 'card' | 'sidebar';
 }
 
 export const MemberSelector: React.FC<MemberSelectorProps> = ({
   members,
-  currentAssignedId = '',
+  currentAssignedIds = [], // Inicializa como array vacío por defecto
   onAssign,
   variant = 'card',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Buscamos al miembro que se encuentra seleccionado actualmente
-  const selectedMember = members.find((m) => m.uid === currentAssignedId);
+  // 2. Quitamos la función 'handleSelect' vieja y metemos la lógica de Toggle múltiple
+  const handleToggleMember = (uid: string) => {
+    let updatedIds: string[];
 
-  const handleSelect = (uid: string) => {
-    onAssign(uid);
-    setIsOpen(false);
+    if (uid === '') {
+      // Si eligen "Sin asignar", limpiamos todo el array
+      updatedIds = [];
+    } else {
+      // Si ya estaba, lo saca. Si no estaba, lo mete.
+      if (currentAssignedIds.includes(uid)) {
+        updatedIds = currentAssignedIds.filter((id) => id !== uid);
+      } else {
+        updatedIds = [...currentAssignedIds, uid];
+      }
+    }
+    
+    // Le manda el array completo actualizado al componente padre (Firestore)
+    onAssign(updatedIds); 
   };
 
   // Helper para renderizar la burbuja de avatar de manera uniforme en el select
@@ -46,7 +59,7 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
 
   return (
     <div className={styles.selectorContainer}>
-      {variant === 'sidebar' && <h4 className={styles.sectionTitle}>Asignar Miembro</h4>}
+      {variant === 'sidebar' && <h4 className={styles.sectionTitle}>Asignar Miembros</h4>}
 
       {/* Botón principal que simula el select nativo */}
       <button
@@ -55,10 +68,17 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className={styles.triggerContent}>
-          {renderAvatar(selectedMember)}
-          <span>
-            {selectedMember ? (selectedMember.name || selectedMember.email) : (variant === 'sidebar' ? 'Sin asignar' : '👤 Asignar...')}
-          </span>
+          {/* 3. Renderizamos un resumen estético en el botón principal */}
+          {currentAssignedIds.length === 0 ? (
+            <>
+              {renderAvatar(undefined)}
+              <span>{variant === 'sidebar' ? 'Sin asignar' : '👤 Asignar...'}</span>
+            </>
+          ) : (
+            <div className="flex -space-x-1 overflow-hidden items-center">
+              <span>{`👥 ${currentAssignedIds.length} asignados`}</span>
+            </div>
+          )}
         </div>
         <ChevronDown 
           size={16} 
@@ -76,28 +96,30 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
       {/* Menú Desplegable Flotante Personalizado */}
       {isOpen && (
         <div className={styles.dropdownMenu}>
-          {/* Opción para remover la asignación */}
+          {/* Opción para remover todas las asignaciones */}
           <button
             type="button"
-            className={`${styles.dropdownItem} ${!currentAssignedId ? styles.active : ''}`}
-            onClick={() => handleSelect('')}
+            className={`${styles.dropdownItem} ${currentAssignedIds.length === 0 ? styles.active : ''}`}
+            onClick={() => handleToggleMember('')}
           >
             <div className={styles.memberInfo}>
               {renderAvatar(undefined)}
               <span>Sin asignar</span>
             </div>
-            {!currentAssignedId && <Check size={14} />}
+            {currentAssignedIds.length === 0 && <Check size={14} />}
           </button>
 
           {/* Mapeo de miembros reales del equipo */}
           {members.map((m) => {
-            const isSelected = m.uid === currentAssignedId;
+            // 4. Chequeamos si el ID actual está incluido en el array
+            const isSelected = currentAssignedIds.includes(m.uid);
             return (
               <button
                 key={m.uid}
                 type="button"
                 className={`${styles.dropdownItem} ${isSelected ? styles.active : ''}`}
-                onClick={() => handleSelect(m.uid)}
+                // Al hacer clic, hace toggle y NO cierra el menú para poder elegir más
+                onClick={() => handleToggleMember(m.uid)}
               >
                 <div className={styles.memberInfo}>
                   {renderAvatar(m)}
