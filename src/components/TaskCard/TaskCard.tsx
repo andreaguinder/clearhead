@@ -2,7 +2,7 @@
 
 import { Task, Label } from '@/types/board';
 import { LabelPills } from '@/components/Labels/LabelPills';
-import { CheckSquare } from 'lucide-react';
+import { CheckSquare, MessageSquare } from 'lucide-react';
 import styles from './TaskCard.module.scss';
 
 interface TaskCardProps {
@@ -37,14 +37,24 @@ export default function TaskCard({ task, globalLabels, onClick }: TaskCardProps)
       {task.description && <p className={styles.taskDescription}>{task.description}</p>}
 
 
-
-      {totalItems > 0 && (
-        <div className={`${styles.checklistBadge} ${isAllDone ? styles.badgeDone : ''}`}>
-          <CheckSquare size={14} />
-          <span>{completedItems}/{totalItems}</span>
+      <div style={{ display: 'flex', gap: '32px', justifyContent: 'flex-start', alignItems: 'center' }}>
+        <div>
+          {totalItems > 0 && (
+            <div className={`${styles.checklistBadge} ${isAllDone ? styles.badgeDone : ''}`}>
+              <CheckSquare size={14} />
+              <span>{completedItems}/{totalItems}</span>
+            </div>
+          )}
         </div>
-      )}
-
+        <div>
+          {task.comments && task.comments.length > 0 && (
+            <div className={styles.cardIndicator} title={`${task.comments.length} comentarios`}>
+              <MessageSquare size={12} className="mr-4" style={{ marginRight: '8px' }} />
+              <span>{task.comments.length}</span>
+            </div>
+          )}
+        </div>
+      </div>
       {task.labelIds && task.labelIds.length > 0 && (
         <div className={styles.labelsContainer}>
           {task.labelIds?.map((labelId) => {

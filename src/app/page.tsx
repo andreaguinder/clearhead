@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { signOut, onAuthStateChanged, User, signInWithRedirect, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { auth } from '../lib/firebase';
+import { UserPlus } from 'lucide-react';
+import { useAuth } from '@/context/AuthContext'; // 🌟 Usamos tu nuevo contexto de autenticación
 import { getBoardData, saveBoardData } from '@/lib/boardService'; 
 import { initialBoardData } from '@/data/mockData';
 import { Task, StatusId, BoardData, Label } from '@/types/board';
@@ -10,53 +10,45 @@ import Column from '@/components/Column/Column';
 import ActionButton from '@/components/ActionButton/ActionButton';
 import TaskDetailModal from '@/components/TaskDetailModal/TaskDetailModal';
 import Header from '@/components/Header/Header';
+import ShareBoardModal from '@/components/ShareBoardModal/ShareBoardModal';
 import styles from './page.module.scss';
 
 export default function Home() {
-  const [user, setUser] = useState<User | null>(null);
+  // 👥 Consumimos la sesión limpia y sus funciones desde el contexto
+  const { user, authLoading, loginWithGoogle, logout } = useAuth();
+  
   const [boardData, setBoardData] = useState<BoardData>(initialBoardData);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const [authLoading, setAuthLoading] = useState(true);
   const [isInitialLoad, setIsInitialLoad] = useState(true); 
-  const globalLabels = boardData.labels || {};
-
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
 
-  // 1. Escuchar el estado real de Firebase Auth y cargar la data remota
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+  
+  const globalLabels = boardData.labels || {};
+
+  // 1. Escuchar los cambios del usuario para cargar su tablero remoto de la nube
   useEffect(() => {
-
-
-
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
-      
-      if (currentUser) {
-        // Traemos el tablero real del usuario de la nube
-        const savedBoard = await getBoardData(currentUser.uid);
+    async function loadData() {
+      if (user) {
+        const savedBoard = await getBoardData(user.uid);
         if (savedBoard) {
-          // Aseguramos que si el tablero guardado no tiene el nodo labels, se inicialice vacío
           setBoardData({
             labels: {},
             ...savedBoard
           } as unknown as BoardData);
         } else {
-          // Si es un usuario nuevo sin datos, le asignamos tus datos mock iniciales
           setBoardData(initialBoardData);
         }
       } else {
-        // Al desloguear limpiamos el tablero
         setBoardData(initialBoardData);
       }
-      
-      setAuthLoading(false);
-      // Apagamos la carga inicial para dar luz verde al auto-guardado remoto
       setIsInitialLoad(false);
-    });
+    }
     
-    return () => unsubscribe();
-  }, []);
+    loadData();
+  }, [user]);
 
-  // Mecanismo de Guardado Automático con Debounce (1.5 segundos)
+  // 💾 Mecanismo de Guardado Automático con Debounce (1.5 segundos)
   useEffect(() => {
     if (!user || isInitialLoad) return;
 
@@ -67,7 +59,7 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, [boardData, user, isInitialLoad]);
 
-  // Controlar el cambio de tema en el elemento HTML raíz
+  // 🎨 Controlar el cambio de tema en el elemento HTML raíz
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
@@ -76,39 +68,26 @@ export default function Home() {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  // Funciones reales de Login / Logout con Firebase
+  // Manejadores simplificados para conectarse al AuthContext
   const handleLogin = async () => {
-
     try {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({ prompt: 'select_account' });
-      
-      // 🌟 Detectamos si estamos en localhost
-      const isDevelopment = typeof window !== 'undefined' && window.location.hostname === 'localhost';
-      
-      if (isDevelopment) {
-        // En desarrollo usamos Popup: es instantáneo, no recarga la página y mantiene el estado limpio
-        await signInWithPopup(auth, provider);
-      } else {
-        // En producción usamos la Redirección blindada que armamos con el proxy inverso
-        await signInWithRedirect(auth, provider);
-      }
+      await loginWithGoogle();
     } catch (error) {
-      console.error("Error al iniciar sesión:", error);
+      console.error("Error al iniciar sesión desde la página:", error);
     }
   };
 
   const handleLogout = async () => {
     try {
       setIsInitialLoad(true); // Bloqueamos el auto-guardado antes de limpiar el estado
-      await signOut(auth);
+      await logout();
       setActiveTask(null);
     } catch (error) {
-      console.error("Error al cerrar sesión", error);
+      console.error("Error al cerrar sesión desde la página:", error);
     }
   };
 
-  // Controladores del Tablero
+  // 🛠️ Controladores del Tablero (Se mantienen 100% idénticos a los tuyos)
   const handleCreateColumn = (title: string) => {
     const newColumnId = `column-${Date.now()}` as StatusId;
     setBoardData((prev) => ({
@@ -175,7 +154,6 @@ export default function Home() {
     setActiveTask(null);
   };
 
-  // Manejadores para crear/editar y borrar etiquetas del panel global
   const handleSaveGlobalLabel = (label: Label) => {
     setBoardData((prev) => ({
       ...prev,
@@ -207,7 +185,7 @@ export default function Home() {
     });
   };
 
-  // Mientras Firebase verifica si hay sesión, mostramos un loader limpio
+  // Mientras Firebase verifica si hay sesión, mostramos el loader limpio
   if (authLoading) {
     return (
       <main className={styles.loginContainer}>
@@ -221,7 +199,7 @@ export default function Home() {
     );
   }
 
-  // Si no hay usuario real en Firebase, mostramos la tarjeta
+  // Si no hay usuario real en Firebase, mostramos la tarjeta de login
   if (!user) {
     return (
       <main className={styles.loginContainer}>
@@ -239,7 +217,7 @@ export default function Home() {
             <span>Iniciar sesión con Google</span>
           </button>
         </div>
-                <div className={styles.footer}>
+        <div className={styles.footer}>
           <h3>Desarrollado por <a href="https://andreaguinder.com/" target="_blank" rel="noopener noreferrer">Andrea Guinder</a></h3>
         </div>
       </main>
@@ -254,6 +232,7 @@ export default function Home() {
         theme={theme} 
         onToggleTheme={toggleTheme} 
         onLogout={handleLogout} 
+        boardId={user.uid}
       />
 
       <main className={styles.mainContainer}>
@@ -294,6 +273,12 @@ export default function Home() {
           onDeleteGlobalLabel={handleDeleteGlobalLabel} 
         />
       )}
+      {isShareModalOpen && user && (
+  <ShareBoardModal 
+    boardId={user.uid} // O el id real de tu tablero si usás uno diferente al uid del dueño
+    onClose={() => setIsShareModalOpen(false)} 
+  />
+)}
     </div>
   );
 }

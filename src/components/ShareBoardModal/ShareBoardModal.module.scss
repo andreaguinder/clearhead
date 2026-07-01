@@ -1,0 +1,160 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--overlay);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 15px;
+  z-index: 1000;
+  backdrop-filter: blur(1px);
+}
+
+.modalCard {
+  background-color: var(--bg-app);
+  width: 100%;
+  max-width: 95vw;
+  max-width: 340px;
+  max-height: calc(100vh - 2rem);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  font-family: var(--font-general);
+  transition: background-color 0.3s ease;
+  position: relative;
+  overflow: visible;
+
+  // Responsive adaptado a tus breakpoints
+  @media screen and (min-width: 768px) {
+    max-width: 420px;
+  }
+}
+
+.closeBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(var(--text-main), 0.08);
+    color: var(--text-main);
+  }
+}
+
+.modalTitle {
+  font-size: 1.25rem;
+  color: var(--text-main);
+  margin: 0;
+  font-family: var(--font-titles);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  svg {
+    color: var(--text-main);
+    flex-shrink: 0;
+  }
+}
+
+.modalDescription {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.modalInput {
+  width: 100%;
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-general);
+  font-size: 0.9rem;
+  color: var(--text-main);
+  transition: border-color 0.2s, background-color 0.3s;
+
+  &:focus {
+    outline: none;
+    border-color: var(--header-bg);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.submitBtn {
+  background-color: var(--header-bg); // Usa tu color principal de cabecera
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-general);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.statusMessage {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 4px;
+  animation: fadeIn 0.2s ease-in-out;
+
+  &.success {
+    color: #10b981;
+    background-color: rgba(16, 185, 129, 0.1);
+  }
+
+  &.error {
+    color: #eb5a46; // Mismo rojo de tu dangerBtn
+    background-color: rgba(235, 90, 70, 0.1);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-3px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -5,15 +5,17 @@ import { User } from 'firebase/auth';
 import { Sun, Moon, LogOut } from 'lucide-react';
 import Button from '../Button/Button';
 import styles from './Header.module.scss';
+import ShareBoardButton from '../ShareBoardButton/ShareBoardButton';
 
 interface HeaderProps {
   user: User;
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
   onLogout: () => void;
+  boardId: string; // ID del tablero para compartir
 }
 
-export default function Header({ user, theme, onToggleTheme, onLogout }: HeaderProps) {
+export default function Header({ user, theme, onToggleTheme, onLogout, boardId }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -33,6 +35,7 @@ export default function Header({ user, theme, onToggleTheme, onLogout }: HeaderP
               >
                 <img src={user.photoURL} alt="Avatar" className={styles.avatar} />
               </button>
+              
             )}
 
             {/* El menú flotante unificado */}
@@ -49,8 +52,9 @@ export default function Header({ user, theme, onToggleTheme, onLogout }: HeaderP
               </div>
             )}
           </div>
-
+        <ShareBoardButton boardId={boardId} />
         </div>
+
 
         <Button variant="theme" onClick={onToggleTheme}>
           {theme === 'light' ? <Moon size={22} className="mr-2" /> : <Sun size={22} className="mr-2" />}
