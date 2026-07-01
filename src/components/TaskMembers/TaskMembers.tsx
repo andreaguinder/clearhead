@@ -7,8 +7,8 @@ import styles from '../TaskDetailModal.module.scss';
 
 interface TaskMembersProps {
   task: Task;
-  members: Member[]; // 🚀 Recibimos la lista real de miembros desde el padre
-  onAssignMember: (taskId: string, memberId: string) => void; // 🚀 Usamos la función asignadora unificada
+  members: Member[]; 
+  onAssignMember: (taskId: string, memberId: string) => void; 
   viewOnly?: boolean; 
 }
 
@@ -20,17 +20,14 @@ export default function TaskMembers({
 }: TaskMembersProps) {
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
 
-  // 🔍 Buscamos si la tarea actualmente tiene un miembro asignado que coincida con la lista
-  const currentAssignedMember = members.find(m => m.uid === task.assignedTo);
+  // 🔍 Filtramos TODOS los miembros reales que estén incluidos en el array de la tarea
+  const assignedMembers = members.filter(m => task.assignedTo?.includes(m.uid)) || [];
 
   const handleSelectMember = (memberId: string) => {
-    // Si cliquea el que ya está asignado, lo desasignamos pasando un string vacío
-    if (task.assignedTo === memberId) {
-      onAssignMember(task.id, '');
-    } else {
-      onAssignMember(task.id, memberId);
-    }
-    setIsOpenDropdown(false);
+    // Le pasamos el memberId al padre. La función unificada se encargará de agregarlo o quitarlo del array
+    onAssignMember(task.id, memberId);
+    // Opcional: Podés comentar la línea de abajo si querés que el dropdown se quede abierto para asignar varios de golpe
+    setIsOpenDropdown(false); 
   };
 
   return (
@@ -38,39 +35,42 @@ export default function TaskMembers({
       {!viewOnly && (
         <h4>
           <Users size={16} className="inline mr-2" style={{ display: 'inline', marginRight: '8px' }} /> 
-          Miembro Asignado
+          Miembros Asignados
         </h4>
       )}
 
       <div className={styles.membersList} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
         
-        {/* Render del avatar asignado actualmente */}
-        {currentAssignedMember ? (
-          <div 
-            className={styles.memberAvatarWrapper} 
-            style={{ position: 'relative', cursor: viewOnly ? 'default' : 'pointer' }}
-            onClick={() => !viewOnly && onAssignMember(task.id, '')}
-            title={viewOnly ? currentAssignedMember.name : `Quitar a ${currentAssignedMember.name}`}
-          >
-            {currentAssignedMember.photoURL ? (
-              <img 
-                src={currentAssignedMember.photoURL} 
-                alt={currentAssignedMember.name} 
-                style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--border-main, #ddd)' }} 
-              />
-            ) : (
-              <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#4f46e5', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 'bold', border: '2px solid var(--border-main, #ddd)' }}>
-                {currentAssignedMember.name?.charAt(0) || currentAssignedMember.email?.charAt(0)}
-              </div>
-            )}
-            
-            {/* Cruz flotante para desasignar rápido */}
-            {!viewOnly && (
-              <div className={styles.avatarOverlayDelete} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', borderRadius: '50%', backgroundColor: 'rgba(239, 68, 68, 0.8)', display: 'none', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
-                <X size={12} />
-              </div>
-            )}
-          </div>
+        {/* 🚀 Render de la lista de avatares asignados actualmente */}
+        {assignedMembers.length > 0 ? (
+          assignedMembers.map((member) => (
+            <div 
+              key={member.uid}
+              className={styles.memberAvatarWrapper} 
+              style={{ position: 'relative', cursor: viewOnly ? 'default' : 'pointer' }}
+              onClick={() => !viewOnly && onAssignMember(task.id, member.uid)}
+              title={viewOnly ? member.name : `Quitar a ${member.name}`}
+            >
+              {member.photoURL ? (
+                <img 
+                  src={member.photoURL} 
+                  alt={member.name} 
+                  style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--border-main, #ddd)' }} 
+                />
+              ) : (
+                <div style={{ width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#4f46e5', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 'bold', border: '2px solid var(--border-main, #ddd)' }}>
+                  {member.name?.charAt(0) || member.email?.charAt(0)}
+                </div>
+              )}
+              
+              {/* Cruz flotante para desasignar rápido */}
+              {!viewOnly && (
+                <div className={styles.avatarOverlayDelete} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', borderRadius: '50%', backgroundColor: 'rgba(239, 68, 68, 0.8)', display: 'none', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
+                  <X size={12} />
+                </div>
+              )}
+            </div>
+          ))
         ) : (
           viewOnly && <span style={{ fontSize: '0.85rem', color: '#888' }}>Sin asignar</span>
         )}
@@ -93,7 +93,8 @@ export default function TaskMembers({
                 <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.75rem', fontWeight: 'bold', color: '#666', borderBottom: '1px solid #eee', paddingBottom: '4px' }}>Miembros del equipo</p>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   {members.map((user) => {
-                    const isAssigned = task.assignedTo === user.uid;
+                    // 🚀 Chequeamos si este miembro está incluido dentro del array de asignados
+                    const isAssigned = task.assignedTo?.includes(user.uid) || false;
                     return (
                       <button
                         key={user.uid}

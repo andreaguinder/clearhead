@@ -12,6 +12,7 @@
 
   h1 {
   font-size: 1.5rem;
+  font-family: "Ubuntu", sans-serif;
 }
 }
 
@@ -120,8 +121,8 @@
   background-image: url("../../assets/iso-zylos.png");
   background-size: contain;
   background-repeat: no-repeat;
-  width: 32px;
-  min-height: 32px;
+  width: 24px;
+  min-height: 24px;
 
 }
 
@@ -131,6 +132,15 @@
   .header {
   flex-direction: row;
           padding: 1rem;
+
+            h1 {
+  font-size: 2rem;
+}
+}
+
+.logoZylos {
+  width: 32px;
+  min-height: 32px;
 
 }
 

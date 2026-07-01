@@ -217,7 +217,7 @@ const [memberFilters, setMemberFilters] = useState<string[]>([]);
     return (
       <main className={styles.loginContainer}>
         <div className={styles.loginCard}>
-          <h2 style={{ color: '#fff' }}><span className={styles.loadingText}></span><span className={styles.logoText}>Zylos<span className={styles.logoZylos}></span></span></h2>
+          <h2 style={{ color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><span className={styles.logoZylos}></span><span className={styles.logoText}>Zylos</span></h2>
         </div>
         <div className={styles.footer}>
           <h3>Desarrollado por <a href="https://andreaguinder.com/" target="_blank" rel="noopener noreferrer">Andrea Guinder</a></h3>
