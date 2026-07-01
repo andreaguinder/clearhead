@@ -14,7 +14,7 @@ export default function ShareBoardButton({ boardId }: ShareBoardButtonProps) {
 
   return (
     <>
-      <button className={styles.shareButton} style={{  backgroundColor: 'transparent' }}
+      <button className={styles.shareButton}
         onClick={() => setIsModalOpen(true)}
       >
         <Share2 size={24} style={{ color: 'white'}}/> 

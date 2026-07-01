@@ -1,0 +1,38 @@
+// Estilos para el selector chiquito de la tarjeta
+.taskMemberAssignment {
+  margin: 0.2rem 0;
+
+  .miniMemberSelect {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-family: var(--font-general);
+    cursor: pointer;
+    padding: 0;
+    max-width: 100%;
+    outline: none;
+
+    &:hover {
+      color: var(--text-main);
+    }
+    
+    option {
+      background-color: var(--bg-card);
+      color: var(--text-main);
+    }
+  }
+}
+
+// Estilos para el selector de la Sidebar (usa tus clases de base)
+.sidebarSection {
+  margin-bottom: 1.5rem;
+
+  h4 {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+  }
+}

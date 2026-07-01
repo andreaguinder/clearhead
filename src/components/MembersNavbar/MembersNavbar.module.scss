@@ -1,0 +1,180 @@
+.membersNavbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 1rem;
+  background-color: var(--bg-app);
+  border-bottom: 1px solid var(--border-color);
+  font-family: var(--font-general);
+  font-size: 0.85rem;
+
+  .membersList {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+
+    .memberAvatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.2s ease, transform 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--text-light-dark);
+      color: var(--text-main);
+      font-weight: 600;
+      font-size: 0.75rem;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      &.active {
+        border-color: var(--header-bg, #4f46e5);
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  // 💎 CONTENEDOR DEL SELECTOR CORREGIDO Y PREMIUM
+  .filterSelectWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-muted);
+    position: relative;
+
+    .selectorContainer {
+      position: relative;
+      width: 180px; // Le damos un ancho fijo estético para la barra superior
+    }
+
+    .triggerButton {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.4rem 0.6rem; // Un toque más compacto para la navbar
+      background-color: var(--bg-card, #ffffff);
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      color: var(--text-main, #1a202c);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+
+      &:hover {
+        border-color: var(--header-bg, #4f46e5);
+        background-color: var(--bg-hover, #f8fafc);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: var(--header-bg, #4f46e5);
+      }
+    }
+
+    .triggerContent {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .dropdownMenu {
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0; // Se alinea a la derecha para que no se corte en los bordes de la pantalla
+      width: 100%;
+      background-color: var(--bg-modal, #ffffff);
+      border: 1px solid var(--border-color, #e2e8f0);
+      border-radius: 6px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+      padding: 0.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      animation: slideDown 0.15s ease-out;
+    }
+
+    .dropdownItem {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0.4rem 0.5rem;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: var(--text-main, #1a202c);
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+      text-align: left;
+
+      &:hover {
+        background-color: var(--bg-secondary, #f1f5f9);
+      }
+
+      &.active {
+        background-color: rgba(79, 70, 229, 0.1);
+        color: var(--header-bg, #4f46e5);
+        font-weight: 500;
+      }
+    }
+
+    .memberInfo {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .avatarCircle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: var(--header-bg, #4f46e5);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      border: 1px solid var(--border-color, #e2e8f0);
+    }
+  }
+}
+
+// Backdrop global para cerrar el dropdown al clickear afuera
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 90;
+  cursor: default;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

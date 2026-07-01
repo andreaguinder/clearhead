@@ -27,7 +27,7 @@ export interface Task {
   checklist?: ChecklistItem[]; 
   labelIds: string[]; 
   comments?: Comment[];
-  members?: Member[];
+  assignedTo?: string;
 }
 
 export interface Column {
@@ -53,7 +53,8 @@ export interface Comment {
 }
 
 export interface Member {
-  id: string;
+  uid: string;
   name: string;
-  photo: string;
+  email: string;
+  photoURL?: string;
 }

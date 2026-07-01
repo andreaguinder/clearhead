@@ -1,28 +1,35 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { UserPlus } from 'lucide-react';
-import { useAuth } from '@/context/AuthContext'; // 🌟 Usamos tu nuevo contexto de autenticación
+import { useAuth } from '@/context/AuthContext'; 
 import { getBoardData, saveBoardData } from '@/lib/boardService'; 
 import { initialBoardData } from '@/data/mockData';
-import { Task, StatusId, BoardData, Label } from '@/types/board';
+import { Task, StatusId, BoardData, Label, Member } from '@/types/board'; // 🚀 Importamos Member de tus tipos centrales
 import Column from '@/components/Column/Column';
 import ActionButton from '@/components/ActionButton/ActionButton';
 import TaskDetailModal from '@/components/TaskDetailModal/TaskDetailModal';
 import Header from '@/components/Header/Header';
 import ShareBoardModal from '@/components/ShareBoardModal/ShareBoardModal';
+import { MembersNavbar } from '@/components/MembersNavbar/MembersNavbar'; 
 import styles from './page.module.scss';
 
+// 👥 Data simulada compatible con tu interfaz central para verificar render y filtros
+const mockMembers: Member[] = [
+  { uid: 'owner-id', name: 'Andy (Vos)', email: 'andreabelen.guinder@gmail.com' },
+  { uid: 'seba-id', name: 'Seba', email: 'seba@test.com' }
+];
+
 export default function Home() {
-  // 👥 Consumimos la sesión limpia y sus funciones desde el contexto
   const { user, authLoading, loginWithGoogle, logout } = useAuth();
   
   const [boardData, setBoardData] = useState<BoardData>(initialBoardData);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true); 
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+
+  // 🔍 Estado para el filtrado de miembros
+  const [memberFilter, setMemberFilter] = useState<string>('');
   
   const globalLabels = boardData.labels || {};
 
@@ -68,7 +75,6 @@ export default function Home() {
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 
-  // Manejadores simplificados para conectarse al AuthContext
   const handleLogin = async () => {
     try {
       await loginWithGoogle();
@@ -79,7 +85,7 @@ export default function Home() {
 
   const handleLogout = async () => {
     try {
-      setIsInitialLoad(true); // Bloqueamos el auto-guardado antes de limpiar el estado
+      setIsInitialLoad(true); 
       await logout();
       setActiveTask(null);
     } catch (error) {
@@ -87,7 +93,7 @@ export default function Home() {
     }
   };
 
-  // 🛠️ Controladores del Tablero (Se mantienen 100% idénticos a los tuyos)
+  // 🛠️ Controladores del Tablero
   const handleCreateColumn = (title: string) => {
     const newColumnId = `column-${Date.now()}` as StatusId;
     setBoardData((prev) => ({
@@ -134,8 +140,36 @@ export default function Home() {
       }
       return { ...prev, tasks: newTasks, columns: newColumns };
     });
-    setActiveTask(updatedTask);
+    
+    // Si la tarjeta editada es la que está abierta en el modal, actualizamos la vista activa también
+    setActiveTask((prevActive) => (prevActive?.id === updatedTask.id ? updatedTask : prevActive));
   };
+
+  // 👤 Controlador para cambiar el miembro asignado a una tarea
+  const handleAssignMember = (taskId: string, memberId: string) => {
+  if (!boardData.tasks[taskId]) return;
+  
+  setBoardData((prev) => {
+    const updatedTasks = { ...prev.tasks };
+    
+    if (!memberId) {
+      // Si no hay memberId (desasignar), eliminamos la propiedad por completo para que no sea undefined
+      const { assignedTo, ...taskWithoutMember } = updatedTasks[taskId];
+      updatedTasks[taskId] = taskWithoutMember as Task;
+    } else {
+      // Si hay miembro, lo asignamos normalmente
+      updatedTasks[taskId] = {
+        ...updatedTasks[taskId],
+        assignedTo: memberId
+      };
+    }
+
+    return {
+      ...prev,
+      tasks: updatedTasks
+    };
+  });
+};
 
   const handleDeleteTask = (taskId: string, columnId: StatusId) => {
     setBoardData((prev) => {
@@ -185,12 +219,11 @@ export default function Home() {
     });
   };
 
-  // Mientras Firebase verifica si hay sesión, mostramos el loader limpio
   if (authLoading) {
     return (
       <main className={styles.loginContainer}>
         <div className={styles.loginCard}>
-          <h2 style={{ color: '#fff' }}><span className={styles.loadingText}></span><span className={styles.logoText}>ClearHead<span className={styles.logoClearHead}></span></span></h2>
+          <h2 style={{ color: '#fff' }}><span className={styles.loadingText}></span><span className={styles.logoText}>Zylos<span className={styles.logoZylos}></span></span></h2>
         </div>
         <div className={styles.footer}>
           <h3>Desarrollado por <a href="https://andreaguinder.com/" target="_blank" rel="noopener noreferrer">Andrea Guinder</a></h3>
@@ -199,12 +232,11 @@ export default function Home() {
     );
   }
 
-  // Si no hay usuario real en Firebase, mostramos la tarjeta de login
   if (!user) {
     return (
       <main className={styles.loginContainer}>
         <div className={styles.loginCard}>
-          <h1 className={styles.title}>ClearHead<span className={styles.logoClearHead}></span></h1>
+          <h1 className={styles.title}>Zylos<span className={styles.logoZylos}></span></h1>
           <p className={styles.subtitle}>Organizá tus ideas de manera limpia y eficiente.</p>
           
           <button className={styles.loginBtn} onClick={handleLogin}>
@@ -224,7 +256,6 @@ export default function Home() {
     );
   }
 
-  // Si está logueado, panel original
   return (
     <div className={styles.appContainer}>
       <Header 
@@ -235,21 +266,39 @@ export default function Home() {
         boardId={user.uid}
       />
 
+      {/* 🚀 Inyección del Navbar de Miembros Finito */}
+      <MembersNavbar 
+        members={mockMembers} 
+        currentFilter={memberFilter} 
+        onFilterChange={setMemberFilter} 
+      />
+
       <main className={styles.mainContainer}>
         <div className={styles.boardWrapper}>
           {boardData.columnOrder.map((columnId) => {
             const column = boardData.columns[columnId];
-            const tasks = column?.taskIds.map((taskId) => boardData.tasks[taskId]) || [];
+            
+            // 1. Tomamos las tareas crudas de la columna
+            const rawTasks = column?.taskIds.map((taskId) => boardData.tasks[taskId]) || [];
+            
+            // 2. 🔍 Aplicamos el filtro por miembro seleccionado antes de mandárselas a <Column />
+            const filteredTasks = rawTasks.filter((task) => {
+              if (!task) return false;
+              if (!memberFilter) return true;
+              return task.assignedTo === memberFilter;
+            });
 
             return (
               <Column 
                 key={column.id} 
                 column={column} 
-                tasks={tasks} 
+                tasks={filteredTasks} 
                 onTaskClick={(task) => setActiveTask(task)}
                 onAddTaskClick={() => handleOpenCreateTaskModal(column.id)}
                 onUpdateColumnTitle={(columnId, newTitle) => handleUpdateColumnTitle(columnId as StatusId, newTitle)}
                 globalLabels={globalLabels} 
+                members={mockMembers} // 🚀 Descomentado y activado
+                onAssignMember={handleAssignMember} // 🚀 Descomentado y activado
               />
             );
           })}
@@ -271,14 +320,17 @@ export default function Home() {
           globalLabels={boardData.labels || {}}
           onSaveGlobalLabel={handleSaveGlobalLabel}
           onDeleteGlobalLabel={handleDeleteGlobalLabel} 
+          members={mockMembers} // 🚀 Descomentado y activado
+          onAssignMember={handleAssignMember} // 🚀 Descomentado y activado
         />
       )}
+
       {isShareModalOpen && user && (
-  <ShareBoardModal 
-    boardId={user.uid} // O el id real de tu tablero si usás uno diferente al uid del dueño
-    onClose={() => setIsShareModalOpen(false)} 
-  />
-)}
+        <ShareBoardModal 
+          boardId={user.uid} 
+          onClose={() => setIsShareModalOpen(false)} 
+        />
+      )}
     </div>
   );
 }

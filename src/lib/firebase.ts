@@ -8,7 +8,7 @@ const isDevelopment = typeof window !== 'undefined' && window.location.hostname 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   // 🔄 Si es desarrollo usa el nativo de firebase, si es producción usa tu dominio de Vercel
-  authDomain: isDevelopment ? "clearhead-5a93c.firebaseapp.com" : "clearhead-board.vercel.app",
+  authDomain: isDevelopment ? "zylos-f9a69.firebaseapp.com" : "zylos-board.vercel.app",
   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,

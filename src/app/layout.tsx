@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'ClearHead',
+  title: 'Zylos',
   description: 'Tu tablero Kanban inteligente. Organiza tus tareas de forma visual y eficiente.',
   manifest: '/manifest.json',
   
@@ -27,16 +27,16 @@ export const metadata: Metadata = {
 
   // 2. OPEN GRAPH (Para cuando compartís el link por WhatsApp / Redes)
   openGraph: {
-    title: 'ClearHead Board',
+    title: 'Zylos Board',
     description: 'El mejor organizador para vaciar tu mente.',
-    url: 'https://clearhead-board.vercel.app/', // Cambialo por tu URL real de Vercel cuando lo subas
-    siteName: 'ClearHead',
+    url: 'https://zylos-board.vercel.app/', // Cambialo por tu URL real de Vercel cuando lo subas
+    siteName: 'Zylos',
     images: [
       {
         url: '/og-image.png', //  La imagen que se va a ver en el mensaje de WhatsApp
         width: 1200,
         height: 630,
-        alt: 'Vista previa de ClearHead Board',
+        alt: 'Vista previa de Zylos Board',
       },
     ],
     locale: 'es_AR',
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   // 3. META EXCLUSIVA PARA EL COMPORTAMIENTO APP DE APPLE
   appleWebApp: {
     capable: true,
-    title: 'ClearHead',
+    title: 'Zylos',
     statusBarStyle: 'black-translucent',
   },
 };

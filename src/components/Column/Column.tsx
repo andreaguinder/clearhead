@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Column as ColumnType, Task, Label } from '@/types/board';
+import { Column as ColumnType, Task, Label, Member } from '@/types/board'; // 🚀 Importamos Member
 import TaskCard from '../TaskCard/TaskCard';
 import ActionButton from '../ActionButton/ActionButton';
 import styles from './Column.module.scss';
@@ -13,6 +13,8 @@ interface ColumnProps {
   onAddTaskClick: () => void;
   onUpdateColumnTitle: (columnId: string, newTitle: string) => void;
   globalLabels: Record<string, Label>;
+  members: Member[]; // 🚀 Agregado a la interfaz
+  onAssignMember: (taskId: string, memberId: string) => void; // 🚀 Agregado a la interfaz
 }
 
 export default function Column({ 
@@ -21,7 +23,9 @@ export default function Column({
   onTaskClick, 
   onAddTaskClick, 
   onUpdateColumnTitle,
-  globalLabels
+  globalLabels,
+  members, // 🚀 Recibimos los miembros
+  onAssignMember // 🚀 Recibimos la función asignadora
 }: ColumnProps) {
   
   const [isEditing, setIsEditing] = useState(false);
@@ -94,6 +98,7 @@ export default function Column({
               task={task} 
               globalLabels={globalLabels}
               onClick={() => onTaskClick(task)} 
+              members={members} // 🚀 Pasamos los miembros abajo a la tarjeta
             />
           )
         ))}

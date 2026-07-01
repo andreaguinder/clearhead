@@ -23,14 +23,14 @@ export async function POST(request: Request) {
     const inviteLink = `${baseUrl}?board=${boardId}`;
 
     const data = await resend.emails.send({
-      from: 'ClearHead <onboarding@resend.dev>',
+      from: 'Zylos <onboarding@resend.dev>',
       to: [email],
-      subject: '¡Te invitaron a colaborar en un tablero de ClearHead!',
+      subject: '¡Te invitaron a colaborar en un tablero de Zylos!',
       html: `
         <div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px;">
           <h2 style="color: #4f46e5; text-align: center;">¡Hola!</h2>
           <p style="font-size: 16px; color: #333; line-height: 1.5;">
-            Te invitaron a formar parte de un espacio de trabajo colaborativo en <strong>ClearHead</strong>.
+            Te invitaron a formar parte de un espacio de trabajo colaborativo en <strong>Zylos</strong>.
           </p>
           <div style="text-align: center; margin: 30px 0;">
             <a href="${inviteLink}" style="background-color: #4f46e5; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: bold; display: inline-block;">
