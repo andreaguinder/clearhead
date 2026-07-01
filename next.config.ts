@@ -6,7 +6,7 @@ async rewrites() {
     return [
       {
         source: '/__/auth/:path*',
-        destination: 'https://clearhead-5a93c.firebaseapp.com/__/auth/:path*',
+        destination: 'https://zylos-f9a69.firebaseapp.com/__/auth/:path*',
       },
     ];
   },
