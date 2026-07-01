@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { StatusId, Task, Label } from '@/types/board';
-import { Trash2, Check, X } from 'lucide-react';
+import { Trash2, Check, X, Wrench } from 'lucide-react';
 import TaskCheckList from '../TaskCheckList/TaskCheckList';
 import Button from "../Button/Button";
 import styles from './TaskDetailModal.module.scss';
@@ -12,6 +12,7 @@ import TaskHeader from './components/TaskHeader';
 import TaskLabels from './components/TaskLabels';
 import TaskMeta from './components/TaskMeta';
 import TaskDescription from './components/TaskDescription';
+import TaskComments from './components/TaskComments';
 
 interface TaskDetailModalProps {
   task: Task;
@@ -83,22 +84,19 @@ export default function TaskDetailModal({
             {/* 🌟 6. PRÓXIMAMENTE: SECCIÓN DE COMENTARIOS COLABORATIVOS */}
             {/* <TaskComments taskId={task.id} /> */}
 
-          </main>
-
-          {/* SIDEBAR DE ACCIONES */}
-          <aside className={styles.sidebar}>
-            <h4>Acciones</h4>
+  <h4><Wrench size={16} className={styles.headerIcon} style={{ marginTop: '10px', marginRight: '10px', color: 'var(--text-muted, #666)' }}/>Acciones</h4>
             
             {/* Espacio ideal para agregar botón "Asignar Miembros" en la barra lateral */}
-
+<div className={styles.eliminarTarjeta}>
             {!isConfirmingDelete ? (
               <Button
                 variant="secondary"
                 className={`${styles.sidebarBtn} ${styles.dangerBtn}`}
                 onClick={() => setIsConfirmingDelete(true)}
               >
-                <Trash2 size={16} className="mr-2" />
+                
                 <span>Eliminar Tarjeta</span>
+                <Trash2 size={16} className="mr-2" />
               </Button>
             ) : (
               <div className={styles.confirmDeleteWrapper}>
@@ -120,6 +118,15 @@ export default function TaskDetailModal({
                 </div>
               </div>
             )}
+            </div>
+          </main>
+
+          {/* SIDEBAR DE ACCIONES */}
+          <aside className={styles.sidebar}>
+           <TaskComments
+              task={task}
+              onUpdateComments={(updatedComments) => onUpdateTask({ ...task, comments: updatedComments })}
+            />
           </aside>
         </div>
       </div>

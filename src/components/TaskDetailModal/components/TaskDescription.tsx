@@ -1,4 +1,5 @@
 import styles from '../TaskDetailModal.module.scss';
+import { Text, Notebook } from 'lucide-react';
 
 interface TaskDescriptionProps {
   shortDescription: string;
@@ -10,7 +11,7 @@ export default function TaskDescription({ shortDescription, detailedDescription,
   return (
     <>
       <section className={styles.section}>
-        <h3>📌 Descripción Corta</h3>
+        <h3><Text size={16} className={styles.headerIcon} style={{ marginTop: '10px', marginRight: '10px', color: 'var(--text-muted, #666)' }}/> Descripción Corta</h3>
         <input
           type="text"
           className={styles.shortDescriptionInput}
@@ -21,7 +22,7 @@ export default function TaskDescription({ shortDescription, detailedDescription,
       </section>
 
       <section className={styles.section}>
-        <h3>📝 Descripción Completa</h3>
+        <h3><Notebook size={16} className={styles.headerIcon} style={{ marginTop: '10px', marginRight: '10px', color: 'var(--text-muted, #666)' }}/> Descripción Completa</h3>
         <textarea
           className={styles.textarea}
           placeholder="Añade detalle..."

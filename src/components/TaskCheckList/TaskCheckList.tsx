@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Trash2, Plus, CheckCircle2, Circle } from 'lucide-react';
+import { Trash2, Plus, CheckCircle2, Circle, CheckSquare } from 'lucide-react';
 import Button from '../Button/Button';
 import styles from './TaskCheckList.module.scss';
 
@@ -71,7 +71,7 @@ export default function TaskChecklist({ items = [], onUpdateChecklist }: TaskChe
     return (
         <div className={styles.checklistContainer}>
             <div className={styles.checklistHeader}>
-                <h3>Checklist</h3>
+                <h3><CheckSquare size={16} className={styles.headerIcon} style={{ marginTop: '10px', marginRight: '10px', color: 'var(--text-muted, #666)' }}/> Checklist</h3>
                 {totalCount > 0 && (
                     <span className={styles.progressText}>{completedCount}/{totalCount}</span>
                 )}

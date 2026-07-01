@@ -36,6 +36,8 @@ export default function TaskCard({ task, globalLabels, onClick }: TaskCardProps)
 
       {task.description && <p className={styles.taskDescription}>{task.description}</p>}
 
+
+
       {totalItems > 0 && (
         <div className={`${styles.checklistBadge} ${isAllDone ? styles.badgeDone : ''}`}>
           <CheckSquare size={14} />

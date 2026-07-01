@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Label } from '@/types/board';
+import { Tag } from 'lucide-react';
 import LabelManager from '@/components/Labels/LabelManager';
 import styles from '../TaskDetailModal.module.scss';
 
@@ -29,7 +30,7 @@ export default function TaskLabels({
 
   return (
     <section className={styles.section}>
-      <h3 className={styles.sectionLabel}>Etiquetas</h3>
+      <h3 className={styles.sectionLabel}><Tag size={16} className={styles.headerIcon} style={{ marginTop: '10px', marginRight: '10px', color: 'var(--text-muted, #666)' }} />Etiquetas</h3>
       <div className={styles.labelsWrapper}>
         {taskLabelIds.map((labelId) => {
           const label = globalLabels[labelId];

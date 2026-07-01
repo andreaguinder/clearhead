@@ -150,10 +150,11 @@
   overflow-y: hidden;  
   align-items: flex-start;
   width: 100%;
+      height: 90vh;
 
 
   &::-webkit-scrollbar {
-    height: 10px;  
+    height: 4px;  
   }
   &::-webkit-scrollbar-track {
     background: var(--bg-column);

@@ -1,4 +1,5 @@
 import styles from '../TaskDetailModal.module.scss';
+import { Layout } from 'lucide-react';
 
 interface TaskHeaderProps {
   title: string;
@@ -10,7 +11,9 @@ interface TaskHeaderProps {
 export default function TaskHeader({ title, columnName, onUpdateTitle, onClose }: TaskHeaderProps) {
   return (
     <header className={styles.modalHeader}>
+      
       <div className={styles.titleWrapper}>
+        <Layout size={20} className={styles.headerIcon} style={{ marginTop: '14px', color: 'var(--text-muted, #666)' }} />
         <div className={styles.headerInputGroup}>
           <textarea
             className={styles.titleInput}

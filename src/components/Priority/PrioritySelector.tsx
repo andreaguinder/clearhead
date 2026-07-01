@@ -16,7 +16,6 @@ export default function PrioritySelector({ selectedPriority, onSelect }: Priorit
 
   return (
     <div className={styles.container}>
-      <h4>Prioridad</h4>
       <div className={styles.pillsContainer}>
         {priorities.map((p) => (
           <button

@@ -26,6 +26,7 @@ export interface Task {
   dueDate?: string; 
   checklist?: ChecklistItem[]; 
   labelIds: string[]; 
+  comments?: Comment[];
 }
 
 export interface Column {
@@ -39,4 +40,13 @@ export interface BoardData {
   columns: Record<StatusId, Column>;
   columnOrder: StatusId[];
   labels: Record<string, Label>;
+}
+
+export interface Comment {
+  id: string;
+  text: string;
+  userId: string;
+  userName: string;
+  userPhoto: string;
+  createdAt: string; 
 }
