@@ -230,7 +230,7 @@ const [memberFilters, setMemberFilters] = useState<string[]>([]);
     return (
       <main className={styles.loginContainer}>
         <div className={styles.loginCard}>
-          <h1 className={styles.title}>Zylos<span className={styles.logoZylos}></span></h1>
+          <h1 className={styles.title}><span className={styles.logoZylos}></span>Zylos</h1>
           <p className={styles.subtitle}>Organizá tus ideas de manera limpia y eficiente.</p>
           
           <button className={styles.loginBtn} onClick={handleLogin}>

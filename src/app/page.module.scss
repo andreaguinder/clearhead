@@ -7,6 +7,12 @@
   background-color: var(--bg-app);
   font-family: var(--font-general);
   color: white;
+
+  .logoZylos {
+    margin-right: 1rem;
+    width: 40px;
+    height: 40px;
+  }
 }
 
 .loginCard {
@@ -28,7 +34,7 @@
 }
 
 .subtitle {
-  color: var(--bg-app);
+  color: white;
   font-size: 1rem;
   margin-bottom: 2rem;
 }
@@ -247,7 +253,7 @@
 
 .logoZylos {
   display: inline-block;
-  background-image: url("../assets/ico-clearhead-light.png");
+  background-image: url("../assets/iso-zylos.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

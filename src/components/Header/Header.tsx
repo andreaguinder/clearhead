@@ -22,9 +22,9 @@ export default function Header({ user, theme, onToggleTheme, onLogout, boardId }
     <header className={styles.header}>
       <div className={styles.appInfo}>
         <div className={styles.appInfoTheme}>
-          <h1>Zylos</h1>
-          <div className={styles.logoZylos}></div>
 
+          <div className={styles.logoZylos}></div>
+          <h1>Zylos</h1>
           {/* El userInfo ahora contiene el avatar-botón y el dropdown que se usa SIEMPRE */}
           <div className={styles.userInfo}>
             {user.photoURL && (

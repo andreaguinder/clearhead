@@ -31,7 +31,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
+
+  h1 {
+    margin-right: 2rem;
+  }
 }
 
 
@@ -113,12 +117,12 @@
 }
 
 .logoZylos {
-  background-image: url("../../assets/ico-clearhead-light.png");
+  background-image: url("../../assets/iso-zylos.png");
   background-size: contain;
   background-repeat: no-repeat;
-  width: 40px;
-  min-height: 40px;
-  margin-right: 1rem;
+  width: 32px;
+  min-height: 32px;
+
 }
 
 @media screen and (min-width: 768px) {
@@ -159,7 +163,5 @@
 }
 
 
-.logoZylos {
-  margin-right: 2rem;
-}
+
 }
