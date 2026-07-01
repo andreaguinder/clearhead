@@ -1,22 +1,21 @@
 export type StatusId = 'Por Hacer' | 'En Progreso' | 'Terminado';
 
-// Definimos la estructura de un elemento dentro de la checklist
 export interface ChecklistItem {
   id: string;
   text: string;
   isCompleted: boolean;
 }
 
-// Estructura de las etiquetas
 export interface Label {
   id: string;
   text: string;
-  color: string; // Guardaremos el código HEX del color
+  color: string; 
   textColor: string;
 }
 
 export interface Task {
   id: string;
+  boardId: string; // 🚀 CLAVE: Cada tarea sabe a qué tablero pertenece
   title: string;
   description?: string;
   detailedDescription?: string;
@@ -27,7 +26,7 @@ export interface Task {
   checklist?: ChecklistItem[]; 
   labelIds: string[]; 
   comments?: Comment[];
-  assignedTo?: string[];
+  assignedTo?: string[]; // Array de UIDs de los miembros asignados
 }
 
 export interface Column {
@@ -36,11 +35,22 @@ export interface Column {
   taskIds: string[];
 }
 
+// Esto es la DATA INTERNA de las columnas y tareas de UN tablero específico
 export interface BoardData {
   tasks: Record<string, Task>;
   columns: Record<StatusId, Column>;
   columnOrder: StatusId[];
   labels: Record<string, Label>;
+}
+
+// 🚀 NUEVA INTERFAZ MAESTRA: Estructura global de un Tablero
+export interface Board {
+  id: string;          // ID único del tablero
+  name: string;        // Ej: "Cosas Privadas" o "Proyecto Laburo"
+  createdAt: string;
+  ownerId: string;     // UID del usuario que creó el tablero (dueño)
+  memberIds: string[]; // 🚀 Lista de UIDs de los usuarios invitados (si está vacío, es privado)
+  data: BoardData;     // Acá adentro metemos las tareas, columnas y etiquetas de este tablero
 }
 
 export interface Comment {

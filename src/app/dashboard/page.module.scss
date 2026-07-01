@@ -1,0 +1,190 @@
+.dashboardContainer {
+  min-height: 100vh;
+  background-color: var(--bg-app); // Integrado con tus temas dinámicos
+  color: var(--text-primary, #ffffff);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-general);
+  padding: 1rem;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.welcomeSection {
+  margin-bottom: 2.5rem;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+  }
+
+  p {
+    color: var(--text-muted);
+    font-size: 1rem;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.boardCard {
+  background: var(--bg-card);
+  border: 2px solid var(--header-bg);
+  border-radius: 12px;
+  padding: 1.5rem;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  color: var(--text-main);
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: var(--header-bg);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin: 0 0 0.5rem 0;
+  }
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+
+  .badge {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+}
+
+.createCard {
+  background: transparent;
+  border: 2px dashed var(--header-bg);
+  border-radius: 12px;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--header-bg);
+    color: var(--header-bg);
+    background: rgba(66, 133, 242, 0.03);
+  }
+
+  .plusIcon {
+    font-size: 2rem;
+    font-weight: 300;
+  }
+
+  span {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+// Estilo del Modal de Creación Rápida
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modalContent {
+  background: var(--bg-app);
+  border: 1px solid var(--border-color);
+  padding: 2rem;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+
+  h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    color: var(--header-bg);
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+
+    &:focus {
+      outline: none;
+      border-color: var(--header-bg);
+    }
+  }
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+
+  button {
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+  }
+
+  .cancelBtn {
+    background: var(--header-bg);
+    color: white;
+    &:hover {
+      color: white;
+    }
+  }
+
+  .submitBtn {
+    background: var(--header-bg);
+    color: white;
+    &:hover {
+      background: #3371db;
+    }
+  }
+}

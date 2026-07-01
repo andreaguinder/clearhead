@@ -23,7 +23,7 @@
   text-align: center;
   max-width: 400px;
   width: 80%;
-    color: white;
+  color: white;
 }
 
 .title {
@@ -65,195 +65,9 @@
   display: block;
 }
 
-
-// CONTENEDOR (Una vez logueado)
-.appContainer {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;   
-  width: 100vw;   
-  overflow: hidden; 
-  background-color: var(--bg-app);
-  color: var(--text-main);
-  font-family: var(--font-general);
-  padding: 12px;   
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--header-bg);
-  color: var(--header-text);
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.userInfo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-
-  h2 {
-    margin: 0;
-    font-size: 1.2rem;
-    font-family: var(--font-titles);
-  }
-}
-
-.avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.8);
-}
-
-.themeBtn {
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  color: var(--header-text);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.85rem;
-  font-family: var(--font-general);
-  transition: background 0.2s;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.3);
-  }
-}
-
-.logoutBtn {
-  background: transparent;
-  color: var(--header-text);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  font-family: var(--font-general);
-  transition: background-color 0.2s, border-color 0.2s;
-  
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.6);
-  }
-}
-
-
-.boardWrapper {
-  flex: 1;         
-  display: flex;
-  flex-direction: row; 
-  gap: 16px;
-  padding: 1.5rem 0;   
-  overflow-x: auto;  
-  overflow-y: hidden;  
-  align-items: flex-start;
-  width: 100%;
-      height: 90vh;
-
-
-  &::-webkit-scrollbar {
-    height: 4px;  
-  }
-  &::-webkit-scrollbar-track {
-    background: var(--bg-column);
-    border-radius: 6px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: var(--text-muted); 
-    border-radius: 6px;
-  }
-}
-
-
-// COMPONENTES INTERNOS DEL TABLERO
-
-.columnCard {
-  background-color: var(--border-color); 
-  border-radius: 8px;
-  width: 300px;
-  min-width: 300px;    
-  flex-shrink: 0;    
-  padding: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
-  transition: background-color 0.3s ease;
-}
-
-.columnTitle {
-  font-size: 1.1rem;
-  color: var(--text-main);
-  margin-bottom: 1rem;
-  font-family: var(--font-titles);
-}
-
-.tasksList {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.taskCard {
-  background-color: var(--bg-card);
-  border-radius: 6px;
-  padding: 0.75rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  transition: background-color 0.3s ease;
-
-  h3 {
-    font-size: 0.95rem;
-    color: var(--text-main);
-    margin: 0;
-    font-family: var(--font-titles);
-  }
-
-  p {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin: 0;
-  }
-}
-
-.priorityBadge {
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  align-self: flex-start;
-  text-transform: uppercase;
-  font-family: var(--font-general);
-
-  &.high {
-    background-color: #ffebe6;
-    color: #de350b;
-  }
-  &.medium {
-    background-color: #fffae6;
-    color: #b78103;
-  }
-  &.low {
-    background-color: #eae6ff;
-    color: #403294;
-  }
-}
-
-.loadingText {
-  font-size: 14px;
-  margin-bottom: 1rem;
-}
-
 .logoZylos {
   display: inline-block;
-  background-image: url("../assets/iso-zylos.png");
+  background-image: url("../assets/iso-zylos.png"); // Revisa si la ruta relativa se mantiene según donde esté la carpeta assets
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -285,13 +99,4 @@
       font-weight: 500;
     }
   }
-}
-
-@media screen and (min-width: 1024px) {
-
-
-  .appContainer {
-  padding: 18px;    
-}
-
 }
