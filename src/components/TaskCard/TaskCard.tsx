@@ -4,6 +4,7 @@ import { Task, Label, Member } from '@/types/board';
 import { LabelPills } from '@/components/Labels/LabelPills';
 import { CheckSquare, MessageSquare, Calendar } from 'lucide-react'; // 🚀 Importamos Calendar
 import styles from './TaskCard.module.scss';
+import StackedAvatars from '../StackedAvatars/StackedAvatars';
 
 interface TaskCardProps {
   task: Task;
@@ -86,34 +87,7 @@ export default function TaskCard({
         </span>
 
         {/* 👤 Contenedor de Avatares Múltiples */}
-        {assignedMembers.length > 0 && (
-          <div style={{ display: 'flex', flexDirection: 'row-reverse', alignItems: 'center' }}>
-            {assignedMembers.map((member, index) => (
-              <div 
-                key={member.uid} 
-                className={styles.staticMemberAvatar} 
-                title={`Asignado a: ${member.name}`}
-                style={{ 
-                  marginLeft: index === 0 ? '0px' : '-6px', 
-                  position: 'relative',
-                  zIndex: assignedMembers.length - index 
-                }}
-              >
-                {member.photoURL ? (
-                  <img 
-                    src={member.photoURL} 
-                    alt={member.name} 
-                    style={{ width: '24px', height: '24px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--bg-card, #fff)' }} 
-                  />
-                ) : (
-                  <div style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#4f46e5', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', fontWeight: 'bold', border: '2px solid var(--bg-card, #fff)' }}>
-                    {member.name?.charAt(0) || member.email?.charAt(0)}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+        <StackedAvatars members={assignedMembers} />
       </div>
 
       {/* Título de la tarjeta */}

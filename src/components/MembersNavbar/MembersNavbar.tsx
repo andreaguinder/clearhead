@@ -7,7 +7,7 @@ import { ChevronDown, Check, Users } from 'lucide-react';
 
 interface MembersNavbarProps {
   members: Member[];
-  currentFilters: string[]; // 🚀 Ahora es un array
+  currentFilters: string[]; // 🚀 Se mantiene el tipado de múltiples filtros
   onFilterChange: (uid: string) => void;
 }
 
@@ -20,7 +20,7 @@ export const MembersNavbar: React.FC<MembersNavbarProps> = ({
 
   if (members.length <= 1) return null;
 
-  // Renderizador de iniciales o foto
+  // Renderizador de iniciales o foto (se mantiene para el interior del dropdown)
   const renderMiniAvatar = (member?: Member) => {
     if (!member) {
       return (
@@ -49,32 +49,9 @@ export const MembersNavbar: React.FC<MembersNavbarProps> = ({
   return (
     <div className={styles.membersNavbar}>
       
-      {/* 1. Lista de Avatares Rápidos */}
-      <div className={styles.membersList}>
-        {members.map((member) => {
-          // 🚀 Activo si su ID está dentro del array de filtros
-          const isActive = currentFilters.includes(member.uid);
-          
-          return (
-            <div 
-              key={member.uid} 
-              className={`${styles.memberAvatar} ${isActive ? styles.active : ''}`}
-              title={member.name || member.email}
-              onClick={() => onFilterChange(member.uid)}
-            >
-              {member.photoURL ? (
-                <img src={member.photoURL} alt={member.name} />
-              ) : (
-                <span>
-                  {(member.name || member.email).charAt(0).toUpperCase()}
-                </span>
-              )}
-            </div>
-          );
-        })}
-      </div>
+      {/* 🚀 Se eliminó el bloque completo de "membersList" para proteger la UI en mobile */}
 
-      {/* 2. Selector Desplegable Premium */}
+      {/* Selector Desplegable Premium */}
       <div className={styles.filterSelectWrapper}>
         <span>Filtrar por:</span>
         
@@ -85,7 +62,7 @@ export const MembersNavbar: React.FC<MembersNavbarProps> = ({
             onClick={() => setIsOpen(!isOpen)}
           >
             <div className={styles.triggerContent}>
-              {/* Si hay filtros, mostramos el icono de grupo, sino el default */}
+              {/* Si hay un solo filtro activo, renderiza su foto, sino el icono default */}
               {renderMiniAvatar(currentFilters.length === 1 ? members.find(m => m.uid === currentFilters[0]) : undefined)}
               <span>{getDropdownLabel()}</span>
             </div>
@@ -106,7 +83,7 @@ export const MembersNavbar: React.FC<MembersNavbarProps> = ({
                 type="button"
                 className={`${styles.dropdownItem} ${currentFilters.length === 0 ? styles.active : ''}`}
                 onClick={() => {
-                  onFilterChange(''); // Envía vacío para resetear
+                  onFilterChange(''); // Resetea
                   setIsOpen(false);
                 }}
               >
@@ -117,7 +94,7 @@ export const MembersNavbar: React.FC<MembersNavbarProps> = ({
                 {currentFilters.length === 0 && <Check size={12} />}
               </button>
 
-              {/* Lista de miembros con checks múltiples */}
+              {/* Lista completa de miembros con checkboxes ocultos (estilo Trello premium) */}
               {members.map((member) => {
                 const isSelected = currentFilters.includes(member.uid);
                 return (
@@ -125,7 +102,7 @@ export const MembersNavbar: React.FC<MembersNavbarProps> = ({
                     key={member.uid}
                     type="button"
                     className={`${styles.dropdownItem} ${isSelected ? styles.active : ''}`}
-                    onClick={() => onFilterChange(member.uid)} // Hace toggle y no cierra el menú para dejar seguir eligiendo
+                    onClick={() => onFilterChange(member.uid)} // Permite selección múltiple interactiva
                   >
                     <div className={styles.memberInfo}>
                       {renderMiniAvatar(member)}
@@ -140,6 +117,7 @@ export const MembersNavbar: React.FC<MembersNavbarProps> = ({
         </div>
       </div>
 
+      {/* Backdrop para cerrar haciendo clic afuera */}
       {isOpen && <div className={styles.backdrop} onClick={() => setIsOpen(false)} />}
     </div>
   );

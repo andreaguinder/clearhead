@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Member } from '@/types/board';
-import { ChevronDown, Check, User } from 'lucide-react';
+import { ChevronDown, Check, User, Users } from 'lucide-react';
 import styles from './MemberSelector.module.scss';
 
 interface MemberSelectorProps {
@@ -59,7 +59,7 @@ export const MemberSelector: React.FC<MemberSelectorProps> = ({
 
   return (
     <div className={styles.selectorContainer}>
-      {variant === 'sidebar' && <h4 className={styles.sectionTitle}>Asignar Miembros</h4>}
+      {variant === 'sidebar' && <h3 className={styles.sectionTitle}><Users size={18} className="inline mr-2" />Miembros</h3>}
 
       {/* Botón principal que simula el select nativo */}
       <button

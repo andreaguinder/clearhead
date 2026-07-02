@@ -1,6 +1,6 @@
 .membersNavbar {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   padding: 0.2rem 1rem;
   background-color: color-mix(in srgb, var(--bg-column) 35%, transparent);
@@ -77,13 +77,13 @@
       text-align: left;
 
       &:hover {
-        border-color: var(--header-bg, #4f46e5);
-        background-color: var(--bg-hover, #f8fafc);
+        border-color:  rgba(12, 66, 184, 0.1);
+        background-color:  rgba(12, 66, 184, 0.1);;
       }
 
       &:focus {
         outline: none;
-        border-color: var(--header-bg, #4f46e5);
+        background-color: rgba(12, 66, 184, 0.1);
       }
     }
 
@@ -98,7 +98,7 @@
       top: calc(100% + 4px);
       right: 0; // Se alinea a la derecha para que no se corte en los bordes de la pantalla
       width: 100%;
-      background-color: var(--bg-modal, #ffffff);
+  background-color: var(--bg-column);
       border: 1px solid var(--border-color, #e2e8f0);
       border-radius: 6px;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
@@ -126,12 +126,12 @@
       text-align: left;
 
       &:hover {
-        background-color: var(--bg-secondary, #f1f5f9);
+        background-color: var(--color-primary);
       }
 
       &.active {
-        background-color: rgba(79, 70, 229, 0.1);
-        color: var(--header-bg, #4f46e5);
+        background-color: rgba(12, 66, 184, 0.1);
+        color: var(--text-main);
         font-weight: 500;
       }
     }

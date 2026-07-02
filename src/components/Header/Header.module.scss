@@ -68,54 +68,6 @@
   margin: 0.5rem auto;
 }
 
-.dropdownMenu {
-  display: block; 
-  position: absolute;
-  top: calc(100% + 12px);
-  right: 0;
-  background-color: var(--bg-app);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 0.75rem;
-  min-width: 200px;
-  z-index: 50;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-  color: var(--text-main);
-}
-
-.dropdownHeader {
-  color: var(--text-main);
-  font-size: 0.875rem;
-  font-weight: 500;
-  padding: 0.25rem 0.5rem;
-  white-space: nowrap; 
-}
-
-.dropdownDivider {
-  border: 0;
-  border-top: 1px solid #374151;
-  margin: 0.5rem 0;
-}
-
-.dropdownLogout {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  background: transparent;
-  border: none;
-  color: #ef4444; 
-  padding: 0.5rem;
-  font-size: 0.875rem;
-  cursor: pointer;
-  border-radius: 4px;
-  text-align: left;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: rgba(239, 68, 68, 0.1);
-  }
-}
 
 .logoZylos {
   background-image: url("../../assets/iso-zylos.png");

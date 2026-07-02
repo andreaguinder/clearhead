@@ -24,7 +24,7 @@ export default function Home() {
   const params = useParams(); 
   const router = useRouter(); // 🚀 Para control de redirecciones
   const boardId = params.boardId as string; // 🎯 ID dinámico del tablero actual
-  
+
   const { user, authLoading, logout } = useAuth(); // 🧼 Limpiamos loginWithGoogle de acá
   
   const [boardData, setBoardData] = useState<BoardData>(initialBoardData);
@@ -216,13 +216,20 @@ export default function Home() {
 
   return (
     <div className={styles.appContainer}>
-      <Header 
-        user={user} 
-        theme={theme} 
-        onToggleTheme={toggleTheme} 
-        onLogout={handleLogout} 
-        boardId={boardId} // 🚀 Le pasa el ID real al Header por si lo usa internamente
-      />
+<Header 
+  user={user} 
+  theme={theme} 
+  onToggleTheme={toggleTheme} 
+  onLogout={handleLogout} 
+  boardId={boardId} 
+  // 🚀 Acá sí pasás la función, entonces el botón "Compartir" SÍ va a aparecer en el menú
+  onOpenShareModal={() => {
+    setIsShareModalOpen(true); // Tu estado real para abrir el modal, ¡sin alerts!
+  }}
+  onNavigateToWorkspaces={() => {
+    router.push('/dashboard'); // Te saca del tablero y te devuelve a tus espacios de trabajo
+  }}
+/>
 
       <MembersNavbar 
         members={mockMembers} 

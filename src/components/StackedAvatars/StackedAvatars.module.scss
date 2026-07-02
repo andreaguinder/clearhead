@@ -1,0 +1,52 @@
+.avatarGroup {
+  display: flex;
+  flex-direction: row-reverse; // 🚀 Logra el solapamiento de izquierda a derecha de forma prolija
+  align-items: center;
+}
+
+.avatarCircle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  position: relative;
+  margin-left: -6px; // 🚀 El solapamiento mágico
+  box-sizing: border-box;
+
+  &:last-child {
+    margin-left: 0; // Evita margen extra en el primer avatar visual
+  }
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--bg-card, #fff);
+}
+
+.avatarFallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #4f46e5;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: bold;
+  border: 2px solid var(--bg-card, #fff);
+}
+
+.avatarPlus {
+  background-color: #4a5568;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: bold;
+  border: 2px solid var(--bg-card, #fff);
+  cursor: default;
+}

@@ -91,17 +91,23 @@ export default function Dashboard() {
   return (
     <div className={styles.dashboardContainer}>
       {/* Reutilización limpia de tu Header existente */}
-      <Header
-        user={user}
-        theme={theme}
-        onToggleTheme={toggleTheme}
-        onLogout={handleLogout}
-        boardId={user.uid}
-      />
+<Header 
+  user={user} 
+  theme={theme} 
+  onToggleTheme={toggleTheme} 
+  onLogout={handleLogout} 
+  boardId={user.uid} 
+  // 🚀 Al pasarle undefined, el botón de compartir DESAPARECE por completo en el Dashboard global
+  onOpenShareModal={undefined} 
+  // 🚀 Esto te asegura que si estás colgada en otra vista, te mande al dashboard limpio
+  onNavigateToWorkspaces={() => {
+    router.push('/dashboard');
+  }}
+/>
 
       <main className={styles.mainContent}>
         <section className={styles.welcomeSection}>
-          <h1>¡Hola, {user.displayName || 'Andy'}!</h1>
+          <h1>¡Hola, {user.displayName}!</h1>
           <p>Seleccioná un tablero para empezar a trabajar o creá uno nuevo.</p>
         </section>
 

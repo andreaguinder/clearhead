@@ -94,10 +94,10 @@ export default function TaskDetailModal({
             />
 
             {/* Botón de Acciones dentro de la sección principal */}
-            <h4>
+            <h3>
               <Wrench size={16} className={styles.headerIcon} style={{ marginTop: '20px', marginRight: '10px', color: 'var(--text-muted, #666)' }}/>
               Acciones
-            </h4>
+            </h3>
             
             <div className={styles.eliminarTarjeta}>
               {!isConfirmingDelete ? (

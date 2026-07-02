@@ -1,13 +1,18 @@
 .selectorContainer {
   position: relative;
   width: 100%;
+
+  h3 {
+        color: var(--text-main);
+    font-size: 1rem;
+    font-family: var(--font-titles);
+    margin-bottom: .75rem;
+  }
 }
 
 .sectionTitle {
   font-size: 0.75rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   color: var(--text-muted, #8a8d93);
   margin-bottom: 0.5rem;
 }
